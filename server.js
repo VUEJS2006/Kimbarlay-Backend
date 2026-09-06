@@ -5,17 +5,21 @@ import "dotenv/config"
 
 // Router
 import townshipRouter from "./router/townshipRouter.js"
+import translationRouter from "./router/translationsRouter.js";
+
+
 const app = express();
 
 
 
 
-
+app.use(express.json())
 app.use(cors())
 app.use('api/', townshipRouter)
-app.use("/", (req, res) => {
-    res.send("Hello Kimberlay")
-})
+app.use("/" , translationRouter)
+// app.use("/", (req, res) => {
+//     res.send("Hello Kimberlay")
+// })
 
 
 
