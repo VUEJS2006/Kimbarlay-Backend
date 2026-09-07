@@ -5,7 +5,7 @@ const translationRouter = express.Router();
 
 // get all data from translation table 
 // call this route when the page is started or refreshed from layout
-translationRouter.get('/admin/translations' , getAllTranslations)
+translationRouter.get('/translations/all' , getAllTranslations)
 
 // use this route for changing each or create if does not exit in database
 translationRouter.post("/admin/translations/change" , changeTranslation )

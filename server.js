@@ -8,6 +8,7 @@ import townshipRouter from "./router/townshipRouter.js"
 import translationRouter from "./router/translationsRouter.js";
 import domesticHotelRouter from "./router/domesticHotelRouter.js";
 import countryRouter from "./router/countryRouter.js"
+import promotionHotelRouter from "./router/promotionHotelRouter.js";
 
 
 const app = express();
@@ -21,6 +22,7 @@ app.use('/api', townshipRouter)
 app.use("/api", translationRouter)
 app.use("/api", domesticHotelRouter)
 app.use("/api", countryRouter)
+app.use("/api", promotionHotelRouter)
 // app.use("/", (req, res) => {
 //     res.send("Hello Kimberlay")
 // })
