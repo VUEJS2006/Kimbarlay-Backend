@@ -361,7 +361,7 @@ example of for township_id 1
     "success": false,
     "message": "One or more selected hotels are invalid or do not belong to this township."
 }
-
+```
 
 ### PUT /api/admin/promotion/hotels/create
 
@@ -438,6 +438,7 @@ example of for township_id 1
     "success": false,
     "message": "One or more selected hotels are invalid or do not belong to this township."
 }
+```
 
 - If the township does not have 3 existing promotion hotels to update
 
