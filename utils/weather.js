@@ -20,7 +20,7 @@ export const getTownshipTemp = async (lat, lon, townshipId) => {
             throw new Error(`HTTP error! status: ${response.status}`)
         }
         const data = await response.json();
-
+        console.log(data)
         const tempMin = Math.round(data.main.temp_min);
         const tempMax = Math.round(data.main.temp_max);
         const tempString = `${tempMin}°C - ${tempMax}°C`;
