@@ -23,13 +23,13 @@ app.use("/api", translationRouter)
 app.use("/api", domesticHotelRouter)
 app.use("/api", countryRouter)
 app.use("/api", promotionHotelRouter)
-// app.use("/", (req, res) => {
-//     res.send("Hello Kimberlay")
-// })
+app.use("/", (req, res) => {
+    res.send("Hello Kimberlay")
+})
 
 
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
+app.listen(PORT,"0.0.0.0", () => {
     console.log(`Server is Running on ${PORT}`)
 })
