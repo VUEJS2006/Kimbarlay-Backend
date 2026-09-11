@@ -25,23 +25,8 @@ app.use("/api", countryRouter)
 app.use("/api", promotionHotelRouter)
 
 app.get("/", (req, res) => {
-    res.send("/ - EXPRESS");
+    res.send("Welcome from Express.");
 });
-
-app.get("/test", (req, res) => {
-    res.send("/TEST - EXPRESS");
-});
-
-app.use("/use", (req, res) => {
-    res.send("/Use - EXPRESS");
-});
-
-app.use((req, res) => {
-    res.status(404).json({
-        message : "EXPRESS 404",
-        path : req.originalUrl
-    })
-})
 
 
 const PORT = process.env.PORT || 5000;

@@ -1,8 +1,18 @@
 # This file is just for instruction of using api
 
+## API URL
+
+- This is the domain of express server.
+- Use this at the start of each route
+
+```text
+https://api.magwaysh1.website
+```
+
 ## 1. SQL code of creating transform table in database
 
 - This code is just for creating `transform` table in database
+- This does not need for frontend user
  
 ```text
 CREATE TABLE IF NOT EXISTS translations (
