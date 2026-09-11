@@ -23,7 +23,7 @@ app.use("/api", translationRouter)
 app.use("/api", domesticHotelRouter)
 app.use("/api", countryRouter)
 app.use("/api", promotionHotelRouter)
-app.use("/", (req, res) => {
+app.get("/test", (req, res) => {
     res.send("Hello Kimberlay")
 })
 
