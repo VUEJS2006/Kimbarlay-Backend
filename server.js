@@ -36,6 +36,12 @@ app.use("/use", (req, res) => {
     res.send("/Use - EXPRESS");
 });
 
+app.use((req, res) => {
+    res.status(404).json({
+        message : "EXPRESS 404",
+        path : req.originalUrl
+    })
+})
 
 
 const PORT = process.env.PORT || 5000;
