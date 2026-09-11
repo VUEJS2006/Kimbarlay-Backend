@@ -23,9 +23,18 @@ app.use("/api", translationRouter)
 app.use("/api", domesticHotelRouter)
 app.use("/api", countryRouter)
 app.use("/api", promotionHotelRouter)
+
+app.get("/", (req, res) => {
+    res.send("/ - EXPRESS");
+});
+
 app.get("/test", (req, res) => {
-    res.send("Hello Kimberlay")
-})
+    res.send("/TEST - EXPRESS");
+});
+
+app.use("/use", (req, res) => {
+    res.send("/Use - EXPRESS");
+});
 
 
 
