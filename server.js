@@ -9,7 +9,7 @@ import translationRouter from "./router/translationsRouter.js";
 import domesticHotelRouter from "./router/domesticHotelRouter.js";
 import countryRouter from "./router/countryRouter.js"
 import promotionHotelRouter from "./router/promotionHotelRouter.js";
-
+import path from "path";
 
 const app = express();
 
@@ -18,6 +18,7 @@ const app = express();
 
 app.use(express.json())
 app.use(cors())
+app.use("/images",express.static(path.join(process.cwd(),"images")))
 app.use('/api', townshipRouter)
 app.use("/api", translationRouter)
 app.use("/api", domesticHotelRouter)
