@@ -25,6 +25,7 @@ export const domesticHotelCreate = asyncHandel(async (req, res) => {
             });
         }
 
+        // tags array
         if (!tags) {
             tags = [];
         }
@@ -55,6 +56,7 @@ export const domesticHotelCreate = asyncHandel(async (req, res) => {
         let imagePath = null;
 
         if (req.file) {
+
             const fileName = `${uuid()}.webp`;
 
             const savePath = path.join(
@@ -105,10 +107,11 @@ export const domesticHotelCreate = asyncHandel(async (req, res) => {
         return res.status(201).json({
             message: "Hotel Create Success",
             success: true,
-            hotel_id: data.insertId
+            data
         });
 
     } catch (error) {
+
         console.log(error);
 
         return res.status(500).json({
@@ -135,10 +138,16 @@ export const domesticHotelList = asyncHandel(async (req, res) => {
                 h.tags,
                 h.description,
                 h.image,
-                DATE_FORMAT(h.created_at, '%d-%m-%Y') AS created_at
+                DATE_FORMAT(
+                    h.created_at,
+                    '%d-%m-%Y'
+                ) AS created_at
+
             FROM domestic_hotels h
+
             LEFT JOIN townships t
                 ON h.township_id = t.id
+
             ORDER BY h.id DESC
             `
         );
@@ -153,11 +162,12 @@ export const domesticHotelList = asyncHandel(async (req, res) => {
         return res.status(200).json({
             message: "Hotel List Success",
             success: true,
-            data: result,
-            count: result.length
+            count: result.length,
+            data: result
         });
 
     } catch (error) {
+
         console.log(error);
 
         return res.status(500).json({
@@ -166,7 +176,6 @@ export const domesticHotelList = asyncHandel(async (req, res) => {
         });
     }
 });
-
 
 export const domesticHotelUpdate = asyncHandel(async (req, res) => {
     try {
