@@ -135,10 +135,7 @@ export const domesticHotelList = asyncHandel(async (req, res) => {
                 h.tags,
                 h.description,
                 h.image,
-                DATE_FORMAT(
-                    h.created_at,
-                    '%d-%m-%Y'
-                ) AS created_at
+                DATE_FORMAT(h.created_at, '%d-%m-%Y') AS created_at
             FROM domestic_hotels h
             LEFT JOIN townships t
                 ON h.township_id = t.id
@@ -146,11 +143,18 @@ export const domesticHotelList = asyncHandel(async (req, res) => {
             `
         );
 
+        const result = data.map(item => ({
+            ...item,
+            tags: typeof item.tags === "string"
+                ? JSON.parse(item.tags)
+                : item.tags
+        }));
+
         return res.status(200).json({
             message: "Hotel List Success",
             success: true,
-            data,
-            count: data.length
+            data: result,
+            count: result.length
         });
 
     } catch (error) {
