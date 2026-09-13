@@ -31,6 +31,9 @@ app.get("/", (req, res) => {
 });
 
 
+
+// this route is not for frontend and just for auto deploy in name cheap 
+// plsease, don't  change or delete anything
 // GitHub Webhook 
 app.use('/deploy' , githubWebhookRouter);
 
@@ -39,6 +42,3 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT,"0.0.0.0", () => {
     console.log(`Server is Running on ${PORT}`)
 })
-
-
-// GitHub Auto Deploy Test
