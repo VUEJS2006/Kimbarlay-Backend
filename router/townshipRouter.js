@@ -7,7 +7,7 @@ const router = exress.Router()
 router.post('/admin/township/create', townshipCreate);
 router.get('/admin/township/list', townshipList);
 router.put('/admin/township/update/:id', townshipUpdate);
-router.get('/admin/township/delete/:id', townshipDelete);
+router.delete('/admin/township/delete/:id', townshipDelete);
 
 
 // Website Site

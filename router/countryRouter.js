@@ -7,7 +7,7 @@ const router = exress.Router()
 router.post('/admin/country/create', countryCreate);
 router.get('/admin/country/list', countryList);
 router.put('/admin/country/update/:id', countryUpdate);
-router.get('/admin/country/delete/:id', countryDelete);
+router.delete('/admin/country/delete/:id', countryDelete);
 
 
 // Website Site

@@ -10,6 +10,7 @@ import domesticHotelRouter from "./router/domesticHotelRouter.js";
 import countryRouter from "./router/countryRouter.js"
 import promotionHotelRouter from "./router/promotionHotelRouter.js";
 import githubWebhookRouter from "./router/deployRouter.js";
+import path from "path";
 
 
 const app = express();
