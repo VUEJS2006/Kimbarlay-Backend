@@ -2,14 +2,13 @@
 
 ## 1. Oversea Hotels table
 
-Run this SQL once before using the oversea hotel routes. The `country_id` and
-`township_id` columns reference the existing `countrys` and `townships` tables.
+Run this SQL once before using the oversea hotel routes. The `country_id`
+column references the existing `countrys` table.
 
 ```sql
 CREATE TABLE IF NOT EXISTS oversea_hotels (
     id INT AUTO_INCREMENT PRIMARY KEY,
     country_id INT NOT NULL,
-    township_id INT NOT NULL,
     title VARCHAR(255) NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
     rating DECIMAL(3, 1) DEFAULT NULL,
@@ -19,8 +18,7 @@ CREATE TABLE IF NOT EXISTS oversea_hotels (
     image VARCHAR(255) DEFAULT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
-    FOREIGN KEY (country_id) REFERENCES countrys(id) ON DELETE CASCADE,
-    FOREIGN KEY (township_id) REFERENCES townships(id) ON DELETE CASCADE
+    FOREIGN KEY (country_id) REFERENCES countrys(id) ON DELETE CASCADE
 );
 ```
 

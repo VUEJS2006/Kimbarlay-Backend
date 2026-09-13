@@ -73,7 +73,6 @@ export const overseaHotelCreate = asyncHandel(async (req, res) => {
     try {
         let {
             country_id,
-            township_id,
             title,
             price,
             rating,
@@ -82,9 +81,9 @@ export const overseaHotelCreate = asyncHandel(async (req, res) => {
             description
         } = req.body;
 
-        if (!country_id || !township_id || !title || !price) {
+        if (!country_id || !title || !price) {
             return res.status(400).json({
-                message: "Country, township, title and price are required!",
+                message: "Country, title and price are required!",
                 success: false
             });
         }
@@ -97,7 +96,6 @@ export const overseaHotelCreate = asyncHandel(async (req, res) => {
             INSERT INTO oversea_hotels
             (
                 country_id,
-                township_id,
                 title,
                 price,
                 rating,
@@ -106,11 +104,10 @@ export const overseaHotelCreate = asyncHandel(async (req, res) => {
                 description,
                 image
             )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
             `,
             [
                 country_id,
-                township_id,
                 title,
                 price,
                 rating,
@@ -144,8 +141,6 @@ export const overseaHotelList = asyncHandel(async (req, res) => {
                 h.id,
                 h.country_id,
                 c.name AS country_name,
-                h.township_id,
-                t.name AS township_name,
                 h.title,
                 h.price,
                 h.rating,
@@ -157,8 +152,6 @@ export const overseaHotelList = asyncHandel(async (req, res) => {
             FROM oversea_hotels h
             LEFT JOIN countrys c
                 ON h.country_id = c.id
-            LEFT JOIN townships t
-                ON h.township_id = t.id
             ORDER BY h.id DESC
             `
         );
@@ -191,7 +184,6 @@ export const overseaHotelUpdate = asyncHandel(async (req, res) => {
         const { id } = req.params;
         let {
             country_id,
-            township_id,
             title,
             price,
             rating,
@@ -212,9 +204,9 @@ export const overseaHotelUpdate = asyncHandel(async (req, res) => {
             });
         }
 
-        if (!country_id || !township_id || !title || !price) {
+        if (!country_id || !title || !price) {
             return res.status(400).json({
-                message: "Country, township, title and price are required!",
+                message: "Country, title and price are required!",
                 success: false
             });
         }
@@ -232,7 +224,6 @@ export const overseaHotelUpdate = asyncHandel(async (req, res) => {
             UPDATE oversea_hotels
             SET
                 country_id = ?,
-                township_id = ?,
                 title = ?,
                 price = ?,
                 rating = ?,
@@ -244,7 +235,6 @@ export const overseaHotelUpdate = asyncHandel(async (req, res) => {
             `,
             [
                 country_id,
-                township_id,
                 title,
                 price,
                 rating,
