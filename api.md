@@ -1,5 +1,37 @@
 # This file is just for instruction of using api
 
+## 1. Oversea Hotels table
+
+Run this SQL once before using the oversea hotel routes. The `country_id` and
+`township_id` columns reference the existing `countrys` and `townships` tables.
+
+```sql
+CREATE TABLE IF NOT EXISTS oversea_hotels (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    country_id INT NOT NULL,
+    township_id INT NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
+    rating DECIMAL(3, 1) DEFAULT NULL,
+    color VARCHAR(50) DEFAULT NULL,
+    tags JSON DEFAULT NULL,
+    description TEXT DEFAULT NULL,
+    image VARCHAR(255) DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (country_id) REFERENCES countrys(id) ON DELETE CASCADE,
+    FOREIGN KEY (township_id) REFERENCES townships(id) ON DELETE CASCADE
+);
+```
+
+### Oversea hotel routes
+
+- `POST /api/admin/oversea/hotel/create`
+- `GET /api/admin/oversea/hotel/list`
+- `PUT /api/admin/oversea/hotel/update/:id`
+- `DELETE /api/admin/oversea/hotel/delete/:id`
+- `GET /api/mobile/oversea/hotel/list`
+
 ## API URL
 
 - This is the domain of express server.
@@ -13,7 +45,7 @@ https://api.magwaysh1.website
 
 - This code is just for creating `transform` table in database
 - This does not need for frontend user
- 
+
 ```text
 CREATE TABLE IF NOT EXISTS translations (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -27,26 +59,26 @@ CREATE TABLE IF NOT EXISTS translations (
 
 - Use this route for getting all translations when the page is started or refreshed
 
-#### Response 
+#### Response
 
 ```json
 {
-    "success": true,
-    "data": {
-        "header_name": {
-            "en": "Kimberley Header",
-            "zh": "Kimberley Chinese Meaning"
-        },
-        "create_hotel_button": {
-            "en": "Create Hotel",
-            "zh": "Chinese lang for Create Hotel"
-        },
-        "log_out_button": {
-            "en": "Log Out",
-            "zh": "Chinese lang for Log Out"
-        }
+  "success": true,
+  "data": {
+    "header_name": {
+      "en": "Kimberley Header",
+      "zh": "Kimberley Chinese Meaning"
     },
-    "message": "Get all Translations successfully!"
+    "create_hotel_button": {
+      "en": "Create Hotel",
+      "zh": "Chinese lang for Create Hotel"
+    },
+    "log_out_button": {
+      "en": "Log Out",
+      "zh": "Chinese lang for Log Out"
+    }
+  },
+  "message": "Get all Translations successfully!"
 }
 ```
 
@@ -58,24 +90,24 @@ CREATE TABLE IF NOT EXISTS translations (
 
 ```json
 {
-    "translation_key" : "create_hotel_button" , 
-    "en" : "Create Hotel" ,
-    "zh" : "Chinese lang for Create Hotel"
+  "translation_key": "create_hotel_button",
+  "en": "Create Hotel",
+  "zh": "Chinese lang for Create Hotel"
 }
 ```
 
-#### Success Response 
+#### Success Response
 
 ```json
 {
-    "success": true,
-    "data": {
-        "create_hotel_button": {
-            "en": "Create Hotel",
-            "zh": "Chinese lang for Create Hotel"
-        }
-    },
-    "message": "Tanslation Chaning is successfully done."
+  "success": true,
+  "data": {
+    "create_hotel_button": {
+      "en": "Create Hotel",
+      "zh": "Chinese lang for Create Hotel"
+    }
+  },
+  "message": "Tanslation Chaning is successfully done."
 }
 ```
 
@@ -88,16 +120,15 @@ CREATE TABLE IF NOT EXISTS translations (
 
 ```json
 {
-    "success": false,
-    "message": "Tanslation_key must not empty and both en and zh should not be underfined !"
+  "success": false,
+  "message": "Tanslation_key must not empty and both en and zh should not be underfined !"
 }
 ```
-
 
 ## 2. SQL code of creating Promotion Hotels in database
 
 - This code is just for creating `promotion_hotels` table in database
- 
+
 ```text
 CREATE TABLE IF NOT EXISTS promotion_hotels (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -105,15 +136,16 @@ CREATE TABLE IF NOT EXISTS promotion_hotels (
     hotel_id INT NOT NULL,
     priority TINYINT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    
+
     FOREIGN KEY (township_id) REFERENCES townships(id) ON DELETE CASCADE,
     FOREIGN KEY (hotel_id) REFERENCES domestic_hotels(id) ON DELETE CASCADE,
-    
+
     CONSTRAINT chk_priority_1_to_3 CHECK (priority IN (1, 2, 3)),
-    
+
     UNIQUE KEY unique_township_priority (township_id, priority)
 );
 ```
+
 ### GET /api/promotion/hotels/each/:township_id
 
 - `:township_id` is replaced by id of the township which is related to the Promotion_hotels you want to get.
@@ -130,41 +162,41 @@ example of for township_id 1
 
 ```json
 {
-    "success": true,
-    "data": {
+  "success": true,
+  "data": {
+    "township_id": 1,
+    "township_name": "Bagan",
+    "temperature": "34°C - 34°C",
+    "promotions": [
+      {
+        "id": 4,
         "township_id": 1,
-        "township_name": "Bagan",
-        "temperature": "34°C - 34°C",
-        "promotions": [
-            {
-                "id": 4,
-                "township_id": 1,
-                "hotel_id": 3,
-                "priority": 1,
-                "hotel_name": "Bagan Lodge",
-                "price": "95.00",
-                "rating": "4.5"
-            },
-            {
-                "id": 5,
-                "township_id": 1,
-                "hotel_id": 1,
-                "priority": 2,
-                "hotel_name": "Aureum Palace Hotel",
-                "price": "120.00",
-                "rating": "4.8"
-            },
-            {
-                "id": 6,
-                "township_id": 1,
-                "hotel_id": 2,
-                "priority": 3,
-                "hotel_name": "Heritage Bagan Hotel",
-                "price": "85.00",
-                "rating": "4.6"
-            }
-        ]
-    }
+        "hotel_id": 3,
+        "priority": 1,
+        "hotel_name": "Bagan Lodge",
+        "price": "95.00",
+        "rating": "4.5"
+      },
+      {
+        "id": 5,
+        "township_id": 1,
+        "hotel_id": 1,
+        "priority": 2,
+        "hotel_name": "Aureum Palace Hotel",
+        "price": "120.00",
+        "rating": "4.8"
+      },
+      {
+        "id": 6,
+        "township_id": 1,
+        "hotel_id": 2,
+        "priority": 3,
+        "hotel_name": "Heritage Bagan Hotel",
+        "price": "85.00",
+        "rating": "4.6"
+      }
+    ]
+  }
 }
 ```
 
@@ -173,25 +205,25 @@ example of for township_id 1
 
 ```json
 {
-    "township_id": 2,
-    "message": "No promotion hotels found for this township.",
-    "promotions": []
+  "township_id": 2,
+  "message": "No promotion hotels found for this township.",
+  "promotions": []
 }
 ```
 
-#### Error Response 
+#### Error Response
 
 ```json
 {
-    "success": false,
-    "message": "Township does not exist in the database."
+  "success": false,
+  "message": "Township does not exist in the database."
 }
 ```
 
 ```json
 {
-    "success": false,
-    "message": "Township ID is required."
+  "success": false,
+  "message": "Township ID is required."
 }
 ```
 
@@ -201,77 +233,77 @@ example of for township_id 1
 
 ```json
 {
-    "success": true,
-    "data": [
+  "success": true,
+  "data": [
+    {
+      "township_id": 1,
+      "township_name": "Bagan",
+      "temperature": "34°C - 34°C",
+      "promotions": [
         {
-            "township_id": 1,
-            "township_name": "Bagan",
-            "temperature": "34°C - 34°C",
-            "promotions": [
-                {
-                    "id": 4,
-                    "township_id": 1,
-                    "hotel_id": 3,
-                    "priority": 1,
-                    "hotel_name": "Bagan Lodge",
-                    "price": "95.00",
-                    "rating": "4.5"
-                },
-                {
-                    "id": 5,
-                    "township_id": 1,
-                    "hotel_id": 1,
-                    "priority": 2,
-                    "hotel_name": "Aureum Palace Hotel",
-                    "price": "120.00",
-                    "rating": "4.8"
-                },
-                {
-                    "id": 6,
-                    "township_id": 1,
-                    "hotel_id": 2,
-                    "priority": 3,
-                    "hotel_name": "Heritage Bagan Hotel",
-                    "price": "85.00",
-                    "rating": "4.6"
-                }
-            ]
+          "id": 4,
+          "township_id": 1,
+          "hotel_id": 3,
+          "priority": 1,
+          "hotel_name": "Bagan Lodge",
+          "price": "95.00",
+          "rating": "4.5"
         },
         {
-            "township_id": 2,
-            "township_name": "MDY",
-            "temperature": "34°C - 34°C",
-            "promotions": [
-                {
-                    "id": 7,
-                    "township_id": 2,
-                    "hotel_id": 4,
-                    "priority": 1,
-                    "hotel_name": "Aureum Palace Hotel",
-                    "price": "120.00",
-                    "rating": "4.8"
-                },
-                {
-                    "id": 8,
-                    "township_id": 2,
-                    "hotel_id": 5,
-                    "priority": 2,
-                    "hotel_name": "Heritage Bagan Hotel",
-                    "price": "85.00",
-                    "rating": "4.6"
-                },
-                {
-                    "id": 9,
-                    "township_id": 2,
-                    "hotel_id": 6,
-                    "priority": 3,
-                    "hotel_name": "Bagan Lodge",
-                    "price": "95.00",
-                    "rating": "4.5"
-                }
-            ]
+          "id": 5,
+          "township_id": 1,
+          "hotel_id": 1,
+          "priority": 2,
+          "hotel_name": "Aureum Palace Hotel",
+          "price": "120.00",
+          "rating": "4.8"
+        },
+        {
+          "id": 6,
+          "township_id": 1,
+          "hotel_id": 2,
+          "priority": 3,
+          "hotel_name": "Heritage Bagan Hotel",
+          "price": "85.00",
+          "rating": "4.6"
         }
-    ]
+      ]
+    },
+    {
+      "township_id": 2,
+      "township_name": "MDY",
+      "temperature": "34°C - 34°C",
+      "promotions": [
+        {
+          "id": 7,
+          "township_id": 2,
+          "hotel_id": 4,
+          "priority": 1,
+          "hotel_name": "Aureum Palace Hotel",
+          "price": "120.00",
+          "rating": "4.8"
+        },
+        {
+          "id": 8,
+          "township_id": 2,
+          "hotel_id": 5,
+          "priority": 2,
+          "hotel_name": "Heritage Bagan Hotel",
+          "price": "85.00",
+          "rating": "4.6"
+        },
+        {
+          "id": 9,
+          "township_id": 2,
+          "hotel_id": 6,
+          "priority": 3,
+          "hotel_name": "Bagan Lodge",
+          "price": "95.00",
+          "rating": "4.5"
+        }
+      ]
+    }
+  ]
 }
 ```
 
@@ -279,8 +311,8 @@ example of for township_id 1
 
 ```json
 {
-    "success": true,
-    "data": []
+  "success": true,
+  "data": []
 }
 ```
 
@@ -292,46 +324,46 @@ example of for township_id 1
 
 ```json
 {
-    "township_id" : 2,
-    "promotions" : [
-        { "priority": 1, "hotel_id": 3 },
-        { "priority": 2, "hotel_id": 1 },
-        { "priority": 3, "hotel_id": 2 }
-    ]
+  "township_id": 2,
+  "promotions": [
+    { "priority": 1, "hotel_id": 3 },
+    { "priority": 2, "hotel_id": 1 },
+    { "priority": 3, "hotel_id": 2 }
+  ]
 }
 ```
 
-#### Success Response 
+#### Success Response
 
 ```json
 {
-    "success": true,
-    "message": "Successfully updated promotion hotels for Bagan.",
-    "data": {
-        "township_id": 1,
-        "township_name": "Bagan",
-        "temperature": "28°C - 28°C",
-        "promotions": [
-            {
-                "id": 1,
-                "hotel_id": 3,
-                "priority": 1,
-                "created_at": "2026-09-07T12:35:27.000Z"
-            },
-            {
-                "id": 2,
-                "hotel_id": 1,
-                "priority": 2,
-                "created_at": "2026-09-07T12:35:27.000Z"
-            },
-            {
-                "id": 3,
-                "hotel_id": 2,
-                "priority": 3,
-                "created_at": "2026-09-07T12:35:27.000Z"
-            }
-        ]
-    }
+  "success": true,
+  "message": "Successfully updated promotion hotels for Bagan.",
+  "data": {
+    "township_id": 1,
+    "township_name": "Bagan",
+    "temperature": "28°C - 28°C",
+    "promotions": [
+      {
+        "id": 1,
+        "hotel_id": 3,
+        "priority": 1,
+        "created_at": "2026-09-07T12:35:27.000Z"
+      },
+      {
+        "id": 2,
+        "hotel_id": 1,
+        "priority": 2,
+        "created_at": "2026-09-07T12:35:27.000Z"
+      },
+      {
+        "id": 3,
+        "hotel_id": 2,
+        "priority": 3,
+        "created_at": "2026-09-07T12:35:27.000Z"
+      }
+    ]
+  }
 }
 ```
 
@@ -341,8 +373,8 @@ example of for township_id 1
 
 ```json
 {
-    "success": false,
-    "message": "You must provide exactly 3 hotels for Priority 1, 2 and 3. And township_id must exit."
+  "success": false,
+  "message": "You must provide exactly 3 hotels for Priority 1, 2 and 3. And township_id must exit."
 }
 ```
 
@@ -350,8 +382,8 @@ example of for township_id 1
 
 ```json
 {
-    "success": false,
-    "message": "Your township does not exit in database"
+  "success": false,
+  "message": "Your township does not exit in database"
 }
 ```
 
@@ -359,8 +391,8 @@ example of for township_id 1
 
 ```json
 {
-    "success": false,
-    "message": "Promotion hotels already exist for this township. Please use the update route to modify."
+  "success": false,
+  "message": "Promotion hotels already exist for this township. Please use the update route to modify."
 }
 ```
 
@@ -368,8 +400,8 @@ example of for township_id 1
 
 ```json
 {
-    "success": false,
-    "message": "One or more selected hotels are invalid or do not belong to this township."
+  "success": false,
+  "message": "One or more selected hotels are invalid or do not belong to this township."
 }
 ```
 
@@ -381,43 +413,43 @@ example of for township_id 1
 
 ```json
 {
-    "township_id" : 1,
-    "promotions" : [
-        { "priority": 1, "hotel_id": 2 },
-        { "priority": 2, "hotel_id": 3 },
-        { "priority": 3, "hotel_id": 1 }
-    ]
+  "township_id": 1,
+  "promotions": [
+    { "priority": 1, "hotel_id": 2 },
+    { "priority": 2, "hotel_id": 3 },
+    { "priority": 3, "hotel_id": 1 }
+  ]
 }
 ```
 
-#### Success Response 
+#### Success Response
 
 ```json
 {
-    "success": true,
-    "message": "Successfully updated promotion hotels for Bagan.",
-    "data": {
-        "township_id": 1,
-        "township_name": "Bagan",
-        "temperature": "34°C - 34°C",
-        "promotions": [
-            {
-                "id": 1,
-                "hotel_id": 2,
-                "priority": 1
-            },
-            {
-                "id": 2,
-                "hotel_id": 3,
-                "priority": 2
-            },
-            {
-                "id": 3,
-                "hotel_id": 1,
-                "priority": 3
-            }
-        ]
-    }
+  "success": true,
+  "message": "Successfully updated promotion hotels for Bagan.",
+  "data": {
+    "township_id": 1,
+    "township_name": "Bagan",
+    "temperature": "34°C - 34°C",
+    "promotions": [
+      {
+        "id": 1,
+        "hotel_id": 2,
+        "priority": 1
+      },
+      {
+        "id": 2,
+        "hotel_id": 3,
+        "priority": 2
+      },
+      {
+        "id": 3,
+        "hotel_id": 1,
+        "priority": 3
+      }
+    ]
+  }
 }
 ```
 
@@ -427,8 +459,8 @@ example of for township_id 1
 
 ```json
 {
-    "success": false,
-    "message": "You must provide exactly 3 hotels for Priority 1, 2 and 3. And township_id must exit."
+  "success": false,
+  "message": "You must provide exactly 3 hotels for Priority 1, 2 and 3. And township_id must exit."
 }
 ```
 
@@ -436,8 +468,8 @@ example of for township_id 1
 
 ```json
 {
-    "success": false,
-    "message": "Your township does not exit in database"
+  "success": false,
+  "message": "Your township does not exit in database"
 }
 ```
 
@@ -445,8 +477,8 @@ example of for township_id 1
 
 ```json
 {
-    "success": false,
-    "message": "One or more selected hotels are invalid or do not belong to this township."
+  "success": false,
+  "message": "One or more selected hotels are invalid or do not belong to this township."
 }
 ```
 
@@ -454,8 +486,8 @@ example of for township_id 1
 
 ```json
 {
-    "success": false,
-    "message": "This township does not have 3 existing promotion hotels to update. Please create them first."
+  "success": false,
+  "message": "This township does not have 3 existing promotion hotels to update. Please create them first."
 }
 ```
 
@@ -473,25 +505,24 @@ example of for township_id 5
 
 ```json
 {
-    "success": true,
-    "message": "Successfully deleted all promotion hotels for Bagan.",
-    "deleted_count": 3
+  "success": true,
+  "message": "Successfully deleted all promotion hotels for Bagan.",
+  "deleted_count": 3
 }
 ```
 
-#### Error Response 
+#### Error Response
 
 ```json
 {
-    "success": false,
-    "message": "Township does not exist in the database."
+  "success": false,
+  "message": "Township does not exist in the database."
 }
 ```
 
 ```json
 {
-    "success": false,
-    "message": "Township ID is required."
+  "success": false,
+  "message": "Township ID is required."
 }
 ```
-

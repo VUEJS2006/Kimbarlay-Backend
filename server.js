@@ -7,6 +7,7 @@ import "dotenv/config"
 import townshipRouter from "./router/townshipRouter.js"
 import translationRouter from "./router/translationsRouter.js";
 import domesticHotelRouter from "./router/domesticHotelRouter.js";
+import overseaHotelRouter from "./router/overseaHotelRouter.js";
 import countryRouter from "./router/countryRouter.js"
 import promotionHotelRouter from "./router/promotionHotelRouter.js";
 import githubWebhookRouter from "./router/deployRouter.js";
@@ -23,6 +24,7 @@ app.use(cors())
 app.use('/api', townshipRouter)
 app.use("/api", translationRouter)
 app.use("/api", domesticHotelRouter)
+app.use("/api", overseaHotelRouter)
 app.use("/api", countryRouter)
 app.use("/api", promotionHotelRouter)
 
@@ -35,10 +37,10 @@ app.get("/", (req, res) => {
 // this route is not for frontend and just for auto deploy in name cheap 
 // plsease, don't  change or delete anything
 // GitHub Webhook 
-app.use('/deploy' , githubWebhookRouter);
+app.use('/deploy', githubWebhookRouter);
 
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT,"0.0.0.0", () => {
+app.listen(PORT, "0.0.0.0", () => {
     console.log(`Server is Running on ${PORT}`)
 })
