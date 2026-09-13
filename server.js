@@ -9,6 +9,7 @@ import translationRouter from "./router/translationsRouter.js";
 import domesticHotelRouter from "./router/domesticHotelRouter.js";
 import countryRouter from "./router/countryRouter.js"
 import promotionHotelRouter from "./router/promotionHotelRouter.js";
+import githubWebhookRouter from "./router/deployRouter.js";
 
 
 const app = express();
@@ -27,6 +28,10 @@ app.use("/api", promotionHotelRouter)
 app.get("/", (req, res) => {
     res.send("Welcome from Express.");
 });
+
+
+// GitHub Webhook 
+app.use('/deploy' , githubWebhookRouter);
 
 
 const PORT = process.env.PORT || 5000;
