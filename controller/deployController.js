@@ -1,6 +1,8 @@
 import crypto from "crypto";
 import { execFile } from "child_process";
 
+// this function is not for frontend and just for auto deploy in name cheap 
+// plsease, don't  change or delete anything
 export const deployControllerFunction = async(req, res) => {
     const signature = req.headers["x-hub-signature-256"];
 
