@@ -1,7 +1,7 @@
 import db from "../config/db.js";
+import { allowedTypes } from "../utils/enum.js";
 import { changeToImageFullUrl, deleteStoredImage, storeImageToDynamicFolder } from "../utils/image.js";
 
-const allowedTypes = ['domestic', 'international'];
 
 export const getAirport = async(req , res) => {
     try {

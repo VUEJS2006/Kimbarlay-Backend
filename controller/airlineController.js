@@ -1,18 +1,19 @@
 import db from "../config/db.js";
+import { allowedStatus, allowedTypes } from "../utils/enum.js";
 import { changeToImageFullUrl, deleteStoredImage, storeImageToDynamicFolder } from "../utils/image.js";
 
-const allowedTypes = ['domestic', 'international'];
-const allowedStatus = ['active', 'inactive'];
 
 export const getAirlines = async (req, res) => {
     try {
         const query = `SELECT * FROM airlines ORDER BY id DESC`;
         const [rows] = await db.execute(query);
 
+        const data = rows.map(item => ({...item , logo_url : changeToImageFullUrl(item.logo_url) }))
+
         return res.status(200).json({
             success: true,
             total: rows.length,
-            data: rows
+            data
         });
     } catch (error) {
         return res.status(500).json({
