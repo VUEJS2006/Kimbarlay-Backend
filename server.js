@@ -12,11 +12,22 @@ import countryRouter from "./router/countryRouter.js"
 import promotionHotelRouter from "./router/promotionHotelRouter.js";
 import githubWebhookRouter from "./router/deployRouter.js";
 import path from "path";
+import airportRouter from "./router/airportRouter.js";
+import airlineRouter from "./router/airlineRouter.js";
+import routeRouter from "./router/routeRouter.js";
+import flightRouter from "./router/flightRouter.js";
 
 
 const app = express();
 
 
+// for image
+app.use(
+    "/images",
+    express.static(
+        path.join(process.cwd(), "images")
+    )
+);
 
 
 app.use(express.json())
@@ -27,6 +38,10 @@ app.use("/api", domesticHotelRouter)
 app.use("/api", overseaHotelRouter)
 app.use("/api", countryRouter)
 app.use("/api", promotionHotelRouter)
+app.use("/api", airportRouter)
+app.use("/api", airlineRouter)
+app.use("/api", routeRouter)
+app.use("/api", flightRouter)
 
 app.get("/", (req, res) => {
     res.send("Welcome from Express.");
