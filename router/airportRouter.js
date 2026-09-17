@@ -1,8 +1,11 @@
 import express from "express"
 import { upload } from "../middleware/upload.js";
-import { createAirport, deleteAirport, getAirport, updateAirport } from "../controller/airportController.js";
+import { createAirport, deleteAirport, getAirport, getAllForAirfare, updateAirport } from "../controller/airportController.js";
 
 const airportRouter = express.Router();
+
+// app start take all rows of 4 tables / requested from frontend
+airportRouter.get("/airfare/getall" , getAllForAirfare )
 
 // get airports from both admin and user
 airportRouter.get("/airports" , getAirport )

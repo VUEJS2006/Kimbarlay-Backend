@@ -2,6 +2,38 @@ import db from "../config/db.js";
 import { allowedTypes } from "../utils/enum.js";
 import { changeToImageFullUrl, deleteStoredImage, storeImageToDynamicFolder } from "../utils/image.js";
 
+export const getAllForAirfare = async(req , res) => {
+    try {
+        const [
+            [airports],
+            [airlines],
+            [routes],
+            [flights]
+        ] = await Promise.all([
+            db.execute('SELECT * FROM airports ORDER BY id DESC'),
+            db.execute('SELECT * FROM airlines ORDER BY id DESC'),
+            db.execute('SELECT * FROM routes ORDER BY id DESC'),
+            db.execute('SELECT * FROM flights ORDER BY id DESC')
+        ]);
+
+        return res.status(200).json({
+            success: true,
+            data : {
+                airports,
+                airlines,
+                routes,
+                flights
+            }
+        });
+
+    } catch(err) {
+        console.log(err)
+        res.status(500).json({
+            success : false,
+            message : error.message
+        });
+    }
+}
 
 export const getAirport = async(req , res) => {
     try {

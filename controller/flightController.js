@@ -1,4 +1,83 @@
 import db from "../config/db.js";
+import { changeToImageFullUrl } from "../utils/image.js";
+
+export const getSearchFlightsWithRelatedData = async(req , res) => {
+    try {
+
+        const { from , to , date , class : flightClass , passengers } = req.query;
+
+        if(!from) {
+            return res.status(400).json({
+                success : false,
+                message : "There must be a least one letter for the departure airport name."
+            })
+        }
+
+        const query = `
+            SELECT 
+                a.id AS from_airport_id,
+                a.name AS from_airport_name,
+                a.code AS from_airport_code,
+                a.city AS from_airport_city,
+                a.country AS from_airport_country,
+
+                t.id AS to_airport_id,
+                t.name AS to_airport_name,
+                t.code AS to_airport_code,
+                t.city AS to_airport_city,
+                t.country AS to_airport_country,
+                
+                r.id AS route_id,
+                r.stops,
+                r.route_type,
+
+                f.id AS flight_id,
+                f.departure_time,
+                f.arrival_time,
+                f.price,
+                f.duration AS flight_duration,
+                
+                al.id AS airline_id,
+                al.name AS airline_name,
+                al.code AS airline_code,
+                al.logo_url AS airline_logo,
+                al.brand_color AS airline_brand_color,
+                al.status AS airline_status
+
+            FROM airports a
+            INNER JOIN routes r ON a.id = r.from_airport_id
+            INNER JOIN airports t ON r.to_airport_id = t.id
+
+            INNER JOIN flights f ON r.id = f.route_id
+
+            INNER JOIN airlines al ON f.airline_id = al.id
+
+            WHERE a.city LIKE ?;
+        `
+
+        // const query = `SELECT * FROM airports WHERE name LIKE ?`;
+        let [flights] = await db.execute(query , [`%${from}%`]);
+
+        if(to) {
+            flights = flights.filter(item => item.to_airport_city && item.to_airport_city.toLowerCase().includes(to.toLowerCase())).map(item => ({...item , airline_logo : changeToImageFullUrl(item.airline_logo)}))
+        }
+
+        res.status(200).json({
+            success : true,
+            data : {
+                from, to , class : flightClass , date , passengers,
+                flights 
+            }
+        })
+
+    } catch(err) {
+        console.error("Database Error:", err);
+        return res.status(500).json({
+            success: false,
+            message: err.message
+        });
+    }
+}
 
 export const getFlights = async(req , res) => {
     try {
