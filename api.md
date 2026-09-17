@@ -1494,3 +1494,194 @@ CREATE TABLE flights (
     "message": "Flight with ID 43 does not exist in database."
 }
 ```
+
+### GET /api/flights/search 
+
+- This route is for searching flights from somewhere to somewhere.
+
+```text
+/api/flights/search?from=yangon&to=Manda&date=2026-11-15&class=Economy&passengers=2
+```
+
+##### Success response 
+
+```json
+{
+    "success": true,
+    "data": {
+        "from": "yangon",
+        "to": "Manda",
+        "class": "Economy",
+        "date": "2026-11-15",
+        "passengers": "2",
+        "flights": [
+            {
+                "from_airport_id": 3,
+                "from_airport_name": "Yangon International AirPort",
+                "from_airport_code": "YGN",
+                "from_airport_city": "Yangon",
+                "from_airport_country": "Myanmar",
+                "to_airport_id": 4,
+                "to_airport_name": "Mandalay Internal AirPort",
+                "to_airport_code": "MDY",
+                "to_airport_city": "Mandalay",
+                "to_airport_country": "Myanamar",
+                "route_id": 1,
+                "stops": 0,
+                "route_type": "international",
+                "flight_id": 1,
+                "departure_time": "08:30:00",
+                "arrival_time": "10:55:00",
+                "price": "150.00",
+                "flight_duration": "2h 25m",
+                "airline_id": 5,
+                "airline_name": "Taung Gyi Airline2",
+                "airline_code": "TG2",
+                "airline_logo": "http://localhost:5000/images/airline/dfaf7e51-c8af-4af2-b6c9-73e8a8fb2f28.webp",
+                "airline_brand_color": null,
+                "airline_status": "active"
+            },
+            {
+                "from_airport_id": 3,
+                "from_airport_name": "Yangon International AirPort",
+                "from_airport_code": "YGN",
+                "from_airport_city": "Yangon",
+                "from_airport_country": "Myanmar",
+                "to_airport_id": 4,
+                "to_airport_name": "Mandalay Internal AirPort",
+                "to_airport_code": "MDY",
+                "to_airport_city": "Mandalay",
+                "to_airport_country": "Myanamar",
+                "route_id": 1,
+                "stops": 0,
+                "route_type": "international",
+                "flight_id": 2,
+                "departure_time": "00:30:00",
+                "arrival_time": "11:55:00",
+                "price": "23.00",
+                "flight_duration": "1h 25m",
+                "airline_id": 5,
+                "airline_name": "Taung Gyi Airline2",
+                "airline_code": "TG2",
+                "airline_logo": "http://localhost:5000/images/airline/dfaf7e51-c8af-4af2-b6c9-73e8a8fb2f28.webp",
+                "airline_brand_color": null,
+                "airline_status": "active"
+            }
+        ]
+    }
+}
+```
+
+#### Error Response
+
+- If you didn't add the `from` data in the route
+
+```json
+{
+    "success": false,
+    "message": "There must be a least one letter for the departure airport name."
+}
+```
+
+### GET /api/airfare/getall
+
+- This route is for getting all data from airports, airlines , routes and flights at one place
+- No payload required
+
+##### Success response 
+
+```json
+{
+    "success": true,
+    "data": {
+        "airports": [
+            {
+                "id": 4,
+                "code": "MDY",
+                "type": "international",
+                "name": "Mandalay Internal AirPort",
+                "city": "Mandalay",
+                "country": "Myanamar",
+                "note": null,
+                "image_url": "images/airport/69f4a0c8-be6a-415a-acdf-8b1a8baa07c0.webp",
+                "created_at": "2026-09-14T12:25:34.000Z",
+                "updated_at": "2026-09-17T12:38:32.000Z"
+            },
+            {
+                "id": 3,
+                "code": "YGN",
+                "type": "international",
+                "name": "Yangon International AirPort",
+                "city": "Yangon",
+                "country": "Myanmar",
+                "note": null,
+                "image_url": "images/airport/b12dd186-8d2a-4a14-ba9c-f52b041ed4b5.webp",
+                "created_at": "2026-09-14T12:17:40.000Z",
+                "updated_at": "2026-09-17T12:15:53.000Z"
+            }
+        ],
+        "airlines": [
+            {
+                "id": 4,
+                "code": "TG1",
+                "name": "Taung Gyi Airline1",
+                "country": null,
+                "type": "international",
+                "status": "active",
+                "brand_color": null,
+                "logo_url": "images/airline/90358ead-60a3-4f89-ba06-ba31ebb19285.webp",
+                "created_at": "2026-09-14T15:29:17.000Z",
+                "updated_at": "2026-09-14T15:30:16.000Z"
+            },
+            {
+                "id": 3,
+                "code": "TG",
+                "name": "Taung Gyi Airline",
+                "country": null,
+                "type": "international",
+                "status": "active",
+                "brand_color": null,
+                "logo_url": "images/airline/71b831f0-fae2-431c-803d-0cece8d50bec.webp",
+                "created_at": "2026-09-14T15:29:14.000Z",
+                "updated_at": "2026-09-14T15:29:14.000Z"
+            }
+        ],
+        "routes": [
+            {
+                "id": 1,
+                "from_airport_id": 3,
+                "to_airport_id": 4,
+                "duration": "1h 30m",
+                "stops": 0,
+                "route_type": "international",
+                "is_popular": 1,
+                "created_at": "2026-09-15T12:35:06.000Z",
+                "updated_at": "2026-09-15T12:35:06.000Z"
+            }
+        ],
+        "flights": [
+            {
+                "id": 2,
+                "route_id": 1,
+                "airline_id": 5,
+                "departure_time": "00:30:00",
+                "arrival_time": "11:55:00",
+                "price": "23.00",
+                "duration": "1h 25m",
+                "created_at": "2026-09-15T13:53:37.000Z",
+                "updated_at": "2026-09-15T13:53:37.000Z"
+            },
+            {
+                "id": 1,
+                "route_id": 1,
+                "airline_id": 5,
+                "departure_time": "08:30:00",
+                "arrival_time": "10:55:00",
+                "price": "150.00",
+                "duration": "2h 25m",
+                "created_at": "2026-09-15T13:43:37.000Z",
+                "updated_at": "2026-09-15T13:43:37.000Z"
+            }
+        ]
+    }
+}
