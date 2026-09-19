@@ -1685,3 +1685,103 @@ CREATE TABLE flights (
         ]
     }
 }
+```
+
+## SQL code of creating `banners` in database
+
+- This sql is just only to know what fields are exit in tables
+- `Not require` to use for frontend 
+
+```sql
+CREATE TABLE IF NOT EXISTS banners (
+    id INT PRIMARY KEY DEFAULT 1,
+    title VARCHAR(255) NOT NULL,
+    subtitle1 VARCHAR(255),
+    subtitle2 VARCHAR(255),
+    image_url TEXT NOT NULL,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+```
+
+### GET /api/promo/banner
+
+- Call this route, to get the banner like when the app start
+- No payload
+
+#### Success Response
+
+```json
+{
+    "success": true,
+    "data": {
+        "id": 1,
+        "title": "Test Title Name",
+        "subtitle1": "subtitle1 Name",
+        "subtitle2": "subtitle2 Name",
+        "image_url": "http://localhost:5000/images/banner/a15077f6-e289-4cbd-b568-d49df465dd70.webp",
+        "updated_at": "2026-09-19T11:40:52.000Z"
+    }
+}
+```
+
+### PUT /api/promo/banner
+
+#### Request Body
+
+- This endpoint accepts data using `multipart/form-data`.
+- The following fields should be included in the request body as `FormData`:
+
+- One of `image` or `image_url` must exit. 
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `title` | string | Yes | The main title of the banner |
+| `subtitle1` | string | No | The first subtitle of the banner |
+| `subtitle1` | string | No | The second subtitle of the banner |
+| `image` | file | Yes | Image file to upload |
+| `image_url` | string | Yes | The image_url of the banner |
+
+#### Example
+
+```js
+const formData = new FormData();
+
+formData.append("title", "Test Title Name");
+formData.append("subtitle1", "subtitle1 Name");
+formData.append("subtitle1", "subtitle2 Name");
+formData.append("image", imageFile);
+//or
+formData.append("image_url", "https://cdn.kimberley.com/new-banner.jpg");
+
+
+fetch("domain/api/admin/airport/create", {
+  method: "POST",
+  body: formData
+});
+```
+
+#### Success Response
+
+```json
+{
+    "success": true,
+    "message": "Banner is successfully updated.",
+    "data": {
+        "id": 1,
+        "title": "Test Title Name",
+        "subtitle1": "subtitle1 Name",
+        "subtitle2": "subtitle2 Name",
+        "image_url": "http://localhost:5000/images/banner/71350e77-61b7-435f-b862-7a76e090494a.webp",
+        "updated_at": "2026-09-19T11:50:49.000Z"
+    }
+}
+```
+
+#### Error Response
+
+```json
+{
+    "success": false,
+    "message": "title and image must exit."
+}
+```
