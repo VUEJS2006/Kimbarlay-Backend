@@ -688,8 +688,8 @@ formData.append("type", "domestic");
 formData.append("name", "domestic");
 formData.append("image", imageFile);
 
-fetch("domain/api/admin/airport/create", {
-  method: "POST",
+fetch("domain/api/admin/airport/update", {
+  method: "PUT",
   body: formData
 });
 ```
@@ -939,8 +939,8 @@ formData.append("status", "active");
 formData.append("brand_color", "#E63946");
 formData.append("logo", logoFile);
 
-fetch("domain/api/admin/airline/create", {
-  method: "POST",
+fetch("domain/api/admin/airline/update", {
+  method: "PUT",
   body: formData
 });
 ```
@@ -1585,7 +1585,7 @@ CREATE TABLE flights (
 
 ### GET /api/airfare/getall
 
-- This route is for getting all data from airports, airlines , routes and flights at one place
+- This route is for getting all data from airports, airlines , routes, flights, banner, categories and cateogry_items at one place
 - No payload required
 
 ##### Success response 
@@ -1603,7 +1603,7 @@ CREATE TABLE flights (
                 "city": "Mandalay",
                 "country": "Myanamar",
                 "note": null,
-                "image_url": "images/airport/69f4a0c8-be6a-415a-acdf-8b1a8baa07c0.webp",
+                "image_url": "http://localhost:5000/images/airport/69f4a0c8-be6a-415a-acdf-8b1a8baa07c0.webp",
                 "created_at": "2026-09-14T12:25:34.000Z",
                 "updated_at": "2026-09-17T12:38:32.000Z"
             },
@@ -1615,7 +1615,7 @@ CREATE TABLE flights (
                 "city": "Yangon",
                 "country": "Myanmar",
                 "note": null,
-                "image_url": "images/airport/b12dd186-8d2a-4a14-ba9c-f52b041ed4b5.webp",
+                "image_url": "http://localhost:5000/images/airport/b12dd186-8d2a-4a14-ba9c-f52b041ed4b5.webp",
                 "created_at": "2026-09-14T12:17:40.000Z",
                 "updated_at": "2026-09-17T12:15:53.000Z"
             }
@@ -1629,7 +1629,7 @@ CREATE TABLE flights (
                 "type": "international",
                 "status": "active",
                 "brand_color": null,
-                "logo_url": "images/airline/90358ead-60a3-4f89-ba06-ba31ebb19285.webp",
+                "logo_url": "http://localhost:5000/images/airline/90358ead-60a3-4f89-ba06-ba31ebb19285.webp",
                 "created_at": "2026-09-14T15:29:17.000Z",
                 "updated_at": "2026-09-14T15:30:16.000Z"
             },
@@ -1641,12 +1641,23 @@ CREATE TABLE flights (
                 "type": "international",
                 "status": "active",
                 "brand_color": null,
-                "logo_url": "images/airline/71b831f0-fae2-431c-803d-0cece8d50bec.webp",
+                "logo_url": "http://localhost:5000/images/airline/71b831f0-fae2-431c-803d-0cece8d50bec.webp",
                 "created_at": "2026-09-14T15:29:14.000Z",
                 "updated_at": "2026-09-14T15:29:14.000Z"
             }
         ],
         "routes": [
+            {
+                "id": 2,
+                "from_airport_id": 3,
+                "to_airport_id": 5,
+                "duration": "1h 30m",
+                "stops": 0,
+                "route_type": "international",
+                "is_popular": 1,
+                "created_at": "2026-09-15T12:35:35.000Z",
+                "updated_at": "2026-09-17T12:39:45.000Z"
+            },
             {
                 "id": 1,
                 "from_airport_id": 3,
@@ -1681,6 +1692,58 @@ CREATE TABLE flights (
                 "duration": "2h 25m",
                 "created_at": "2026-09-15T13:43:37.000Z",
                 "updated_at": "2026-09-15T13:43:37.000Z"
+            }
+        ],
+        "banner": {
+            "id": 1,
+            "title": "Test Title Name",
+            "subtitle1": "subtitle1 Name",
+            "subtitle2": "subtitle2 Name",
+            "image_url": "http://localhost:5000/http://localhost:5000/images/banner/f52df254-5f66-4ee1-9437-8ad91bd2f7cc.webp",
+            "updated_at": "2026-09-19T12:08:56.000Z"
+        },
+        "categories": [
+            {
+                "id": 1,
+                "title": "Updated Title for category",
+                "color": "#22BCB0",
+                "icon_url": null,
+                "created_at": "2026-09-20T01:30:34.000Z",
+                "updated_at": "2026-09-20T01:51:14.000Z"
+            },
+            {
+                "id": 3,
+                "title": "Updated Title for category",
+                "color": "#22BCB0",
+                "icon_url": "http://localhost:5000/images/airfair_category/58bc7c2e-c676-454f-8c56-0261d301e138.webp",
+                "created_at": "2026-09-20T02:45:07.000Z",
+                "updated_at": "2026-09-20T02:45:07.000Z"
+            }
+        ],
+        "cateogry_items": [
+            {
+                "id": 2,
+                "category_id": 3,
+                "image_url": "http://localhost:5000/images/airfair_category_items/ec46f4ca-aaea-4019-901b-0dd86feefb05.webp",
+                "from": "Yangon",
+                "to": "Ngapali Beach",
+                "price": "¥ 450",
+                "date": "Friday, December 5, 2025",
+                "discount": "0.8 discount",
+                "created_at": "2026-09-20T04:08:45.000Z",
+                "updated_at": "2026-09-20T04:08:45.000Z"
+            },
+            {
+                "id": 3,
+                "category_id": 3,
+                "image_url": "http://localhost:5000/images/airfair_category_items/5a28d6d5-fcaf-403f-a1fd-3631cd1f40a9.webp",
+                "from": "Yangon 2",
+                "to": "Ngapali Beach 2",
+                "price": "¥ 1150",
+                "date": "Friday, December 9, 2025",
+                "discount": "1.8 discount",
+                "created_at": "2026-09-20T04:10:44.000Z",
+                "updated_at": "2026-09-20T04:24:02.000Z"
             }
         ]
     }
@@ -1749,13 +1812,14 @@ const formData = new FormData();
 formData.append("title", "Test Title Name");
 formData.append("subtitle1", "subtitle1 Name");
 formData.append("subtitle1", "subtitle2 Name");
+
 formData.append("image", imageFile);
 //or
 formData.append("image_url", "https://cdn.kimberley.com/new-banner.jpg");
 
 
-fetch("domain/api/admin/airport/create", {
-  method: "POST",
+fetch("domain/api/promo/banner", {
+  method: "PUT",
   body: formData
 });
 ```
@@ -1785,3 +1849,461 @@ fetch("domain/api/admin/airport/create", {
     "message": "title and image must exit."
 }
 ```
+
+## SQL code of creating `express_report_categories` in database
+
+- This sql is just only to know what fields are exit in tables
+- `Not require` to use for frontend 
+
+```sql
+CREATE TABLE express_report_categories (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    color VARCHAR(20) DEFAULT '#22BCB0',
+    icon_url TEXT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+```
+
+### GET /api/promo/categories
+
+- No payload required
+
+#### Success Response
+
+```json
+{
+    "success": true,
+    "data": [
+        {
+            "id": 1,
+            "title": "Updated Title for category",
+            "color": "#22BCB0",
+            "icon_url": null,
+            "created_at": "2026-09-20T01:30:34.000Z",
+            "updated_at": "2026-09-20T01:51:14.000Z"
+        },
+        {
+            "id": 3,
+            "title": "Updated Title for category",
+            "color": "#22BCB0",
+            "icon_url": "http://localhost:5000/images/airfair_category/58bc7c2e-c676-454f-8c56-0261d301e138.webp",
+            "created_at": "2026-09-20T02:45:07.000Z",
+            "updated_at": "2026-09-20T02:45:07.000Z"
+        }
+    ]
+}
+```
+
+### POST /api/promo/category/create
+
+#### Request Body
+
+- This endpoint accepts data using `multipart/form-data`.
+- The following fields should be included in the request body as `FormData`:
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `title` | string | Yes | The main title of the category |
+| `color` | string | No | The color code of the banner |
+| `icon` | file | No | Image file to upload |
+| `icon_url` | string | No | The image_url of the banner |
+
+#### Example
+
+```js
+const formData = new FormData();
+
+formData.append("title", "Food Ranking");
+formData.append("color", "#22BCB0");
+
+formData.append("icon", imageFile);
+//or
+formData.append("icon_url", "https://cdn.kimberley.com/new-banner.jpg");
+
+
+fetch("domain/api/promo/category/create", {
+  method: "POST",
+  body: formData
+});
+```
+
+#### Success Response
+
+```json
+{
+    "success": true,
+    "message": "New Category is successfully created.",
+    "data": {
+        "id": 2,
+        "title": "Food Ranking",
+        "color": "#22BCB0",
+        "icon_url": "http://localhost:5000/images/airfair_category/4c07e96a-b04d-406c-90f8-cd85a8ab1720.webp",
+        "created_at": "2026-09-20T01:31:38.000Z",
+        "updated_at": "2026-09-20T01:31:38.000Z"
+    }
+}
+```
+
+### Error Response
+
+```json
+{
+    "success": false,
+    "message": "Cannot destructure property 'title' of 'req.body' as it is undefined."
+}
+```
+
+```json
+{
+    "success": false,
+    "message": "Title is required"
+}
+```
+
+### PUT /api/promo/category/update
+
+#### Request Body
+
+- This endpoint accepts data using `multipart/form-data`.
+- The following fields should be included in the request body as `FormData`:
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `id` | number | Yes | id of category generated by backend |
+| `title` | string | Yes | The main title of the category |
+| `color` | string | No | The color code of the banner |
+| `icon` | file | No | Image file to upload |
+| `icon_url` | string | No | The image_url of the banner |
+
+#### Example
+
+```js
+const formData = new FormData();
+
+formData.append("id", 2);
+formData.append("title", "Food Ranking");
+formData.append("color", "#22BCB0");
+
+formData.append("icon", imageFile);
+//or
+formData.append("icon_url", "https://cdn.kimberley.com/new-banner.jpg");
+
+
+fetch("domain/api/promo/category/update", {
+  method: "PUT",
+  body: formData
+});
+```
+
+#### Success Response
+
+```json
+{
+    "success": true,
+    "message": "Category is successfully updated.",
+    "data": {
+        "id": 2,
+        "title": "Updated Title for category",
+        "color": "#22BCB0",
+        "icon_url": null,
+        "created_at": "2026-09-20T01:31:38.000Z",
+        "updated_at": "2026-09-20T02:03:51.000Z"
+    }
+}
+```
+
+#### Error Response
+
+```json
+{
+    "success": false,
+    "message": "Id and Title are required"
+}
+```
+
+```json
+{
+    "success": false,
+    "message": "Cannot destructure property 'id' of 'req.body' as it is undefined."
+}
+```
+
+### DELETE /api/promo/category/delete/:id
+
+- `:id` is the `id of the category` to delete
+- It will also delete the items related to that category
+
+```text
+/api/promo/category/delete/2
+/api/promo/category/delete/3
+.
+.
+```
+
+#### Success Response
+
+```json
+{
+    "success": true,
+    "message": "Category is successfully deleted."
+}
+```
+
+## SQL code of creating `express_report_items` in database
+
+```sql
+CREATE TABLE express_report_items (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    category_id INT NOT NULL,
+    image_url TEXT NULL,
+    `from` VARCHAR(255) NOT NULL,
+    `to` VARCHAR(255) NOT NULL,
+    price VARCHAR(100) NULL,
+    `date` VARCHAR(100) NULL,
+    discount VARCHAR(100) NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (category_id) REFERENCES express_report_categories(id) ON DELETE CASCADE
+);
+```
+
+### GET /api/promo/category/items
+
+- No payload requried
+
+#### Success response
+
+```json
+{
+    "success": true,
+    "data": [
+        {
+            "id": 2,
+            "category_id": 3,
+            "image_url": "http://localhost:5000/images/airfair_category_items/ec46f4ca-aaea-4019-901b-0dd86feefb05.webp",
+            "from": "Yangon",
+            "to": "Ngapali Beach",
+            "price": "¥ 450",
+            "date": "Friday, December 5, 2025",
+            "discount": "0.8 discount",
+            "created_at": "2026-09-20T04:08:45.000Z",
+            "updated_at": "2026-09-20T04:08:45.000Z"
+        },
+        {
+            "id": 3,
+            "category_id": 3,
+            "image_url": "http://localhost:5000/images/airfair_category_items/5a28d6d5-fcaf-403f-a1fd-3631cd1f40a9.webp",
+            "from": "Yangon 2",
+            "to": "Ngapali Beach 2",
+            "price": "¥ 1150",
+            "date": "Friday, December 9, 2025",
+            "discount": "1.8 discount",
+            "created_at": "2026-09-20T04:10:44.000Z",
+            "updated_at": "2026-09-20T04:24:02.000Z"
+        }
+    ]
+}
+```
+
+### POST /api/promo/category/item/create
+
+#### Request Body
+
+- This endpoint accepts data using `multipart/form-data`.
+- The following fields should be included in the request body as `FormData`:
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `category_id` | number | Yes | Id of the category related to the item to be created |
+| `from` | string | Yes | from data of the item |
+| `to` | string | Yes | to data of the item |
+| `price` | string | No | price of the item |
+| `date` | string | No | date of the item |
+| `discount` | string | No | discount of the item |
+| `image` | file | No | Image file to upload |
+| `image_url` | string | No | The image_url of the banner |
+
+#### Example
+
+```js
+const formData = new FormData();
+
+formData.append("category_id", 3);
+formData.append("from", "Mandalay");
+formData.append("to", "Ngapali Beach");
+formData.append("price", "¥ 350");
+formData.append("date", "Friday, December 5, 2025");
+formData.append("discount", "0.8 discount");
+
+formData.append("image", imageFile);
+//or
+formData.append("image_url", "https://cdn.kimberley.com/new-banner.jpg");
+
+
+fetch("domain/api/promo/category/item/create", {
+  method: "POST",
+  body: formData
+});
+```
+
+#### Success Response
+
+```json
+{
+    "success": true,
+    "message": "Item created successfully",
+    "data": {
+        "id": 3,
+        "category_id": 3,
+        "image_url": "http://localhost:5000/images/airfair_category_items/4e971733-bf95-45ab-a434-0758d5fe7e34.webp",
+        "from": "Yangon",
+        "to": "Ngapali Beach",
+        "price": "¥ 450",
+        "date": "Friday, December 5, 2025",
+        "discount": "0.8 discount",
+        "created_at": "2026-09-20T04:10:44.000Z",
+        "updated_at": "2026-09-20T04:10:44.000Z"
+    }
+}
+```
+
+### Error Response
+
+```json
+{
+    "success": false,
+    "message": "Cannot destructure property 'category_id' of 'req.body' as it is undefined."
+}
+```
+
+```json
+{
+    "success": false,
+    "error": "category_id, from, and to are required"
+}
+```
+
+```json
+{
+    "success": false,
+    "message": "Category related to category_id does not exit in database"
+}
+```
+
+### PUT /api/promo/category/item/update
+
+#### Request Body
+
+- This endpoint accepts data using `multipart/form-data`.
+- The following fields should be included in the request body as `FormData`:
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `id` | number | Yes | id of item generated by backend |
+| `from` | string | Yes | from data of the item |
+| `to` | string | Yes | to data of the item |
+| `price` | string | No | price of the item |
+| `date` | string | No | date of the item |
+| `discount` | string | No | discount of the item |
+| `image` | file | No | Image file to upload |
+| `image_url` | string | No | The image_url of the banner |
+
+#### Example
+
+```js
+const formData = new FormData();
+
+formData.append("id", 1);
+formData.append("from", "Yangon");
+formData.append("to", "Ngapali Beach");
+formData.append("price", "¥ 450");
+formData.append("date", "Friday, December 6, 2025");
+formData.append("discount", "0.7 discount");
+
+formData.append("image", imageFile);
+//or
+formData.append("image_url", "https://cdn.kimberley.com/new-banner.jpg");
+
+
+fetch("domain/api/promo/category/item/update", {
+  method: "PUT",
+  body: formData
+});
+```
+
+#### Success Response
+
+```json
+{
+    "success": true,
+    "message": "Item updated successfully",
+    "data": {
+        "id": 3,
+        "category_id": 3,
+        "image_url": "http://localhost:5000/images/airfair_category_items/5a28d6d5-fcaf-403f-a1fd-3631cd1f40a9.webp",
+        "from": "Yangon 2",
+        "to": "Ngapali Beach 2",
+        "price": "¥ 1150",
+        "date": "Friday, December 9, 2025",
+        "discount": "1.8 discount",
+        "created_at": "2026-09-20T04:10:44.000Z",
+        "updated_at": "2026-09-20T04:24:02.000Z"
+    }
+}
+```
+
+#### Error Response 
+
+```json
+{
+    "success": false,
+    "error": "id, from, and to are required"
+}
+```
+
+```json
+{
+    "success": false,
+    "message": "The item that you wnat to update does not exit in database"
+}
+```
+
+
+### DELETE /api/promo/category/item/delete/:id
+
+- `:id` is the `id of the category` to delete
+
+```text
+/api/promo/category/item/delete/2
+/api/promo/category/item/delete/3
+.
+.
+```
+
+#### Success Response
+
+```json
+{
+    "success": true,
+    "message": "The item is successfully deleted."
+}
+```
+
+####  Error Response
+
+```json
+{
+    "success": false,
+    "message": "The item that you wnat to delete does not exit in database"
+}
+```
+
+```json
+{
+    "success" : false,
+    "message" : "Id must exit"
+}
+```
+
