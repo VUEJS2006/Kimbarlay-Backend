@@ -164,6 +164,7 @@ export const deleteRoute = async(req , res) => {
         }
 
         const [existing] = await db.execute('SELECT * FROM routes WHERE id = ?', [id]);
+
         if (!existing || existing.length === 0) {
             return res.status(404).json({
                 success: false,

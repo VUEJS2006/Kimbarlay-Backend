@@ -17,6 +17,8 @@ import airlineRouter from "./router/airlineRouter.js";
 import routeRouter from "./router/routeRouter.js";
 import flightRouter from "./router/flightRouter.js";
 import bannerRouter from "./router/bannerRouter.js";
+import expressReportCategoriesRouter from "./router/expressReportCategoryRouter.js";
+import expressReportItemsRouter from "./router/expressReportItemRouter.js";
 
 
 const app = express();
@@ -44,6 +46,8 @@ app.use("/api", airlineRouter)
 app.use("/api", routeRouter)
 app.use("/api", flightRouter)
 app.use("/api" , bannerRouter)
+app.use("/api" , expressReportCategoriesRouter)
+app.use("/api" , expressReportItemsRouter)
 
 app.get("/", (req, res) => {
     res.send("Welcome from Express.");

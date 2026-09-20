@@ -8,21 +8,30 @@ export const getAllForAirfare = async(req , res) => {
             [airports],
             [airlines],
             [routes],
-            [flights]
+            [flights],
+            [banners],
+            [categories],
+            [items]
         ] = await Promise.all([
             db.execute('SELECT * FROM airports ORDER BY id DESC'),
             db.execute('SELECT * FROM airlines ORDER BY id DESC'),
             db.execute('SELECT * FROM routes ORDER BY id DESC'),
-            db.execute('SELECT * FROM flights ORDER BY id DESC')
+            db.execute('SELECT * FROM flights ORDER BY id DESC'),
+            db.execute('SELECT * FROM banners WHERE id = 1'),
+            db.execute('SELECT * FROM express_report_categories ORDER BY id ASC'),
+            db.execute('SELECT * FROM express_report_items ORDER BY id ASC')
         ]);
 
         return res.status(200).json({
             success: true,
             data : {
-                airports,
-                airlines,
+                airports : airports.map(item => ({...item , image_url : changeToImageFullUrl(item.image_url)})),
+                airlines : airlines.map(item => ({...item , logo_url : changeToImageFullUrl(item.logo_url)})),
                 routes,
-                flights
+                flights,
+                banner : {...banners[0] , image_url : changeToImageFullUrl(banners[0].image_url)},
+                categories : categories.map(item => ({...item , icon_url : changeToImageFullUrl(item.icon_url)})),
+                cateogry_items : items.map(item => ({...item , image_url : changeToImageFullUrl(item.image_url)}))
             }
         });
 
@@ -30,7 +39,7 @@ export const getAllForAirfare = async(req , res) => {
         console.log(err)
         res.status(500).json({
             success : false,
-            message : error.message
+            message : err.message
         });
     }
 }
