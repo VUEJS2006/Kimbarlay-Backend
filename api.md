@@ -1241,7 +1241,7 @@ CREATE TABLE routes (
 }
 ```
 
-## SQL code of creating `flights` in database
+## 6. SQL code of creating `flights` in database
 
 - This sql is just only to know what fields are exit in tables
 - `Not require` to use for frontend 
@@ -1750,7 +1750,7 @@ CREATE TABLE flights (
 }
 ```
 
-## SQL code of creating `banners` in database
+## 7. SQL code of creating `banners` in database
 
 - This sql is just only to know what fields are exit in tables
 - `Not require` to use for frontend 
@@ -1850,7 +1850,7 @@ fetch("domain/api/promo/banner", {
 }
 ```
 
-## SQL code of creating `express_report_categories` in database
+## 8. SQL code of creating `express_report_categories` in database
 
 - This sql is just only to know what fields are exit in tables
 - `Not require` to use for frontend 
@@ -2051,7 +2051,7 @@ fetch("domain/api/promo/category/update", {
 }
 ```
 
-## SQL code of creating `express_report_items` in database
+## 9. SQL code of creating `express_report_items` in database
 
 ```sql
 CREATE TABLE express_report_items (
