@@ -29,7 +29,7 @@ export const getAllForAirfare = async(req , res) => {
                 airlines : airlines.map(item => ({...item , logo_url : changeToImageFullUrl(item.logo_url)})),
                 routes,
                 flights,
-                banner : {...banners[0] , image_url : changeToImageFullUrl(banners[0].image_url)},
+                banner : banners[0],
                 categories : categories.map(item => ({...item , icon_url : changeToImageFullUrl(item.icon_url)})),
                 cateogry_items : items.map(item => ({...item , image_url : changeToImageFullUrl(item.image_url)}))
             }
