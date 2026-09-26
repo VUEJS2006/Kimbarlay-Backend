@@ -1254,6 +1254,9 @@ CREATE TABLE flights (
     departure_time TIME DEFAULT NULL, 
     arrival_time TIME DEFAULT NULL,   
     price DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
+    adult_price DECIMAL(10, 2) DEFAULT NULL,
+    child_price DECIMAL(10, 2) DEFAULT NULL,
+    infant_price DECIMAL(10, 2) DEFAULT NULL,
     duration VARCHAR(50) DEFAULT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -1272,18 +1275,35 @@ CREATE TABLE flights (
 ```json
 {
     "success": true,
-    "total": 3,
+    "total": 4,
     "data": [
         {
-            "id": 3,
+            "id": 5,
             "route_id": 1,
+            "airline_id": 3,
+            "departure_time": "08:30:00",
+            "arrival_time": "10:55:00",
+            "price": "11.00",
+            "adult_price": "12.00",
+            "child_price": "1202.00",
+            "infant_price": "303.00",
+            "duration": "1h 25m",
+            "created_at": "2026-09-26T00:10:45.000Z",
+            "updated_at": "2026-09-26T00:14:13.000Z"
+        },
+        {
+            "id": 3,
+            "route_id": 2,
             "airline_id": 4,
             "departure_time": "00:30:00",
             "arrival_time": "11:55:00",
             "price": "23.00",
+            "adult_price": null,
+            "child_price": null,
+            "infant_price": null,
             "duration": "1h 25m",
             "created_at": "2026-09-15T13:58:40.000Z",
-            "updated_at": "2026-09-15T13:58:40.000Z"
+            "updated_at": "2026-09-17T12:41:29.000Z"
         },
         {
             "id": 2,
@@ -1292,6 +1312,9 @@ CREATE TABLE flights (
             "departure_time": "00:30:00",
             "arrival_time": "11:55:00",
             "price": "23.00",
+            "adult_price": null,
+            "child_price": null,
+            "infant_price": null,
             "duration": "1h 25m",
             "created_at": "2026-09-15T13:53:37.000Z",
             "updated_at": "2026-09-15T13:53:37.000Z"
@@ -1303,6 +1326,9 @@ CREATE TABLE flights (
             "departure_time": "08:30:00",
             "arrival_time": "10:55:00",
             "price": "150.00",
+            "adult_price": null,
+            "child_price": null,
+            "infant_price": null,
             "duration": "2h 25m",
             "created_at": "2026-09-15T13:43:37.000Z",
             "updated_at": "2026-09-15T13:43:37.000Z"
@@ -1321,10 +1347,13 @@ CREATE TABLE flights (
 ```json
 {
   "route_id": 1,
-  "airline_id": 5,
+  "airline_id": 3,
   "departure_time": "08:30:00",
   "arrival_time": "10:55:00",
   "price": 150.00,
+  "adult_price": 150.00,
+  "child_price": 120.00,
+  "infant_price": 30.00,
   "duration": "2h 25m"
 }
 ```
@@ -1338,15 +1367,18 @@ CREATE TABLE flights (
     "success": true,
     "message": "Flight created successfully",
     "data": {
-        "id": 1,
+        "id": 5,
         "route_id": 1,
-        "airline_id": 5,
+        "airline_id": 3,
         "departure_time": "08:30:00",
         "arrival_time": "10:55:00",
         "price": "150.00",
+        "adult_price": "150.00",
+        "child_price": "120.00",
+        "infant_price": "30.00",
         "duration": "2h 25m",
-        "created_at": "2026-09-15T13:43:37.000Z",
-        "updated_at": "2026-09-15T13:43:37.000Z"
+        "created_at": "2026-09-26T00:10:45.000Z",
+        "updated_at": "2026-09-26T00:10:45.000Z"
     }
 }
 ```
@@ -1381,21 +1413,24 @@ CREATE TABLE flights (
 }
 ```
 
-### POST /api/admin/flight/create
+### POST /api/admin/flight/update
 
-- use this route for creating each `flight`
+- use this route for udpating each `flight`
 
 
 #### Payload 
 
 ```json
 {
-  "id" : 1,
+  "id": 5,
   "route_id": 1,
-  "airline_id": 5,
-  "departure_time": "00:30:00",
-  "arrival_time": "11:55:00",
-  "price": 23.00,
+  "airline_id": 3,
+  "departure_time": "08:30:00",
+  "arrival_time": "10:55:00",
+  "price": 1501.00,
+  "adult_price": 1502.00,
+  "child_price": 1202.00,
+  "infant_price": 303.00,
   "duration": "1h 25m"
 }
 ```
@@ -1407,17 +1442,20 @@ CREATE TABLE flights (
 ```json
 {
     "success": true,
-    "message": "Flight created successfully",
+    "message": "Flight updated successfully",
     "data": {
-        "id": 2,
+        "id": 5,
         "route_id": 1,
-        "airline_id": 5,
-        "departure_time": "00:30:00",
-        "arrival_time": "11:55:00",
-        "price": "23.00",
+        "airline_id": 3,
+        "departure_time": "08:30:00",
+        "arrival_time": "10:55:00",
+        "price": "1501.00",
+        "adult_price": "1502.00",
+        "child_price": "1202.00",
+        "infant_price": "303.00",
         "duration": "1h 25m",
-        "created_at": "2026-09-15T13:53:37.000Z",
-        "updated_at": "2026-09-15T13:53:37.000Z"
+        "created_at": "2026-09-26T00:10:45.000Z",
+        "updated_at": "2026-09-26T00:13:10.000Z"
     }
 }
 ```
@@ -1529,11 +1567,14 @@ CREATE TABLE flights (
                 "route_id": 1,
                 "stops": 0,
                 "route_type": "international",
-                "flight_id": 1,
-                "departure_time": "08:30:00",
-                "arrival_time": "10:55:00",
-                "price": "150.00",
-                "flight_duration": "2h 25m",
+                "flight_id": 2,
+                "departure_time": "00:30:00",
+                "arrival_time": "11:55:00",
+                "price": "23.00",
+                "adult_price": null,
+                "child_price": null,
+                "infant_price": null,
+                "flight_duration": "1h 25m",
                 "airline_id": 5,
                 "airline_name": "Taung Gyi Airline2",
                 "airline_code": "TG2",
@@ -1555,15 +1596,18 @@ CREATE TABLE flights (
                 "route_id": 1,
                 "stops": 0,
                 "route_type": "international",
-                "flight_id": 2,
-                "departure_time": "00:30:00",
-                "arrival_time": "11:55:00",
-                "price": "23.00",
+                "flight_id": 5,
+                "departure_time": "08:30:00",
+                "arrival_time": "10:55:00",
+                "price": "11.00",
+                "adult_price": "12.00",
+                "child_price": "1202.00",
+                "infant_price": "303.00",
                 "flight_duration": "1h 25m",
-                "airline_id": 5,
-                "airline_name": "Taung Gyi Airline2",
-                "airline_code": "TG2",
-                "airline_logo": "http://localhost:5000/images/airline/dfaf7e51-c8af-4af2-b6c9-73e8a8fb2f28.webp",
+                "airline_id": 3,
+                "airline_name": "Taung Gyi Airline",
+                "airline_code": "TG",
+                "airline_logo": "http://localhost:5000/images/airline/71b831f0-fae2-431c-803d-0cece8d50bec.webp",
                 "airline_brand_color": null,
                 "airline_status": "active"
             }
@@ -1672,15 +1716,18 @@ CREATE TABLE flights (
         ],
         "flights": [
             {
-                "id": 2,
+                "id": 5,
                 "route_id": 1,
-                "airline_id": 5,
-                "departure_time": "00:30:00",
-                "arrival_time": "11:55:00",
-                "price": "23.00",
+                "airline_id": 3,
+                "departure_time": "08:30:00",
+                "arrival_time": "10:55:00",
+                "price": "11.00",
+                "adult_price": "12.00",
+                "child_price": "1202.00",
+                "infant_price": "303.00",
                 "duration": "1h 25m",
-                "created_at": "2026-09-15T13:53:37.000Z",
-                "updated_at": "2026-09-15T13:53:37.000Z"
+                "created_at": "2026-09-26T00:10:45.000Z",
+                "updated_at": "2026-09-26T00:14:13.000Z"
             },
             {
                 "id": 1,
@@ -1689,6 +1736,9 @@ CREATE TABLE flights (
                 "departure_time": "08:30:00",
                 "arrival_time": "10:55:00",
                 "price": "150.00",
+                "adult_price": null,
+                "child_price": null,
+                "infant_price": null,
                 "duration": "2h 25m",
                 "created_at": "2026-09-15T13:43:37.000Z",
                 "updated_at": "2026-09-15T13:43:37.000Z"
