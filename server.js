@@ -19,6 +19,8 @@ import flightRouter from "./router/flightRouter.js";
 import bannerRouter from "./router/bannerRouter.js";
 import expressReportCategoriesRouter from "./router/expressReportCategoryRouter.js";
 import expressReportItemsRouter from "./router/expressReportItemRouter.js";
+import cookieParser from "cookie-parser";
+import authRouter from "./router/authRouter.js"
 
 
 const app = express();
@@ -34,6 +36,7 @@ app.use(
 
 
 app.use(express.json())
+app.use(cookieParser());
 app.use(cors())
 app.use('/api', townshipRouter)
 app.use("/api", translationRouter)
@@ -45,9 +48,10 @@ app.use("/api", airportRouter)
 app.use("/api", airlineRouter)
 app.use("/api", routeRouter)
 app.use("/api", flightRouter)
-app.use("/api" , bannerRouter)
-app.use("/api" , expressReportCategoriesRouter)
-app.use("/api" , expressReportItemsRouter)
+app.use("/api", bannerRouter)
+app.use("/api", expressReportCategoriesRouter)
+app.use("/api", expressReportItemsRouter)
+app.use("/api", authRouter)
 
 app.get("/", (req, res) => {
     res.send("Welcome from Express.");
