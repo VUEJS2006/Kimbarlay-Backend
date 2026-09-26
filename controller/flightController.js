@@ -35,6 +35,9 @@ export const getSearchFlightsWithRelatedData = async(req , res) => {
                 f.departure_time,
                 f.arrival_time,
                 f.price,
+                f.adult_price,
+                f.child_price,
+                f.infant_price,
                 f.duration AS flight_duration,
                 
                 al.id AS airline_id,
@@ -101,7 +104,7 @@ export const getFlights = async(req , res) => {
 
 export const createFlight = async(req , res) => {
     try {
-        const { route_id, airline_id, departure_time, arrival_time, price , duration } = req.body;
+        const { route_id, airline_id, departure_time, arrival_time, price, adult_price, child_price, infant_price, duration } = req.body;
 
         
         const isValid = route_id && airline_id;
@@ -129,8 +132,18 @@ export const createFlight = async(req , res) => {
         }
 
         const query = `
-            INSERT INTO flights (route_id, airline_id, departure_time, arrival_time, price, duration)
-            VALUES (?, ?, ?, ?, ?, ?)
+            INSERT INTO flights (
+                route_id,
+                airline_id,
+                departure_time,
+                arrival_time,
+                price,
+                adult_price,
+                child_price,
+                infant_price,
+                duration
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
 
         const [result] = await db.execute(query, [
@@ -138,7 +151,10 @@ export const createFlight = async(req , res) => {
             airline_id, 
             departure_time, 
             arrival_time, 
-            price, 
+            price,
+            adult_price,
+            child_price,
+            infant_price, 
             duration
         ]);
 
@@ -160,7 +176,7 @@ export const createFlight = async(req , res) => {
 
 export const updateFlight = async(req , res) => {
     try {
-        const { id, route_id, airline_id, departure_time, arrival_time, price , duration } = req.body;
+        const { id, route_id, airline_id, departure_time, arrival_time, price,  adult_price, child_price, infant_price, duration } = req.body;
 
         
         const isValid = id && route_id && airline_id;
@@ -197,24 +213,38 @@ export const updateFlight = async(req , res) => {
         }
 
         const query = `
-            INSERT INTO flights (route_id, airline_id, departure_time, arrival_time, price, duration)
-            VALUES (?, ?, ?, ?, ?, ?)
+            UPDATE flights
+            SET
+                route_id = ?,
+                airline_id = ?,
+                departure_time = ?,
+                arrival_time = ?,
+                price = ?,
+                adult_price = ?,
+                child_price = ?,
+                infant_price = ?,
+                duration = ?
+            WHERE id = ?
         `;
 
-        const [result] = await db.execute(query, [
-            route_id, 
-            airline_id, 
-            departure_time, 
-            arrival_time, 
-            price, 
-            duration
+        await db.execute(query, [
+            route_id,
+            airline_id,
+            departure_time,
+            arrival_time,
+            price,
+            adult_price,
+            child_price,
+            infant_price,
+            duration,
+            id
         ]);
 
-        const [rows] = await db.execute('SELECT * FROM flights WHERE id = ?', [result.insertId]);
+        const [rows] = await db.execute('SELECT * FROM flights WHERE id = ?', [id]);
         
         return res.status(201).json({
             success : true,
-            message: "Flight created successfully",
+            message: "Flight updated successfully",
             data : rows[0]
         });
 
