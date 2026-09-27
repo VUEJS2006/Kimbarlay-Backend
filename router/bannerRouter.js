@@ -7,7 +7,10 @@ const bannerRouter = express.Router();
 
 bannerRouter.get("/promo/banner" ,  getBanner)
 
-bannerRouter.put("/promo/banner" , upload.single("image") , authencated , isAdmin , bannerUpdate)
+// bannerRouter.put("/promo/banner" , upload.single("image") , authencated , isAdmin , bannerUpdate)
+
+bannerRouter.put("/promo/banner" , upload.single("image") , bannerUpdate)
+
 
 
 export default bannerRouter;
