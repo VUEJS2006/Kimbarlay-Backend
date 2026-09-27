@@ -1,6 +1,7 @@
 import express from "express";
 import { bannerUpdate, getBanner } from "../controller/bannerController.js";
 import { upload } from "../middleware/upload.js";
+import { authencated, isAdmin } from "../middleware/authenticatedMiddleware.js";
 
 const bannerRouter = express.Router();
 
