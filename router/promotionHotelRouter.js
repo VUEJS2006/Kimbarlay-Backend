@@ -1,5 +1,6 @@
 import express from "express"
 import { deletePromotionHotels, getPromotionHotelsForAllTownships, getPromotionHotelsForEachTownship, promotionHotelCreate, updatePromotionHotels } from "../controller/promotionHotelController.js";
+import { authencated, isAdmin } from "../middleware/authenticatedMiddleware.js";
 
 const promotionHotelRouter = express.Router();
 
@@ -11,12 +12,12 @@ promotionHotelRouter.get("/promotion/hotels/all" , getPromotionHotelsForAllTowns
 
 
 // create promotionHotels
-promotionHotelRouter.post("/admin/promotion/hotels/create" , promotionHotelCreate )
+promotionHotelRouter.post("/admin/promotion/hotels/create" , authencated , isAdmin , promotionHotelCreate )
 
 // change promotionHotels
-promotionHotelRouter.put("/admin/promotion/hotels/update" , updatePromotionHotels )
+promotionHotelRouter.put("/admin/promotion/hotels/update" , authencated , isAdmin , updatePromotionHotels )
 
 // delete promotionHotels
-promotionHotelRouter.delete("/admin/promotion/hotels/delete/:township_id" , deletePromotionHotels)
+promotionHotelRouter.delete("/admin/promotion/hotels/delete/:township_id" , authencated , isAdmin , deletePromotionHotels)
 
 export default promotionHotelRouter;
