@@ -2357,3 +2357,146 @@ fetch("domain/api/promo/category/item/update", {
 }
 ```
 
+## 10. SQL code of creating `trust_cards` in database
+
+```sql
+CREATE TABLE trust_cards (
+    id VARCHAR(10) PRIMARY KEY CHECK (id IN ('card_1', 'card_2', 'card_3')),
+    title VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    color VARCHAR(50) NOT NULL,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+```
+
+### GET /api/trust_cards
+
+- No payload required
+
+#### Success Response
+
+```json
+{
+    "success": true,
+    "message": "All trust cards are here",
+    "data": [
+        {
+            "id": "card_1",
+            "title": "Best price guarantee",
+            "description": "Find a lower price elsewhere...",
+            "color": "#20C997",
+            "updated_at": "2026-10-03T03:07:47.000Z"
+        },
+        {
+            "id": "card_2",
+            "title": "Wide selection of airlines",
+            "description": "Choose from 100+ domestic...",
+            "color": "#F99B35",
+            "updated_at": "2026-10-03T03:07:47.000Z"
+        },
+        {
+            "id": "card_3",
+            "title": "24/7 travel support",
+            "description": "Our airline experts are available...",
+            "color": "#20C997",
+            "updated_at": "2026-10-03T03:07:47.000Z"
+        }
+    ]
+}
+```
+
+### PUT /api/trust_cards/update/all
+
+- Id must be only `card_1`, `card_2` or `card_3`.
+- Order by Id like `card_1` is always the first one.
+
+
+#### Payload
+
+```json
+[
+   {
+    "id": "card_2",
+    "title": "Best price guarantee",
+    "description": "Find a lower price elsewhere...",
+    "color": "#20C997"
+  },
+  {
+    "id": "card_1",
+    "title": "Wide selection of airlines",
+    "description": "Choose from 100+ domestic...",
+    "color": "#F99B35"
+  },
+  {
+    "id": "card_3",
+    "title": "24/7 travel support",
+    "description": "Our airline experts are available...",
+    "color": "#20C997"
+  }
+]
+```
+
+#### Success Response
+
+```json
+{
+    "success": true,
+    "message": "All trust cards updated successfully",
+    "data": [
+        {
+            "id": "card_1",
+            "title": "Wide selection of airlines",
+            "description": "Choose from 100+ domestic...",
+            "color": "#F99B35",
+            "updated_at": "2026-10-03T03:00:04.000Z"
+        },
+        {
+            "id": "card_2",
+            "title": "Best price guarantee",
+            "description": "Find a lower price elsewhere...",
+            "color": "#20C997",
+            "updated_at": "2026-10-03T03:00:04.000Z"
+        },
+        {
+            "id": "card_3",
+            "title": "24/7 travel support",
+            "description": "Our airline experts are available...",
+            "color": "#20C997",
+            "updated_at": "2026-10-03T03:00:04.000Z"
+        }
+    ]
+}
+```
+
+#### Error Response
+
+- Status : `400`
+
+```json
+{
+    "success": false,
+    "message": "Request body must be an array containing exactly 3 trust cards."
+}
+```
+
+```json
+{
+    "success": false,
+    "message": "Invalid Card ID: 'card1'. ID must be one of 'card_1', 'card_2', or 'card_3'."
+}
+```
+
+```json
+{
+    "success": false,
+    "message": "Title, description, and color are required for card 'card_1'."
+}
+```
+
+```json
+{
+    "success": false,
+    "message": "You must provide all 3 cards: 'card_1', 'card_2', and 'card_3'."
+}
+```
+
