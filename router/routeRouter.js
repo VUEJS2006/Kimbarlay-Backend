@@ -6,19 +6,13 @@ const routeRouter = express.Router();
 
 routeRouter.get("/routes" , getRoutes)
 
-// routeRouter.post("/admin/route/create" , authencated , isAdmin , createRoute);
+routeRouter.post("/admin/route/create" , authencated , isAdmin , createRoute);
 
-// routeRouter.put("/admin/route/update" , authencated , isAdmin , updateRoute);
+routeRouter.put("/admin/route/update" , authencated , isAdmin , updateRoute);
 
-// routeRouter.delete('/admin/route/delete/:id' , authencated , isAdmin , deleteRoute)
+routeRouter.delete('/admin/route/delete/:id' , authencated , isAdmin , deleteRoute)
 
 
-// temporarity
-routeRouter.post("/admin/route/create", createRoute);
-
-routeRouter.put("/admin/route/update" , updateRoute);
-
-routeRouter.delete('/admin/route/delete/:id' , deleteRoute)
 
 
 export default routeRouter;
