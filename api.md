@@ -1627,179 +1627,6 @@ CREATE TABLE flights (
 }
 ```
 
-### GET /api/airfare/getall
-
-- This route is for getting all data from airports, airlines , routes, flights, banner, categories and cateogry_items at one place
-- No payload required
-
-##### Success response 
-
-```json
-{
-    "success": true,
-    "data": {
-        "airports": [
-            {
-                "id": 4,
-                "code": "MDY",
-                "type": "international",
-                "name": "Mandalay Internal AirPort",
-                "city": "Mandalay",
-                "country": "Myanamar",
-                "note": null,
-                "image_url": "http://localhost:5000/images/airport/69f4a0c8-be6a-415a-acdf-8b1a8baa07c0.webp",
-                "created_at": "2026-09-14T12:25:34.000Z",
-                "updated_at": "2026-09-17T12:38:32.000Z"
-            },
-            {
-                "id": 3,
-                "code": "YGN",
-                "type": "international",
-                "name": "Yangon International AirPort",
-                "city": "Yangon",
-                "country": "Myanmar",
-                "note": null,
-                "image_url": "http://localhost:5000/images/airport/b12dd186-8d2a-4a14-ba9c-f52b041ed4b5.webp",
-                "created_at": "2026-09-14T12:17:40.000Z",
-                "updated_at": "2026-09-17T12:15:53.000Z"
-            }
-        ],
-        "airlines": [
-            {
-                "id": 4,
-                "code": "TG1",
-                "name": "Taung Gyi Airline1",
-                "country": null,
-                "type": "international",
-                "status": "active",
-                "brand_color": null,
-                "logo_url": "http://localhost:5000/images/airline/90358ead-60a3-4f89-ba06-ba31ebb19285.webp",
-                "created_at": "2026-09-14T15:29:17.000Z",
-                "updated_at": "2026-09-14T15:30:16.000Z"
-            },
-            {
-                "id": 3,
-                "code": "TG",
-                "name": "Taung Gyi Airline",
-                "country": null,
-                "type": "international",
-                "status": "active",
-                "brand_color": null,
-                "logo_url": "http://localhost:5000/images/airline/71b831f0-fae2-431c-803d-0cece8d50bec.webp",
-                "created_at": "2026-09-14T15:29:14.000Z",
-                "updated_at": "2026-09-14T15:29:14.000Z"
-            }
-        ],
-        "routes": [
-            {
-                "id": 2,
-                "from_airport_id": 3,
-                "to_airport_id": 5,
-                "duration": "1h 30m",
-                "stops": 0,
-                "route_type": "international",
-                "is_popular": 1,
-                "created_at": "2026-09-15T12:35:35.000Z",
-                "updated_at": "2026-09-17T12:39:45.000Z"
-            },
-            {
-                "id": 1,
-                "from_airport_id": 3,
-                "to_airport_id": 4,
-                "duration": "1h 30m",
-                "stops": 0,
-                "route_type": "international",
-                "is_popular": 1,
-                "created_at": "2026-09-15T12:35:06.000Z",
-                "updated_at": "2026-09-15T12:35:06.000Z"
-            }
-        ],
-        "flights": [
-            {
-                "id": 5,
-                "route_id": 1,
-                "airline_id": 3,
-                "departure_time": "08:30:00",
-                "arrival_time": "10:55:00",
-                "price": "11.00",
-                "adult_price": "12.00",
-                "child_price": "1202.00",
-                "infant_price": "303.00",
-                "duration": "1h 25m",
-                "created_at": "2026-09-26T00:10:45.000Z",
-                "updated_at": "2026-09-26T00:14:13.000Z"
-            },
-            {
-                "id": 1,
-                "route_id": 1,
-                "airline_id": 5,
-                "departure_time": "08:30:00",
-                "arrival_time": "10:55:00",
-                "price": "150.00",
-                "adult_price": null,
-                "child_price": null,
-                "infant_price": null,
-                "duration": "2h 25m",
-                "created_at": "2026-09-15T13:43:37.000Z",
-                "updated_at": "2026-09-15T13:43:37.000Z"
-            }
-        ],
-        "banner": {
-            "id": 1,
-            "title": "Test Title Name",
-            "subtitle1": "subtitle1 Name",
-            "subtitle2": "subtitle2 Name",
-            "image_url": "http://localhost:5000/http://localhost:5000/images/banner/f52df254-5f66-4ee1-9437-8ad91bd2f7cc.webp",
-            "updated_at": "2026-09-19T12:08:56.000Z"
-        },
-        "categories": [
-            {
-                "id": 1,
-                "title": "Updated Title for category",
-                "color": "#22BCB0",
-                "icon_url": null,
-                "created_at": "2026-09-20T01:30:34.000Z",
-                "updated_at": "2026-09-20T01:51:14.000Z"
-            },
-            {
-                "id": 3,
-                "title": "Updated Title for category",
-                "color": "#22BCB0",
-                "icon_url": "http://localhost:5000/images/airfair_category/58bc7c2e-c676-454f-8c56-0261d301e138.webp",
-                "created_at": "2026-09-20T02:45:07.000Z",
-                "updated_at": "2026-09-20T02:45:07.000Z"
-            }
-        ],
-        "cateogry_items": [
-            {
-                "id": 2,
-                "category_id": 3,
-                "image_url": "http://localhost:5000/images/airfair_category_items/ec46f4ca-aaea-4019-901b-0dd86feefb05.webp",
-                "from": "Yangon",
-                "to": "Ngapali Beach",
-                "price": "¥ 450",
-                "date": "Friday, December 5, 2025",
-                "discount": "0.8 discount",
-                "created_at": "2026-09-20T04:08:45.000Z",
-                "updated_at": "2026-09-20T04:08:45.000Z"
-            },
-            {
-                "id": 3,
-                "category_id": 3,
-                "image_url": "http://localhost:5000/images/airfair_category_items/5a28d6d5-fcaf-403f-a1fd-3631cd1f40a9.webp",
-                "from": "Yangon 2",
-                "to": "Ngapali Beach 2",
-                "price": "¥ 1150",
-                "date": "Friday, December 9, 2025",
-                "discount": "1.8 discount",
-                "created_at": "2026-09-20T04:10:44.000Z",
-                "updated_at": "2026-09-20T04:24:02.000Z"
-            }
-        ]
-    }
-}
-```
-
 ## 7. SQL code of creating `banners` in database
 
 - This sql is just only to know what fields are exit in tables
@@ -2357,3 +2184,342 @@ fetch("domain/api/promo/category/item/update", {
 }
 ```
 
+## 10. SQL code of creating `trust_cards` in database
+
+```sql
+CREATE TABLE trust_cards (
+    id VARCHAR(10) PRIMARY KEY CHECK (id IN ('card_1', 'card_2', 'card_3')),
+    title VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    color VARCHAR(50) NOT NULL,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+```
+
+### GET /api/trust_cards
+
+- No payload required
+
+#### Success Response
+
+```json
+{
+    "success": true,
+    "message": "All trust cards are here",
+    "data": [
+        {
+            "id": "card_1",
+            "title": "Best price guarantee",
+            "description": "Find a lower price elsewhere...",
+            "color": "#20C997",
+            "updated_at": "2026-10-03T03:07:47.000Z"
+        },
+        {
+            "id": "card_2",
+            "title": "Wide selection of airlines",
+            "description": "Choose from 100+ domestic...",
+            "color": "#F99B35",
+            "updated_at": "2026-10-03T03:07:47.000Z"
+        },
+        {
+            "id": "card_3",
+            "title": "24/7 travel support",
+            "description": "Our airline experts are available...",
+            "color": "#20C997",
+            "updated_at": "2026-10-03T03:07:47.000Z"
+        }
+    ]
+}
+```
+
+### PUT /api/trust_cards/update/all
+
+- Id must be only `card_1`, `card_2` or `card_3`.
+- Order by Id like `card_1` is always the first one.
+
+
+#### Payload
+
+```json
+[
+   {
+    "id": "card_2",
+    "title": "Best price guarantee",
+    "description": "Find a lower price elsewhere...",
+    "color": "#20C997"
+  },
+  {
+    "id": "card_1",
+    "title": "Wide selection of airlines",
+    "description": "Choose from 100+ domestic...",
+    "color": "#F99B35"
+  },
+  {
+    "id": "card_3",
+    "title": "24/7 travel support",
+    "description": "Our airline experts are available...",
+    "color": "#20C997"
+  }
+]
+```
+
+#### Success Response
+
+```json
+{
+    "success": true,
+    "message": "All trust cards updated successfully",
+    "data": [
+        {
+            "id": "card_1",
+            "title": "Wide selection of airlines",
+            "description": "Choose from 100+ domestic...",
+            "color": "#F99B35",
+            "updated_at": "2026-10-03T03:00:04.000Z"
+        },
+        {
+            "id": "card_2",
+            "title": "Best price guarantee",
+            "description": "Find a lower price elsewhere...",
+            "color": "#20C997",
+            "updated_at": "2026-10-03T03:00:04.000Z"
+        },
+        {
+            "id": "card_3",
+            "title": "24/7 travel support",
+            "description": "Our airline experts are available...",
+            "color": "#20C997",
+            "updated_at": "2026-10-03T03:00:04.000Z"
+        }
+    ]
+}
+```
+
+#### Error Response
+
+- Status : `400`
+
+```json
+{
+    "success": false,
+    "message": "Request body must be an array containing exactly 3 trust cards."
+}
+```
+
+```json
+{
+    "success": false,
+    "message": "Invalid Card ID: 'card1'. ID must be one of 'card_1', 'card_2', or 'card_3'."
+}
+```
+
+```json
+{
+    "success": false,
+    "message": "Title, description, and color are required for card 'card_1'."
+}
+```
+
+```json
+{
+    "success": false,
+    "message": "You must provide all 3 cards: 'card_1', 'card_2', and 'card_3'."
+}
+```
+
+
+### GET /api/airfare/getall
+
+- This route is for getting all data from airports, airlines , routes, flights, banner, categories, cateogry_items and trust_cards at one place
+- No payload required
+
+##### Success response 
+
+```json
+{
+    "success": true,
+    "data": {
+        "airports": [
+            {
+                "id": 4,
+                "code": "MDY",
+                "type": "international",
+                "name": "Mandalay Internal AirPort",
+                "city": "Mandalay",
+                "country": "Myanamar",
+                "note": null,
+                "image_url": "http://localhost:5000/images/airport/69f4a0c8-be6a-415a-acdf-8b1a8baa07c0.webp",
+                "created_at": "2026-09-14T12:25:34.000Z",
+                "updated_at": "2026-09-17T12:38:32.000Z"
+            },
+            {
+                "id": 3,
+                "code": "YGN",
+                "type": "international",
+                "name": "Yangon International AirPort",
+                "city": "Yangon",
+                "country": "Myanmar",
+                "note": null,
+                "image_url": "http://localhost:5000/images/airport/b12dd186-8d2a-4a14-ba9c-f52b041ed4b5.webp",
+                "created_at": "2026-09-14T12:17:40.000Z",
+                "updated_at": "2026-09-17T12:15:53.000Z"
+            }
+        ],
+        "airlines": [
+            {
+                "id": 4,
+                "code": "TG1",
+                "name": "Taung Gyi Airline1",
+                "country": null,
+                "type": "international",
+                "status": "active",
+                "brand_color": null,
+                "logo_url": "http://localhost:5000/images/airline/90358ead-60a3-4f89-ba06-ba31ebb19285.webp",
+                "created_at": "2026-09-14T15:29:17.000Z",
+                "updated_at": "2026-09-14T15:30:16.000Z"
+            },
+            {
+                "id": 3,
+                "code": "TG",
+                "name": "Taung Gyi Airline",
+                "country": null,
+                "type": "international",
+                "status": "active",
+                "brand_color": null,
+                "logo_url": "http://localhost:5000/images/airline/71b831f0-fae2-431c-803d-0cece8d50bec.webp",
+                "created_at": "2026-09-14T15:29:14.000Z",
+                "updated_at": "2026-09-14T15:29:14.000Z"
+            }
+        ],
+        "routes": [
+            {
+                "id": 2,
+                "from_airport_id": 3,
+                "to_airport_id": 5,
+                "duration": "1h 30m",
+                "stops": 0,
+                "route_type": "international",
+                "is_popular": 1,
+                "created_at": "2026-09-15T12:35:35.000Z",
+                "updated_at": "2026-09-17T12:39:45.000Z"
+            },
+            {
+                "id": 1,
+                "from_airport_id": 3,
+                "to_airport_id": 4,
+                "duration": "1h 30m",
+                "stops": 0,
+                "route_type": "international",
+                "is_popular": 1,
+                "created_at": "2026-09-15T12:35:06.000Z",
+                "updated_at": "2026-09-15T12:35:06.000Z"
+            }
+        ],
+        "flights": [
+            {
+                "id": 5,
+                "route_id": 1,
+                "airline_id": 3,
+                "departure_time": "08:30:00",
+                "arrival_time": "10:55:00",
+                "price": "11.00",
+                "adult_price": "12.00",
+                "child_price": "1202.00",
+                "infant_price": "303.00",
+                "duration": "1h 25m",
+                "created_at": "2026-09-26T00:10:45.000Z",
+                "updated_at": "2026-09-26T00:14:13.000Z"
+            },
+            {
+                "id": 1,
+                "route_id": 1,
+                "airline_id": 5,
+                "departure_time": "08:30:00",
+                "arrival_time": "10:55:00",
+                "price": "150.00",
+                "adult_price": null,
+                "child_price": null,
+                "infant_price": null,
+                "duration": "2h 25m",
+                "created_at": "2026-09-15T13:43:37.000Z",
+                "updated_at": "2026-09-15T13:43:37.000Z"
+            }
+        ],
+        "banner": {
+            "id": 1,
+            "title": "Test Title Name",
+            "subtitle1": "subtitle1 Name",
+            "subtitle2": "subtitle2 Name",
+            "image_url": "http://localhost:5000/http://localhost:5000/images/banner/f52df254-5f66-4ee1-9437-8ad91bd2f7cc.webp",
+            "updated_at": "2026-09-19T12:08:56.000Z"
+        },
+        "categories": [
+            {
+                "id": 1,
+                "title": "Updated Title for category",
+                "color": "#22BCB0",
+                "icon_url": null,
+                "created_at": "2026-09-20T01:30:34.000Z",
+                "updated_at": "2026-09-20T01:51:14.000Z"
+            },
+            {
+                "id": 3,
+                "title": "Updated Title for category",
+                "color": "#22BCB0",
+                "icon_url": "http://localhost:5000/images/airfair_category/58bc7c2e-c676-454f-8c56-0261d301e138.webp",
+                "created_at": "2026-09-20T02:45:07.000Z",
+                "updated_at": "2026-09-20T02:45:07.000Z"
+            }
+        ],
+        "cateogry_items": [
+            {
+                "id": 2,
+                "category_id": 3,
+                "image_url": "http://localhost:5000/images/airfair_category_items/ec46f4ca-aaea-4019-901b-0dd86feefb05.webp",
+                "from": "Yangon",
+                "to": "Ngapali Beach",
+                "price": "¥ 450",
+                "date": "Friday, December 5, 2025",
+                "discount": "0.8 discount",
+                "created_at": "2026-09-20T04:08:45.000Z",
+                "updated_at": "2026-09-20T04:08:45.000Z"
+            },
+            {
+                "id": 3,
+                "category_id": 3,
+                "image_url": "http://localhost:5000/images/airfair_category_items/5a28d6d5-fcaf-403f-a1fd-3631cd1f40a9.webp",
+                "from": "Yangon 2",
+                "to": "Ngapali Beach 2",
+                "price": "¥ 1150",
+                "date": "Friday, December 9, 2025",
+                "discount": "1.8 discount",
+                "created_at": "2026-09-20T04:10:44.000Z",
+                "updated_at": "2026-09-20T04:24:02.000Z"
+            }
+        ],
+         "trustCards": [
+            {
+                "id": "card_1",
+                "title": "Best price guarantee",
+                "description": "Find a lower price elsewhere...",
+                "color": "#20C997",
+                "updated_at": "2026-10-03T03:07:47.000Z"
+            },
+            {
+                "id": "card_2",
+                "title": "Wide selection of airlines",
+                "description": "Choose from 100+ domestic...",
+                "color": "#F99B35",
+                "updated_at": "2026-10-03T03:07:47.000Z"
+            },
+            {
+                "id": "card_3",
+                "title": "24/7 travel support",
+                "description": "Our airline experts are available...",
+                "color": "#20C997",
+                "updated_at": "2026-10-03T03:07:47.000Z"
+            }
+        ]
+    }
+}
+```

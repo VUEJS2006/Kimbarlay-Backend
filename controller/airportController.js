@@ -11,7 +11,8 @@ export const getAllForAirfare = async(req , res) => {
             [flights],
             [banners],
             [categories],
-            [items]
+            [items],
+            [trustCards]
         ] = await Promise.all([
             db.execute('SELECT * FROM airports ORDER BY id DESC'),
             db.execute('SELECT * FROM airlines ORDER BY id DESC'),
@@ -19,7 +20,8 @@ export const getAllForAirfare = async(req , res) => {
             db.execute('SELECT * FROM flights ORDER BY id DESC'),
             db.execute('SELECT * FROM banners WHERE id = 1'),
             db.execute('SELECT * FROM express_report_categories ORDER BY id ASC'),
-            db.execute('SELECT * FROM express_report_items ORDER BY id ASC')
+            db.execute('SELECT * FROM express_report_items ORDER BY id ASC'),
+            db.execute('SELECT * FROM trust_cards ORDER BY id ASC')
         ]);
 
         return res.status(200).json({
@@ -31,7 +33,8 @@ export const getAllForAirfare = async(req , res) => {
                 flights,
                 banner : banners[0],
                 categories : categories.map(item => ({...item , icon_url : changeToImageFullUrl(item.icon_url)})),
-                cateogry_items : items.map(item => ({...item , image_url : changeToImageFullUrl(item.image_url)}))
+                cateogry_items : items.map(item => ({...item , image_url : changeToImageFullUrl(item.image_url)})),
+                trustCards  
             }
         });
 
