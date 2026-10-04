@@ -7,11 +7,11 @@ const faqsRouter = express.Router();
 
 faqsRouter.get("/faqs", getFaqs);
 
-faqsRouter.post("/faqs", createFaqs);
+faqsRouter.post("/faqs" , authenticated, isAdmin, createFaqs);
 
-faqsRouter.put("/faqs", updateFaqs);
+faqsRouter.put("/faqs" , authenticated, isAdmin , updateFaqs);
 
-faqsRouter.delete("/faqs/:id", deleteFaq);
+faqsRouter.delete("/faqs/:id" , authenticated, isAdmin , deleteFaq);
 
 
 export default faqsRouter;

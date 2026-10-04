@@ -2358,7 +2358,63 @@ CREATE TABLE bookings (
 );
 ```
 
+### GET /api/bookings
+
+- No payload required
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Bookings are here.",
+    "body": [
+        {
+            "id": 2,
+            "pnr_code": "HK892345",
+            "user_id": 1,
+            "flight_id": 5,
+            "departure_date": "2026-11-20",
+            "cabin_class": "ECONOMY",
+            "adult_count": 3,
+            "child_count": 2,
+            "infant_count": 2,
+            "contact_full_name": "Aung Aung 2",
+            "contact_email": "aung@gmail.com 2",
+            "contact_phone": "+959123456789 2",
+            "special_requests": "Window seat preferred 2",
+            "total_amount": "4502.00",
+            "status": "PENDING",
+            "created_at": "2026-10-04T06:02:38.000Z",
+            "updated_at": "2026-10-04T06:02:38.000Z"
+        },
+        {
+            "id": 1,
+            "pnr_code": "BK892341",
+            "user_id": 1,
+            "flight_id": 5,
+            "departure_date": "2026-11-25",
+            "cabin_class": "BUSINESS",
+            "adult_count": 2,
+            "child_count": 0,
+            "infant_count": 0,
+            "contact_full_name": "Aung Aung",
+            "contact_email": "aung.updated@gmail.com",
+            "contact_phone": "+959987654321",
+            "special_requests": "Vegetarian meal required",
+            "total_amount": "600.00",
+            "status": "CONFIRMED",
+            "created_at": "2026-10-04T05:59:57.000Z",
+            "updated_at": "2026-10-04T06:10:33.000Z"
+        }
+    ]
+}
+```
+
 ### POST /api/bookings
+
+- only `authenticated` user can use this route
+
 
 #### Payload
 
@@ -2432,6 +2488,8 @@ CREATE TABLE bookings (
 
 ### PUT /api/bookings
 
+- only `authenticated` user can use this route
+
 #### Payload
 
 ```json
@@ -2496,6 +2554,8 @@ CREATE TABLE bookings (
 ### PATCH /api/bookings/status
 
 - When only want to change `status` like from pending to confirmed
+- only `authenticated` user and `admin` can use this route
+
 
 #### Payload
 
@@ -2535,6 +2595,7 @@ CREATE TABLE bookings (
 ### DELETE /api/bookings/:id
 
 - `:id` is the id of the booking you want to delete
+- only `authenticated` user can use this route
 
 #### Example route
 
@@ -2607,6 +2668,7 @@ CREATE TABLE faqs (
 ### POST /api/faqs
 
 - `is_active` can be `undefined`, its default value is `true`
+- only `authenticated` and `admin` can use this route
 
 #### Payload
 
@@ -2648,6 +2710,8 @@ CREATE TABLE faqs (
 ### PUT /api/faqs
 
 - `is_active` can be `undefined`, its default value is `true`
+- only `authenticated` and `admin` can use this route
+
 
 #### Payload
 
@@ -2696,6 +2760,8 @@ CREATE TABLE faqs (
 ### DELETE /api/faqs/:id
 
 - `:id` is the id of the faqs you want to delete
+- only `authenticated` and `admin` can use this route
+
 
 #### Example route
 
