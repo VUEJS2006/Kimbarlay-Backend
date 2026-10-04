@@ -24,7 +24,7 @@ import authRouter from "./router/authRouter.js"
 import trustCardsRouter from "./router/trustCardsRouter.js";
 import bookingRouter from "./router/bookingRouter.js";
 import faqsRouter from "./router/faqsRouter.js";
-
+import guideTouter from "./router//hotelGuideRouter.js"
 
 
 const app = express();
@@ -59,7 +59,7 @@ app.use("/api", authRouter)
 app.use("/api", trustCardsRouter)
 app.use("/api", bookingRouter)
 app.use("/api", faqsRouter)
-
+app.use("/api", guideTouter)
 
 app.get("/", (req, res) => {
     res.send("Welcome from Express.");
@@ -67,9 +67,9 @@ app.get("/", (req, res) => {
 
 
 
-// this route is not for frontend and just for auto deploy in name cheap 
+// this route is not for frontend and just for auto deploy in name cheap
 // plsease, don't  change or delete anything
-// GitHub Webhook 
+// GitHub Webhook
 app.use('/deploy', githubWebhookRouter);
 
 
@@ -77,3 +77,4 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, "0.0.0.0", () => {
     console.log(`Server is Running on ${PORT}`)
 })
+

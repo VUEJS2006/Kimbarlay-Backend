@@ -1,4 +1,4 @@
-import { hotelGuideCreate, hotelGuideDelete, hotelGuideList, hotelGuideUpdate } from "../controller/guideCountryController.js"
+import { hotelGuideCreate,hotelGuideList,hotelGuideUpdate,hotelGuideDelete } from "../controller/guideController.js"
 import express from "express";
 import { authenticated, isAdmin } from "../middleware/authenticatedMiddleware.js";
 const router = express.Router()
