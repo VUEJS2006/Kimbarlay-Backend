@@ -2678,6 +2678,46 @@ CREATE TABLE bookings (
                 "updated_at": "2026-09-15T13:43:37.000Z"
             }
         ],
+        "bookings": [
+            {
+                "id": 2,
+                "pnr_code": "HK892345",
+                "user_id": 1,
+                "flight_id": 5,
+                "departure_date": "2026-11-20",
+                "cabin_class": "ECONOMY",
+                "adult_count": 3,
+                "child_count": 2,
+                "infant_count": 2,
+                "contact_full_name": "Aung Aung 2",
+                "contact_email": "aung@gmail.com 2",
+                "contact_phone": "+959123456789 2",
+                "special_requests": "Window seat preferred 2",
+                "total_amount": "4502.00",
+                "status": "PENDING",
+                "created_at": "2026-10-04T06:02:38.000Z",
+                "updated_at": "2026-10-04T06:02:38.000Z"
+            },
+            {
+                "id": 1,
+                "pnr_code": "BK892341",
+                "user_id": 1,
+                "flight_id": 5,
+                "departure_date": "2026-11-25",
+                "cabin_class": "BUSINESS",
+                "adult_count": 2,
+                "child_count": 0,
+                "infant_count": 0,
+                "contact_full_name": "Aung Aung",
+                "contact_email": "aung.updated@gmail.com",
+                "contact_phone": "+959987654321",
+                "special_requests": "Vegetarian meal required",
+                "total_amount": "600.00",
+                "status": "CONFIRMED",
+                "created_at": "2026-10-04T05:59:57.000Z",
+                "updated_at": "2026-10-04T06:10:33.000Z"
+            }
+        ],
         "banner": {
             "id": 1,
             "title": "Test Title Name",
