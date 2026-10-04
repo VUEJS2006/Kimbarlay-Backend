@@ -1,15 +1,104 @@
-import { hotelGuideCreate,hotelGuideList,hotelGuideUpdate,hotelGuideDelete } from "../controller/hotelGuideController.js"
+import {
+    hotelGuideCreate,
+    hotelGuideList,
+    hotelGuideUpdate,
+    hotelGuideDelete
+} from "../controller/hotelGuideController.js";
+
 import express from "express";
-import { authenticated, isAdmin } from "../middleware/authenticatedMiddleware.js";
-const router = express.Router()
 
+import {authenticated,isAdmin} from "../middleware/authenticatedMiddleware.js";
+
+import upload from "../middleware/uploadMiddleware.js";
+
+const router = express.Router();
+
+
+// =========================
 // Dashboard Site
-router.post('/admin/hotel-guide/create', authenticated, isAdmin, hotelGuideCreate);
-router.get('/admin/hotel-guide/list', authenticated, isAdmin, hotelGuideList);
-router.put('/admin/hotel-guide/update/:id', authenticated, isAdmin, hotelGuideUpdate);
-router.delete('/admin/hotel-guide/delete/:id', authenticated, isAdmin, hotelGuideDelete);
+// =========================
+
+// CREATE
+router.post(
+    "/admin/hotel-guide/create",
+    authenticated,
+    isAdmin,
+    upload.fields([
+        {
+            name: "main_image",
+            maxCount: 1
+        },
+        {
+            name: "image1",
+            maxCount: 1
+        },
+        {
+            name: "image2",
+            maxCount: 1
+        },
+        {
+            name: "image3",
+            maxCount: 1
+        }
+    ]),
+    hotelGuideCreate
+);
 
 
-// Website Site
-router.get('/mobile/hotel-guide/list', authenticated, hotelGuideList)
+// LIST
+router.get(
+    "/admin/hotel-guide/list",
+    authenticated,
+    isAdmin,
+    hotelGuideList
+);
+
+
+// UPDATE
+router.put(
+    "/admin/hotel-guide/update/:id",
+    authenticated,
+    isAdmin,
+    upload.fields([
+        {
+            name: "main_image",
+            maxCount: 1
+        },
+        {
+            name: "image1",
+            maxCount: 1
+        },
+        {
+            name: "image2",
+            maxCount: 1
+        },
+        {
+            name: "image3",
+            maxCount: 1
+        }
+    ]),
+    hotelGuideUpdate
+);
+
+
+// DELETE
+router.delete(
+    "/admin/hotel-guide/delete/:id",
+    authenticated,
+    isAdmin,
+    hotelGuideDelete
+);
+
+
+// =========================
+// Website / Mobile Site
+// =========================
+
+router.get(
+    "/mobile/hotel-guide/list",
+    authenticated,
+    hotelGuideList
+);
+
+
 export default router;
