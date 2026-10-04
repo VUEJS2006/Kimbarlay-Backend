@@ -2559,11 +2559,172 @@ CREATE TABLE bookings (
 }
 ```
 
+## 12. SQL code of creating `faqs` in database
+
+```sql
+CREATE TABLE faqs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    question TEXT NOT NULL,
+    answer TEXT NOT NULL,
+    is_active BOOLEAN NOT NULL DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+```
+
+
+### GET /api/faqs
+
+- No payloads requried
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "FAQs fetched successfully.",
+    "body": [
+        {
+            "id": 2,
+            "question": "2222What is the status of my refund request, and when will it be credited?2222",
+            "answer": "2222It typically takes 7 to 20 business days. Under federal regulations, airlines must issue refunds within 7 business days if you paid by credit card, and within 20 business days if you paid by cash or check.",
+            "is_active": true,
+            "created_at": "2026-10-04T08:04:12.000Z",
+            "updated_at": "2026-10-04T08:04:12.000Z"
+        },
+        {
+            "id": 1,
+            "question": "Can I get a full refund for my non-refundable ticket because of a severe schedule change?",
+            "answer": "Yes, if an airline makes a significant schedule change or delay, you are entitled to a full refund to your original payment method.",
+            "is_active": true,
+            "created_at": "2026-10-04T08:02:19.000Z",
+            "updated_at": "2026-10-04T08:10:19.000Z"
+        }
+    ]
+}
+```
+
+### POST /api/faqs
+
+- `is_active` can be `undefined`, its default value is `true`
+
+#### Payload
+
+```json
+{
+  "question": "What is the status of my refund request, and when will it be credited?",
+  "answer": "It typically takes 7 to 20 business days. Under federal regulations, airlines must issue refunds within 7 business days if you paid by credit card, and within 20 business days if you paid by cash or check.",
+  "is_active": true
+}
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "FAQ created successfully",
+    "body": {
+        "id": 1,
+        "question": "What is the status of my refund request, and when will it be credited?",
+        "answer": "It typically takes 7 to 20 business days. Under federal regulations, airlines must issue refunds within 7 business days if you paid by credit card, and within 20 business days if you paid by cash or check.",
+        "is_active": true,
+        "created_at": "2026-10-04T08:02:19.000Z",
+        "updated_at": "2026-10-04T08:02:19.000Z"
+    }
+}
+```
+
+#### Error Responses
+
+```json
+{
+    "status": false,
+    "message": "question and answer are required"
+}
+```
+
+
+### PUT /api/faqs
+
+- `is_active` can be `undefined`, its default value is `true`
+
+#### Payload
+
+```json
+{
+  "id": 1,
+  "question": "Can I get a full refund for my non-refundable ticket because of a severe schedule change?",
+  "answer": "Yes, if an airline makes a significant schedule change or delay, you are entitled to a full refund to your original payment method.",
+  "is_active": true
+}
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "FAQ updated successfully",
+    "body": {
+        "id": 1,
+        "question": "Can I get a full refund for my non-refundable ticket because of a severe schedule change?",
+        "answer": "Yes, if an airline makes a significant schedule change or delay, you are entitled to a full refund to your original payment method.",
+        "is_active": true,
+        "created_at": "2026-10-04T08:02:19.000Z",
+        "updated_at": "2026-10-04T08:10:19.000Z"
+    }
+}
+```
+
+#### Error Responses
+
+```json
+{
+    "status": false,
+    "message": "id, question, and answer are required"
+}
+```
+```json
+{
+    "status": false,
+    "message": "FAQ not found"
+}
+```
+
+
+### DELETE /api/faqs/:id
+
+- `:id` is the id of the faqs you want to delete
+
+#### Example route
+
+```text
+/api/faqs/3
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "FAQ deleted successfully"
+}
+```
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "FAQ not found"
+}
+```
 
 
 ### GET /api/airfare/getall
 
-- This route is for getting all data from airports, airlines , routes, flights, banner, categories, cateogry_items and trust_cards at one place
+- This route is for getting all data from airports, airlines , routes, flights, banner, categories, cateogry_items, trust_cards, bookings and faqs at one place
 - No payload required
 
 ##### Success response 
@@ -2791,6 +2952,24 @@ CREATE TABLE bookings (
                 "description": "Our airline experts are available...",
                 "color": "#20C997",
                 "updated_at": "2026-10-03T03:07:47.000Z"
+            }
+        ],
+        "faqs": [
+            {
+                "id": 2,
+                "question": "2222What is the status of my refund request, and when will it be credited?2222",
+                "answer": "2222It typically takes 7 to 20 business days. Under federal regulations, airlines must issue refunds within 7 business days if you paid by credit card, and within 20 business days if you paid by cash or check.",
+                "is_active": true,
+                "created_at": "2026-10-04T08:04:12.000Z",
+                "updated_at": "2026-10-04T08:04:12.000Z"
+            },
+            {
+                "id": 1,
+                "question": "Can I get a full refund for my non-refundable ticket because of a severe schedule change?",
+                "answer": "Yes, if an airline makes a significant schedule change or delay, you are entitled to a full refund to your original payment method.",
+                "is_active": true,
+                "created_at": "2026-10-04T08:02:19.000Z",
+                "updated_at": "2026-10-04T08:22:26.000Z"
             }
         ]
     }
