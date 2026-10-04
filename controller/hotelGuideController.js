@@ -1,6 +1,9 @@
 import db from "../config/db.js"
 import { asyncHandel } from "../middleware/asyncMiddleware.js"
-
+import fs from "fs";
+import path from "path";
+import sharp from "sharp";
+import { v4 as uuid } from "uuid"
 
 export const hotelGuideList = asyncHandel(async (req, res) => {
     try {
@@ -64,7 +67,9 @@ export const hotelGuideCreate = asyncHandel(async (req, res) => {
             badge1,
             badge2,
             badge3
-        } = req.body;
+        } = req.body || {};
+
+
         if (
             !tag ||
             !title1 ||
@@ -79,6 +84,8 @@ export const hotelGuideCreate = asyncHandel(async (req, res) => {
                 message: "All fields are required!"
             });
         }
+
+
         const allowedTags = [
             "domestic",
             "asia",
@@ -91,6 +98,7 @@ export const hotelGuideCreate = asyncHandel(async (req, res) => {
                 message: "Invalid tag!"
             });
         }
+
         if (
             !req.files ||
             !req.files.main_image ||
@@ -103,27 +111,43 @@ export const hotelGuideCreate = asyncHandel(async (req, res) => {
                 message: "Main image and 3 card images are required!"
             });
         }
+
+
         const uploadFolder = path.join(
             process.cwd(),
             "images",
             "hotel_guide"
         );
+
         if (!fs.existsSync(uploadFolder)) {
             fs.mkdirSync(uploadFolder, {
                 recursive: true
             });
         }
-        const mainFile =
-            req.files.main_image[0];
 
-        const mainFileName =
-            `${uuid()}.webp`;
+        const mainFile = req.files.main_image[0];
 
-        const mainSavePath =
-            path.join(
-                uploadFolder,
-                mainFileName
-            );
+        const mainFileName = `${uuid()}.webp`;
+
+        const mainSavePath = path.join(
+            uploadFolder,
+            mainFileName
+        );
+
+        await sharp(mainFile.buffer)
+            .resize({
+                width: 1920,
+                withoutEnlargement: true
+            })
+            .webp({
+                quality: 90
+            })
+            .toFile(mainSavePath);
+
+        const mainImage =
+            `images/hotel_guide/${mainFileName}`;
+
+
         const [result] = await db.query(
             `
             INSERT INTO hotel_guides
@@ -138,38 +162,26 @@ export const hotelGuideCreate = asyncHandel(async (req, res) => {
                 tag
             ]
         );
+
         const hotelGuideId = result.insertId;
+
+
         const cardImages = [];
+
         const files = [
             req.files.image1[0],
             req.files.image2[0],
             req.files.image3[0]
         ];
 
-        await sharp(mainFile.buffer)
-            .resize({
-                width: 1920,
-                withoutEnlargement: true
-            })
-            .webp({
-                quality: 90
-            })
-            .toFile(mainSavePath);
-
-
-        const mainImage =
-            `images/hotel_guide/${mainFileName}`;
         for (const file of files) {
 
-            const fileName =
-                `${uuid()}.webp`;
+            const fileName = `${uuid()}.webp`;
 
-            const savePath =
-                path.join(
-                    uploadFolder,
-                    fileName
-                );
-
+            const savePath = path.join(
+                uploadFolder,
+                fileName
+            );
 
             await sharp(file.buffer)
                 .resize({
@@ -181,12 +193,11 @@ export const hotelGuideCreate = asyncHandel(async (req, res) => {
                 })
                 .toFile(savePath);
 
-
             cardImages.push(
                 `images/hotel_guide/${fileName}`
             );
-
         }
+
         const cards = [
             {
                 title: title1,
@@ -226,8 +237,8 @@ export const hotelGuideCreate = asyncHandel(async (req, res) => {
                     card.image
                 ]
             );
-
         }
+
         return res.status(201).json({
             success: true,
             message: "Hotel guide created successfully.",
@@ -239,16 +250,16 @@ export const hotelGuideCreate = asyncHandel(async (req, res) => {
             }
         });
 
-
-
     } catch (error) {
+
         console.log(error);
+
         return res.status(500).json({
             success: false,
             message: error.message
         });
     }
-})
+});
 
 export const hotelGuideUpdate = asyncHandel(async (req, res) => {
     try {
