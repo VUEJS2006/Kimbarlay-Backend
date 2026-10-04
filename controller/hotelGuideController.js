@@ -499,12 +499,16 @@ export const hotelGuideDelete = asyncHandel(async (req, res) => {
     try {
 
         const { id } = req.params;
+
+       
         if (!id) {
             return res.status(400).json({
                 success: false,
                 message: "Hotel guide id is required!"
             });
         }
+
+
         const [guide] = await db.query(
             `
             SELECT
@@ -515,6 +519,27 @@ export const hotelGuideDelete = asyncHandel(async (req, res) => {
             `,
             [id]
         );
+
+        if (guide.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: "Hotel guide not found!"
+            });
+        }
+
+    
+        const [cards] = await db.query(
+            `
+            SELECT
+                image
+            FROM hotel_cards
+            WHERE hotel_guide_id = ?
+            `,
+            [id]
+        );
+
+      
+
         await db.query(
             `
             DELETE FROM hotel_guides
@@ -522,15 +547,20 @@ export const hotelGuideDelete = asyncHandel(async (req, res) => {
             `,
             [id]
         );
+
+       
+
         const mainImagePath = path.join(
             process.cwd(),
             guide[0].main_image
         );
 
-
         if (fs.existsSync(mainImagePath)) {
             fs.unlinkSync(mainImagePath);
         }
+
+      
+
         for (const card of cards) {
 
             const cardImagePath = path.join(
@@ -538,12 +568,11 @@ export const hotelGuideDelete = asyncHandel(async (req, res) => {
                 card.image
             );
 
-
             if (fs.existsSync(cardImagePath)) {
                 fs.unlinkSync(cardImagePath);
             }
-
         }
+
 
         return res.status(200).json({
             success: true,
@@ -551,10 +580,12 @@ export const hotelGuideDelete = asyncHandel(async (req, res) => {
         });
 
     } catch (error) {
+
         console.log(error);
+
         return res.status(500).json({
             success: false,
             message: error.message
         });
     }
-})
+});
