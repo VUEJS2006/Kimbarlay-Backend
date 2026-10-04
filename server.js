@@ -24,7 +24,7 @@ import authRouter from "./router/authRouter.js"
 import trustCardsRouter from "./router/trustCardsRouter.js";
 import bookingRouter from "./router/bookingRouter.js";
 import faqsRouter from "./router/faqsRouter.js";
-import guideTouter from "./router//hotelGuideRouter.js"
+import guideTouter from "./router/hotelGuideRouter.js"
 
 
 const app = express();
