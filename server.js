@@ -23,6 +23,7 @@ import cookieParser from "cookie-parser";
 import authRouter from "./router/authRouter.js"
 import trustCardsRouter from "./router/trustCardsRouter.js";
 import bookingRouter from "./router/bookingRouter.js";
+import faqsRouter from "./router/faqsRouter.js";
 
 
 const app = express();
@@ -56,6 +57,7 @@ app.use("/api", expressReportItemsRouter)
 app.use("/api", authRouter)
 app.use("/api", trustCardsRouter)
 app.use("/api", bookingRouter)
+app.use("/api", faqsRouter)
 
 app.get("/", (req, res) => {
     res.send("Welcome from Express.");
