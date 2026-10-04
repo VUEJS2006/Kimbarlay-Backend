@@ -9,7 +9,7 @@ import express from "express";
 
 import {authenticated,isAdmin} from "../middleware/authenticatedMiddleware.js";
 
-import upload from "../middleware/uploadMiddleware.js";
+import { upload } from "../middleware/upload.js";
 
 const router = express.Router();
 
