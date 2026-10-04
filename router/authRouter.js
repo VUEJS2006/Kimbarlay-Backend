@@ -1,8 +1,8 @@
 import { register, login, logout } from "../controller/authController.js"
-import exress from "express";
+import express from "express";
 import { validateRegister } from "../middleware/authenticatedMiddleware.js";
 
-const router = exress.Router()
+const router = express.Router()
 
 // Dashboard Site
 router.post('/auth/register', validateRegister, register);

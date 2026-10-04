@@ -1,15 +1,15 @@
 import { countryCreate, countryList, countryUpdate, countryDelete } from "../controller/countryController.js"
-import exress from "express";
-import { authencated, isAdmin } from "../middleware/authenticatedMiddleware.js";
-const router = exress.Router()
+import express from "express";
+import { authenticated, isAdmin } from "../middleware/authenticatedMiddleware.js";
+const router = express.Router()
 
 // Dashboard Site
-router.post('/admin/country/create', authencated, isAdmin, countryCreate);
-router.get('/admin/country/list', authencated, isAdmin, countryList);
-router.put('/admin/country/update/:id', authencated, isAdmin, countryUpdate);
-router.delete('/admin/country/delete/:id', authencated, isAdmin, countryDelete);
+router.post('/admin/country/create', authenticated, isAdmin, countryCreate);
+router.get('/admin/country/list', authenticated, isAdmin, countryList);
+router.put('/admin/country/update/:id', authenticated, isAdmin, countryUpdate);
+router.delete('/admin/country/delete/:id', authenticated, isAdmin, countryDelete);
 
 
 // Website Site
-router.get('/mobile/country/list', authencated, countryList)
+router.get('/mobile/country/list', authenticated, countryList)
 export default router;

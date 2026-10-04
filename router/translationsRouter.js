@@ -1,15 +1,15 @@
 import express from "express"
 import { changeTranslation, getAllTranslations } from "../controller/translationsController.js";
-import { authencated, isAdmin } from "../middleware/authenticatedMiddleware.js";
+import { authenticated, isAdmin } from "../middleware/authenticatedMiddleware.js";
 
 const translationRouter = express.Router();
 
 // get all data from translation table 
 // call this route when the page is started or refreshed from layout
-translationRouter.get('/translations/all' , getAllTranslations)
+translationRouter.get('/translations/all', getAllTranslations)
 
 // use this route for changing each or create if does not exit in database
-translationRouter.post("/admin/translations/change" , authencated , isAdmin , changeTranslation )
+translationRouter.post("/admin/translations/change", authenticated, isAdmin, changeTranslation)
 
 
 export default translationRouter;

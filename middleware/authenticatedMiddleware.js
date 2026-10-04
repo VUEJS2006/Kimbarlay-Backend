@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import "dotenv/config"
 
-export const authencated = (req, res, next) => {
+export const authenticated = (req, res, next) => {
     try {
 
         const token = req.cookies.access_token || req.headers.authorization?.split(" ")[1];
