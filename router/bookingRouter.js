@@ -7,12 +7,13 @@ const bookingRouter = express.Router();
 
 bookingRouter.get('/bookings', getBookings);
 
-bookingRouter.post('/bookings', createBooking);
+bookingRouter.post('/bookings', authenticated, createBooking);
 
-bookingRouter.put('/bookings', updateBooking);
+bookingRouter.put('/bookings', authenticated, updateBooking);
 
-bookingRouter.patch('/bookings/status', changeBookingStatus);
 
-bookingRouter.delete('/bookings/:id', deleteBooking);
+bookingRouter.patch('/bookings/status', authenticated, isAdmin, changeBookingStatus);
+
+bookingRouter.delete('/bookings/:id', authenticated, deleteBooking);
 
 export default bookingRouter;
