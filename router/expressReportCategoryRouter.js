@@ -7,16 +7,10 @@ const expressReportCategoriesRouter = express.Router();
 
 expressReportCategoriesRouter.get("/promo/categories", getExpressReportCategories)
 
-// expressReportCategoriesRouter.post("/promo/category/create" , upload.single("icon") , authenticated , isAdmin , createExpressReportCategory )
+expressReportCategoriesRouter.post("/promo/category/create", upload.single("icon"), authenticated, isAdmin, createExpressReportCategory)
 
-// expressReportCategoriesRouter.put("/promo/category/update" , upload.single("icon") , authenticated , isAdmin , updateExpressReportCategory)
+expressReportCategoriesRouter.put("/promo/category/update", upload.single("icon"), authenticated, isAdmin, updateExpressReportCategory)
 
-// expressReportCategoriesRouter.delete("/promo/category/delete/:id" , authenticated , isAdmin ,  deleteExpressReportCategory)
-
-expressReportCategoriesRouter.post("/promo/category/create", upload.single("icon"), createExpressReportCategory)
-
-expressReportCategoriesRouter.put("/promo/category/update", upload.single("icon"), updateExpressReportCategory)
-
-expressReportCategoriesRouter.delete("/promo/category/delete/:id", deleteExpressReportCategory)
+expressReportCategoriesRouter.delete("/promo/category/delete/:id", authenticated, isAdmin, deleteExpressReportCategory)
 
 export default expressReportCategoriesRouter;

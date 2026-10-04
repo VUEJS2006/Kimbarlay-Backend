@@ -1518,7 +1518,7 @@ CREATE TABLE flights (
 ```
 
 #### Error Response
-
+z
 ```json
 {
     "success": false,
@@ -2327,6 +2327,239 @@ CREATE TABLE trust_cards (
 }
 ```
 
+## 11. SQL code of creating `booking` in database
+
+```sql
+CREATE TABLE bookings (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    pnr_code VARCHAR(10) UNIQUE NOT NULL,
+    user_id INT NOT NULL,
+    flight_id INT NOT NULL,
+    departure_date VARCHAR(50) NOT NULL,
+    cabin_class ENUM('ECONOMY', 'PREMIUM_ECONOMY', 'BUSINESS', 'FIRST') NOT NULL DEFAULT 'ECONOMY',
+
+    adult_count INT NOT NULL DEFAULT 1,
+    child_count INT NOT NULL DEFAULT 0,
+    infant_count INT NOT NULL DEFAULT 0,
+    
+    contact_full_name VARCHAR(255) NOT NULL,
+    contact_email VARCHAR(255) NOT NULL,
+    contact_phone VARCHAR(50) NOT NULL,
+    special_requests TEXT,
+    
+    total_amount DECIMAL(10, 2) NOT NULL,
+    status ENUM('PENDING', 'CONFIRMED', 'CANCELLED', 'EXPIRED') NOT NULL DEFAULT 'PENDING',
+    
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (flight_id) REFERENCES flights(id) ON DELETE CASCADE
+);
+```
+
+### POST /api/bookings
+
+#### Payload
+
+```json
+{
+  "pnr_code": "BK892341",
+  "user_id": 1,
+  "flight_id": 5,
+  "departure_date": "2026-11-20",
+  "cabin_class": "ECONOMY",
+  "adult_count": 2,
+  "child_count": 1,
+  "infant_count": 0,
+  "contact_full_name": "Aung Aung",
+  "contact_email": "aung@gmail.com",
+  "contact_phone": "+959123456789",
+  "special_requests": "Window seat preferred",
+  "total_amount": 450.00
+}
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Booking created successfully",
+    "body": {
+        "id": 1,
+        "pnr_code": "BK892341",
+        "user_id": 1,
+        "flight_id": 5,
+        "departure_date": "2026-11-20",
+        "cabin_class": "ECONOMY",
+        "adult_count": 2,
+        "child_count": 1,
+        "infant_count": 0,
+        "contact_full_name": "Aung Aung",
+        "contact_email": "aung@gmail.com",
+        "contact_phone": "+959123456789",
+        "special_requests": "Window seat preferred",
+        "total_amount": "450.00",
+        "status": "PENDING",
+        "created_at": "2026-10-04T05:59:57.000Z",
+        "updated_at": "2026-10-04T05:59:57.000Z"
+    }
+}
+```
+
+#### Error Responses
+
+```json
+{
+    "status": false,
+    "message": "Invalid user_id [15] : user does not exit in database."
+}
+```
+```json
+{
+    "status": false,
+    "message": "Invalid flight_id [52] : flight does not exit in database."
+}
+```
+```json
+{
+    "status": false,
+    "message": "pnr_code, user_id, flight_id, departure_date, cabin_class, contact_full_name, contact_email, contact_phone, contact_phone and total_amount are required"
+}
+```
+
+
+### PUT /api/bookings
+
+#### Payload
+
+```json
+{
+  "id": 1,
+  "departure_date": "2026-11-25",
+  "cabin_class": "BUSINESS",
+  "adult_count": 2,
+  "child_count": 0,
+  "infant_count": 0,
+  "contact_full_name": "Aung Aung",
+  "contact_email": "aung.updated@gmail.com",
+  "contact_phone": "+959987654321",
+  "special_requests": "Vegetarian meal required",
+  "total_amount": 600.00
+}
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Booking updated successfully",
+    "body": {
+        "id": 1,
+        "pnr_code": "BK892341",
+        "user_id": 1,
+        "flight_id": 5,
+        "departure_date": "2026-11-25",
+        "cabin_class": "BUSINESS",
+        "adult_count": 2,
+        "child_count": 0,
+        "infant_count": 0,
+        "contact_full_name": "Aung Aung",
+        "contact_email": "aung.updated@gmail.com",
+        "contact_phone": "+959987654321",
+        "special_requests": "Vegetarian meal required",
+        "total_amount": "600.00",
+        "status": "PENDING",
+        "created_at": "2026-10-04T05:59:57.000Z",
+        "updated_at": "2026-10-04T06:06:28.000Z"
+    }
+}
+```
+
+#### Error Responses
+
+```json
+{
+    "status": false,
+    "message": "Booking not found"
+}
+```
+```json
+{
+    "status": false,
+    "message": "departure_date, cabin_class, contact_full_name, contact_email, contact_phone, contact_phone and total_amount are required"
+}
+```
+
+### PATCH /api/bookings/status
+
+- When only want to change `status` like from pending to confirmed
+
+#### Payload
+
+```json
+{
+  "id": 1,
+  "status": "confirmed"
+}
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Booking status updated successfully",
+    "id": 1,
+    "changedStatus": "CONFIRMED"
+}
+```
+
+#### Error Responses
+
+```json
+{
+    "status": false,
+    "message": "id is required"
+}
+```
+```json
+{
+    "status": false,
+    "message": "Invalid status. Allowed values: PENDING, CONFIRMED, CANCELLED, EXPIRED"
+}
+```
+
+### DELETE /api/bookings/:id
+
+- `:id` is the id of the booking you want to delete
+
+#### Example route
+
+```text
+/api/bookings/3
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Booking deleted successfully"
+}
+```
+
+#### Error Response
+
+```json
+{
+    "message": "Booking not found"
+}
+```
+
+
 
 ### GET /api/airfare/getall
 
@@ -2443,6 +2676,46 @@ CREATE TABLE trust_cards (
                 "duration": "2h 25m",
                 "created_at": "2026-09-15T13:43:37.000Z",
                 "updated_at": "2026-09-15T13:43:37.000Z"
+            }
+        ],
+        "bookings": [
+            {
+                "id": 2,
+                "pnr_code": "HK892345",
+                "user_id": 1,
+                "flight_id": 5,
+                "departure_date": "2026-11-20",
+                "cabin_class": "ECONOMY",
+                "adult_count": 3,
+                "child_count": 2,
+                "infant_count": 2,
+                "contact_full_name": "Aung Aung 2",
+                "contact_email": "aung@gmail.com 2",
+                "contact_phone": "+959123456789 2",
+                "special_requests": "Window seat preferred 2",
+                "total_amount": "4502.00",
+                "status": "PENDING",
+                "created_at": "2026-10-04T06:02:38.000Z",
+                "updated_at": "2026-10-04T06:02:38.000Z"
+            },
+            {
+                "id": 1,
+                "pnr_code": "BK892341",
+                "user_id": 1,
+                "flight_id": 5,
+                "departure_date": "2026-11-25",
+                "cabin_class": "BUSINESS",
+                "adult_count": 2,
+                "child_count": 0,
+                "infant_count": 0,
+                "contact_full_name": "Aung Aung",
+                "contact_email": "aung.updated@gmail.com",
+                "contact_phone": "+959987654321",
+                "special_requests": "Vegetarian meal required",
+                "total_amount": "600.00",
+                "status": "CONFIRMED",
+                "created_at": "2026-10-04T05:59:57.000Z",
+                "updated_at": "2026-10-04T06:10:33.000Z"
             }
         ],
         "banner": {

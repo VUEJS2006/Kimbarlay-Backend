@@ -11,24 +11,16 @@ airportRouter.get("/airfare/getall", getAllForAirfare)
 // get airports from both admin and user
 airportRouter.get("/airports", getAirport)
 
-// // creating each airport
-// airportRouter.post("/admin/airport/create" , upload.single("image") , authenticated , isAdmin , createAirport )
-
-// // updating each airport
-// airportRouter.put("/admin/airport/update" , upload.single("image") , authenticated , isAdmin , updateAirport )
-
-// // delete each airport 
-// airportRouter.delete('/admin/airport/delete/:id' , authenticated , isAdmin , deleteAirport)
-
-
 
 // creating each airport
-airportRouter.post("/admin/airport/create", upload.single("image"), createAirport)
+airportRouter.post("/admin/airport/create", upload.single("image"), authenticated, isAdmin, createAirport)
 
 // updating each airport
-airportRouter.put("/admin/airport/update", upload.single("image"), updateAirport)
+airportRouter.put("/admin/airport/update", upload.single("image"), authenticated, isAdmin, updateAirport)
 
 // delete each airport 
-airportRouter.delete('/admin/airport/delete/:id', deleteAirport)
+airportRouter.delete('/admin/airport/delete/:id', authenticated, isAdmin, deleteAirport)
+
+
 
 export default airportRouter;
