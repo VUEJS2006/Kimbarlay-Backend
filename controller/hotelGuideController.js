@@ -1,6 +1,9 @@
 import db from "../config/db.js"
 import { asyncHandel } from "../middleware/asyncMiddleware.js"
-
+import fs from "fs";
+import path from "path";
+import sharp from "sharp";
+import { v4 as uuid } from "uuid"
 
 export const hotelGuideList = asyncHandel(async (req, res) => {
     try {
