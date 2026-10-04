@@ -22,7 +22,7 @@ import expressReportItemsRouter from "./router/expressReportItemRouter.js";
 import cookieParser from "cookie-parser";
 import authRouter from "./router/authRouter.js"
 import trustCardsRouter from "./router/trustCardsRouter.js";
-
+import hotelGuideRouter from "./router/hotelGuideRouter.js";
 
 const app = express();
 
