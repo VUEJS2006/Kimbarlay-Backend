@@ -168,11 +168,9 @@ export const userList = asyncHandel(async (req, res) => {
         const [userInfo] = await db.query(
             `
             SELECT
-            id,
             username, 
             email, 
             phone, 
-            confirm_password,
             township, 
             region, 
             address
