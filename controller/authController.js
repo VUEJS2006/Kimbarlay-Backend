@@ -167,7 +167,7 @@ export const userList = asyncHandel(async (req, res) => {
 
         const [userInfo] = await db.query(
             `
-            SELECT 
+            SELECT
             id,
             username, 
             email, 
@@ -176,6 +176,7 @@ export const userList = asyncHandel(async (req, res) => {
             township, 
             region, 
             address
+            FROM users
             ORDER BY id DESC
             `
         );
