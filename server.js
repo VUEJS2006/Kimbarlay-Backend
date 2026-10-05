@@ -26,7 +26,7 @@ import bookingRouter from "./router/bookingRouter.js";
 import faqsRouter from "./router/faqsRouter.js";
 import guideTouter from "./router/hotelGuideRouter.js"
 import guideRouter from "./router/guideRouter.js"
-
+import reviewRouter from "./router/reviewRouter.js"
 
 import rescheduleRequestRouter from "./router/rescheduleRequestRouter.js";
 
@@ -64,7 +64,7 @@ app.use("/api", bookingRouter)
 app.use("/api", faqsRouter)
 app.use("/api", guideTouter)
 app.use("/api", guideRouter)
-
+app.use("/api", reviewRouter)
 
 
 app.use("/api", rescheduleRequestRouter)
