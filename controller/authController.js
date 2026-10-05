@@ -173,7 +173,8 @@ export const userList = asyncHandel(async (req, res) => {
             phone, 
             township, 
             region, 
-            address
+            address,
+            role
             FROM users
             ORDER BY id DESC
             `
