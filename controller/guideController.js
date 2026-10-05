@@ -464,27 +464,59 @@ export const guideDetails = asyncHandel(async (req, res) => {
                     '%d-%m-%Y'
                 ) AS created_at,
 
+
                 COALESCE(
-                    JSON_ARRAYAGG(
-                        CASE
-                            WHEN gi.id IS NOT NULL
-                            THEN gi.image
-                        END
+                    (
+                        SELECT JSON_ARRAYAGG(
+                            gi.image
+                        )
+                        FROM guide_images gi
+                        WHERE gi.guide_id = g.id
                     ),
                     JSON_ARRAY()
-                ) AS images
+                ) AS images,
+                    SELECT COUNT(*)
+                    FROM review r
+                    WHERE r.guide_id = g.id
+                ) AS review_count,
+
+                COALESCE(
+                    (
+                        SELECT JSON_ARRAYAGG(
+                            JSON_OBJECT(
+                                'id', r.id,
+                                'user_id', r.user_id,
+                                'user_name', u.name,
+                                'user_image', u.image,
+                                'review_title', r.review_title,
+                                'description', r.description,
+                                'star_rating', r.star_rating,
+                                'image', r.image,
+                                'created_at',
+                                    DATE_FORMAT(
+                                        r.created_at,
+                                        '%d-%m-%Y'
+                                    )
+                            )
+                        )
+                        FROM review r
+
+                        INNER JOIN users u
+                            ON r.user_id = u.id
+
+                        WHERE r.guide_id = g.id
+                    ),
+                    JSON_ARRAY()
+                ) AS reviews
+
 
             FROM guides g
 
-            LEFT JOIN guide_images gi
-                ON g.id = gi.guide_id
-
             WHERE g.id = ?
-
-            GROUP BY g.id
             `,
             [id]
         );
+
 
         if (data.length === 0) {
             return res.status(404).json({
@@ -492,6 +524,7 @@ export const guideDetails = asyncHandel(async (req, res) => {
                 message: "Guide not found"
             });
         }
+
 
         return res.status(200).json({
             success: true,
@@ -505,6 +538,94 @@ export const guideDetails = asyncHandel(async (req, res) => {
         return res.status(500).json({
             success: false,
             message: error.message
+        });
+    }
+});
+
+export const guideMobileList = asyncHandel(async (req, res) => {
+    try {
+
+        const [data] = await db.query(`
+            SELECT
+                g.id,
+                g.title,
+                g.author,
+                g.badge,
+                g.excerpt,
+                g.tag,
+                g.location,
+                g.rating,
+                g.best_time,
+                g.entry,
+                g.sightseeing,
+                g.summary,
+
+                DATE_FORMAT(
+                    g.created_at,
+                    '%d-%m-%Y'
+                ) AS created_at,
+
+
+                COALESCE(
+                    (
+                        SELECT JSON_ARRAYAGG(
+                            gi.image
+                        )
+                        FROM guide_images gi
+                        WHERE gi.guide_id = g.id
+                    ),
+                    JSON_ARRAY()
+                ) AS images,
+
+                COALESCE(
+                    (
+                        SELECT JSON_ARRAYAGG(
+                            JSON_OBJECT(
+                                'id', r.id,
+                                'user_id', r.user_id,
+                                'user_name', u.name,
+                                'user_image', u.image,
+                                'review_title', r.review_title,
+                                'description', r.description,
+                                'star_rating', r.star_rating,
+                                'image', r.image,
+                                'created_at',
+                                    DATE_FORMAT(
+                                        r.created_at,
+                                        '%d-%m-%Y'
+                                    )
+                            )
+                        )
+                        FROM review r
+
+                        INNER JOIN users u
+                            ON r.user_id = u.id
+
+                        WHERE r.guide_id = g.id
+                    ),
+                    JSON_ARRAY()
+                ) AS reviews
+
+            FROM guides g
+
+            ORDER BY g.id DESC
+        `);
+
+
+        return res.status(200).json({
+            success: true,
+            count: data.length,
+            message: "Guide Success",
+            data
+        });
+
+    } catch (error) {
+
+        console.log(error);
+
+        return res.status(500).json({
+            message: error.message,
+            success: false
         });
     }
 });

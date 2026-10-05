@@ -1,4 +1,4 @@
-import { guideCreate, guideList, guideUpdate, guideDelete, guideDetails } from "../controller/guideController.js"
+import { guideCreate, guideList, guideMobileList, guideUpdate, guideDelete, guideDetails } from "../controller/guideController.js"
 import express from "express";
 import { upload } from "../middleware/upload.js";
 import { authenticated, isAdmin } from "../middleware/authenticatedMiddleware.js";
@@ -12,6 +12,6 @@ router.delete('/admin/guide/delete/:id', authenticated, isAdmin, guideDelete);
 
 
 // Website Site
-router.get('/mobile/guide/list', authenticated, guideList)
+router.get('/mobile/guide/list', authenticated, guideMobileList)
 router.get('/mobile/guide/details/:id', authenticated, guideDetails)
 export default router;
