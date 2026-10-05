@@ -1,6 +1,7 @@
 import db from "../config/db.js";
 import { allowedTypes } from "../utils/enum.js";
 import { changeToImageFullUrl, deleteStoredImage, storeImageToDynamicFolder } from "../utils/image.js";
+import { refundAllowedIds, trustAllowedIds } from "./trustCardsController.js";
 
 export const getAllForAirfare = async(req , res) => {
     try {
@@ -14,6 +15,7 @@ export const getAllForAirfare = async(req , res) => {
             [categories],
             [items],
             [trustCards],
+            [refundCards],
             [faqs]
         ] = await Promise.all([
             db.execute('SELECT * FROM airports ORDER BY id DESC'),
@@ -24,7 +26,14 @@ export const getAllForAirfare = async(req , res) => {
             db.execute('SELECT * FROM banners WHERE id = 1'),
             db.execute('SELECT * FROM express_report_categories ORDER BY id ASC'),
             db.execute('SELECT * FROM express_report_items ORDER BY id ASC'),
-            db.execute('SELECT * FROM trust_cards ORDER BY id ASC'),
+            db.execute(
+                'SELECT * FROM trust_cards WHERE id IN (?, ?, ?) ORDER BY id ASC',
+                trustAllowedIds
+            ),
+            db.execute(
+                'SELECT * FROM trust_cards WHERE id IN (?, ?, ?) ORDER BY id ASC',
+                refundAllowedIds
+            ),
             db.execute("SELECT * FROM faqs ORDER BY id DESC"),
         ]);
 
@@ -40,6 +49,7 @@ export const getAllForAirfare = async(req , res) => {
                 categories : categories.map(item => ({...item , icon_url : changeToImageFullUrl(item.icon_url)})),
                 cateogry_items : items.map(item => ({...item , image_url : changeToImageFullUrl(item.image_url)})),
                 trustCards,
+                refundCards,
                 faqs : faqs.map(item => ({...item , is_active : (item.is_active === 1) }))
             }
         });

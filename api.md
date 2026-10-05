@@ -2188,13 +2188,14 @@ fetch("domain/api/promo/category/item/update", {
 
 ```sql
 CREATE TABLE trust_cards (
-    id VARCHAR(10) PRIMARY KEY CHECK (id IN ('card_1', 'card_2', 'card_3')),
+    id VARCHAR(50) PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,
     color VARCHAR(50) NOT NULL,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 ```
+### For Trust Cards
 
 ### GET /api/trust_cards
 
@@ -2324,6 +2325,139 @@ CREATE TABLE trust_cards (
 {
     "success": false,
     "message": "You must provide all 3 cards: 'card_1', 'card_2', and 'card_3'."
+}
+```
+
+### For Refund Cards
+
+### GET /api/refund_cards
+
+- No payload required
+
+#### Success Response
+
+```json
+{
+    "success": true,
+    "message": "All refund cards are here",
+    "data": [
+        {
+            "id": "refund_card_1",
+            "title": "needHelp",
+            "description": "needHelpText",
+            "color": "#20C997",
+            "updated_at": "2026-10-04T23:22:36.000Z"
+        },
+        {
+            "id": "refund_card_2",
+            "title": "processingTime",
+            "description": "processingTimeText",
+            "color": "#FFF8EE",
+            "updated_at": "2026-10-04T23:22:36.000Z"
+        },
+        {
+            "id": "refund_card_3",
+            "title": "secureService",
+            "description": "secureServiceText",
+            "color": "#20C997",
+            "updated_at": "2026-10-04T23:22:36.000Z"
+        }
+    ]
+}
+```
+
+### PUT /api/refund_cards/update/all
+
+- Id must be only `refund_card_1`, `refund_card_2` or `refund_card_3`.
+- Order by Id like `refund_card_1` is always the first one.
+
+
+#### Payload
+
+```json
+[
+  {
+    "id": "refund_card_1",
+    "title": "needHelp",
+    "description": "needHelpText",
+    "color": "#20C997"
+  },
+  {
+    "id": "refund_card_2",
+    "title": "processingTime",
+    "description": "processingTimeText",
+    "color": "#FFF8EE"
+  },
+  {
+    "id": "refund_card_3",
+    "title": "secureService",
+    "description": "secureServiceText",
+    "color": "#20C997"
+  }
+]
+```
+
+#### Success Response
+
+```json
+{
+    "success": true,
+    "message": "All refund cards updated successfully",
+    "data": [
+        {
+            "id": "refund_card_1",
+            "title": "needHelp",
+            "description": "needHelpText",
+            "color": "#20C997",
+            "updated_at": "2026-10-04T23:22:36.000Z"
+        },
+        {
+            "id": "refund_card_2",
+            "title": "processingTime",
+            "description": "processingTimeText",
+            "color": "#FFF8EE",
+            "updated_at": "2026-10-04T23:22:36.000Z"
+        },
+        {
+            "id": "refund_card_3",
+            "title": "secureService",
+            "description": "secureServiceText",
+            "color": "#20C997",
+            "updated_at": "2026-10-04T23:22:36.000Z"
+        }
+    ]
+}
+```
+
+#### Error Response
+
+- Status : `400`
+
+```json
+{
+    "success": false,
+    "message": "Request body must be an array containing exactly 3 refund cards."
+}
+```
+
+```json
+{
+    "success": false,
+    "message": "Invalid Card ID: 'refund_ca_2'. ID must be one of 'refund_card_1', 'refund_card_2', or 'refund_card_3'."
+}
+```
+
+```json
+{
+    "success": false,
+    "message": "Title, description, and color are required for card 'refund_card_2'."
+}
+```
+
+```json
+{
+    "success": false,
+    "message": "You must provide all 3 cards: 'refund_card_1', 'refund_card_2', or 'refund_card_3'."
 }
 ```
 
@@ -2788,9 +2922,11 @@ CREATE TABLE faqs (
 ```
 
 
+
+
 ### GET /api/airfare/getall
 
-- This route is for getting all data from airports, airlines , routes, flights, banner, categories, cateogry_items, trust_cards, bookings and faqs at one place
+- This route is for getting all data from airports, airlines , routes, flights, banner, categories, cateogry_items, trust_cards, refund_cards, bookings and faqs at one place
 - No payload required
 
 ##### Success response 
@@ -3018,6 +3154,29 @@ CREATE TABLE faqs (
                 "description": "Our airline experts are available...",
                 "color": "#20C997",
                 "updated_at": "2026-10-03T03:07:47.000Z"
+            }
+        ],
+         "refundCards": [
+            {
+                "id": "refund_card_1",
+                "title": "needHelp",
+                "description": "needHelpText",
+                "color": "#20C997",
+                "updated_at": "2026-10-04T23:22:36.000Z"
+            },
+            {
+                "id": "refund_card_2",
+                "title": "processingTime",
+                "description": "processingTimeText",
+                "color": "#FFF8EE",
+                "updated_at": "2026-10-04T23:22:36.000Z"
+            },
+            {
+                "id": "refund_card_3",
+                "title": "secureService",
+                "description": "secureServiceText",
+                "color": "#20C997",
+                "updated_at": "2026-10-04T23:22:36.000Z"
             }
         ],
         "faqs": [
