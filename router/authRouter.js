@@ -7,6 +7,6 @@ const router = express.Router()
 // Dashboard Site
 router.post('/auth/register', validateRegister, register);
 router.post('/auth/login', login);
-router.post('/auth/user/list', authenticated, isAdmin, userList);
+router.get('/auth/user/list', authenticated, isAdmin, userList);
 router.post('/auth/logout', logout);
 export default router;
