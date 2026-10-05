@@ -8,18 +8,13 @@ const expressReportItemsRouter = express.Router();
 expressReportItemsRouter.get("/promo/category/items", getAllExpressReportItem)
 
 
-// expressReportItemsRouter.post("/promo/category/item/create" , upload.single("image") , authenticated , isAdmin , createExpressReportItem )
+expressReportItemsRouter.post("/promo/category/item/create" , upload.single("image") , authenticated , isAdmin , createExpressReportItem )
 
-// expressReportItemsRouter.put("/promo/category/item/update" , upload.single("image") , authenticated , isAdmin , updateExpressReportItem)
+expressReportItemsRouter.put("/promo/category/item/update" , upload.single("image") , authenticated , isAdmin , updateExpressReportItem)
 
-// expressReportItemsRouter.delete("/promo/category/item/delete/:id" , authenticated , isAdmin , deleteExpressReportItem)
+expressReportItemsRouter.delete("/promo/category/item/delete/:id" , authenticated , isAdmin , deleteExpressReportItem)
 
 
-expressReportItemsRouter.post("/promo/category/item/create", upload.single("image"), authenticated, isAdmin, createExpressReportItem)
-
-expressReportItemsRouter.put("/promo/category/item/update", upload.single("image"), authenticated, isAdmin, updateExpressReportItem)
-
-expressReportItemsRouter.delete("/promo/category/item/delete/:id", authenticated, isAdmin, deleteExpressReportItem)
 
 
 

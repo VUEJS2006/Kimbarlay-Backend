@@ -27,6 +27,9 @@ import faqsRouter from "./router/faqsRouter.js";
 import guideTouter from "./router/hotelGuideRouter.js"
 import guideRouter from "./router/guideRouter.js"
 
+
+import rescheduleRequestRouter from "./router/rescheduleRequestRouter.js";
+
 const app = express();
 
 
@@ -61,6 +64,10 @@ app.use("/api", bookingRouter)
 app.use("/api", faqsRouter)
 app.use("/api", guideTouter)
 app.use("/api", guideRouter)
+
+
+
+app.use("/api", rescheduleRequestRouter)
 
 app.get("/", (req, res) => {
     res.send("Welcome from Express.");
