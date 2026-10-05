@@ -486,7 +486,7 @@ export const guideDetails = asyncHandel(async (req, res) => {
                             JSON_OBJECT(
                                 'id', r.id,
                                 'user_id', r.user_id,
-                                'user_name', u.namename,
+                                'user_name', u.username,
                                 'review_title', r.review_title,
                                 'description', r.description,
                                 'star_rating', r.star_rating,
@@ -582,7 +582,7 @@ export const guideMobileList = asyncHandel(async (req, res) => {
                             JSON_OBJECT(
                                 'id', r.id,
                                 'user_id', r.user_id,
-                                'user_name', u.namename,
+                                'user_name', u.username,
                                 'review_title', r.review_title,
                                 'description', r.description,
                                 'star_rating', r.star_rating,
