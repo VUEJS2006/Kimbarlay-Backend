@@ -170,8 +170,7 @@ export const reviewList = asyncHandel(async (req, res) => {
 
                 g.title AS guide_title,
 
-                u.name AS user_name,
-                u.image AS user_image,
+                u.username AS user_name,
 
                 r.review_title,
                 r.description,
