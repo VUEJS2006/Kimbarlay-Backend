@@ -2688,7 +2688,7 @@ CREATE TABLE bookings (
 ### PATCH /api/bookings/status
 
 - When only want to change `status` like from pending to confirmed
-- only `authenticated` user and `admin` can use this route
+- only `authenticated` and `admin` can use this route
 
 
 #### Payload
@@ -3107,7 +3107,7 @@ CREATE TABLE reschedule_requests (
 ### PATCH /api/reschedule/change/status/:id
 
 - `:id` is the id of the reschedule to update
-- only `authenticated` user and `admin` can use this route
+- only `authenticated` and `admin` can use this route
 
 
 #### Payload 
@@ -3182,10 +3182,260 @@ CREATE TABLE reschedule_requests (
 }
 ```
 
+## 14 SQL code of creating `refund_requests` in database
+
+```sql
+CREATE TABLE refund_requests (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    booking_id INT NOT NULL,
+    user_id INT NOT NULL,
+    
+    reason TEXT NULL,
+    
+    status ENUM('PENDING', 'APPROVED', 'REJECTED') NOT NULL DEFAULT 'PENDING',
+    
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (booking_id) REFERENCES bookings(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+```
+
+### GET /api/reschedules
+
+- if you want to get `all refunds`, no payload required
+- example
+```text
+/api/refunds
+```
+
+- if you want to get `refunds related to user_id`, you must add `?user_id=1` at the end of the route
+- example
+```text
+/api/refunds?user_id=1
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Refund requests retrieved successfully",
+    "data": [
+        {
+            "id": 2,
+            "booking_id": 2,
+            "user_id": 1,
+            "reason": "Medical emergency",
+            "status": "PENDING",
+            "created_at": "2026-10-05T09:38:31.000Z",
+            "updated_at": "2026-10-05T09:38:31.000Z"
+        },
+        {
+            "id": 1,
+            "booking_id": 1,
+            "user_id": 1,
+            "reason": "Medical emergency 222",
+            "status": "REJECTED",
+            "created_at": "2026-10-05T09:34:49.000Z",
+            "updated_at": "2026-10-05T10:37:47.000Z"
+        }
+    ]
+}
+```
+
+### POST /api/refund/request
+
+- only `authenticated` user can use this route
+
+#### Payload 
+
+```json
+{
+  "booking_id": 1,
+  "user_id": 1,
+  "reason": "Medical emergency"
+}
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Refund request submitted successfully",
+    "data": {
+        "id": 1,
+        "booking_id": 1,
+        "user_id": 1,
+        "reason": "Medical emergency",
+        "status": "PENDING",
+        "created_at": "2026-10-05T09:34:49.000Z",
+        "updated_at": "2026-10-05T09:34:49.000Z"
+    }
+}
+```
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "booking not found in database"
+}
+```
+```json
+{
+    "status": false,
+    "message": "User not found in database"
+}
+```
+```json
+{
+    "status": false,
+    "message": "A refund request has already been submitted for this booking."
+}
+```
+```json
+{
+    "status": false,
+    "message": "booking_id and user_id are required"
+}
+```
+```json
+{
+    "status" : false,
+    "message" : "pending or confirmed booking of your booking_id does not exit in database"
+}
+```
+
+### PUT /api/refund/update/:id
+
+- `:id` is the id of the refund to update
+- Only `authenticated` user can use this route
+
+#### Payload 
+
+```text
+/api/refund/update/1
+```
+```json
+{
+  "reason": "Medical emergency 333" 
+}
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Refund request updated successfully",
+    "data": {
+        "id": 1,
+        "booking_id": 1,
+        "user_id": 1,
+        "reason": "Medical emergency 333",
+        "status": "REJECTED",
+        "created_at": "2026-10-05T09:34:49.000Z",
+        "updated_at": "2026-10-05T10:58:35.000Z"
+    }
+}
+```
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Refund request not found"
+}
+```
+
+### PATCH /api/refund/change/status/:id
+
+- `:id` is the id of the refund to update
+- only `authenticated` and `admin` can use this route
+
+
+#### Payload 
+
+```text
+/api/refund/change/status/1
+```
+```json
+{
+  "status": "APPROVED" 
+}
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Refund request status changed to APPROVED",
+    "data": {
+        "id": 1,
+        "booking_id": 1,
+        "user_id": 1,
+        "reason": "Medical emergency 333",
+        "status": "APPROVED",
+        "created_at": "2026-10-05T09:34:49.000Z",
+        "updated_at": "2026-10-05T11:04:06.000Z"
+    }
+}
+```
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Refund request not found"
+}
+```
+```json
+{
+    "status": false,
+    "message": "Invalid status. Status must be one of: PENDING, APPROVED, REJECTED"
+}
+```
+
+### DELETE /api/refund/:id
+
+- `:id` is the id of refund to delete
+- only `authenticated` user can use this route
+
+```text
+/api/refund/1
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Refund request deleted successfully"
+}
+```
+
+#### Error response
+
+```json
+{
+    "status": false,
+    "message": "Refund request not found"
+}
+```
+
+
+
 
 ### GET /api/airfare/getall
 
-- This route is for getting all data from airports, airlines , routes, flights, banner, categories, cateogry_items, trust_cards, refund_cards, bookings, reschedule_requests and faqs at one place
+- This route is for getting all data from airports, airlines , routes, flights, banner, categories, cateogry_items, trust_cards, refund_cards, bookings, reschedule_requests , refund_requests and faqs at one place
 - No payload required
 
 ##### Success response 
@@ -3360,6 +3610,26 @@ CREATE TABLE reschedule_requests (
                 "status": "PENDING",
                 "created_at": "2026-10-05T05:29:00.000Z",
                 "updated_at": "2026-10-05T05:29:00.000Z"
+            }
+        ],
+        "refund_requests": [
+            {
+                "id": 2,
+                "booking_id": 2,
+                "user_id": 1,
+                "reason": "Medical emergency",
+                "status": "PENDING",
+                "created_at": "2026-10-05T09:38:31.000Z",
+                "updated_at": "2026-10-05T09:38:31.000Z"
+            },
+            {
+                "id": 1,
+                "booking_id": 1,
+                "user_id": 1,
+                "reason": "Medical emergency 222",
+                "status": "REJECTED",
+                "created_at": "2026-10-05T09:34:49.000Z",
+                "updated_at": "2026-10-05T10:37:47.000Z"
             }
         ],
         "banner": {

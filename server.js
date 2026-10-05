@@ -29,6 +29,7 @@ import guideRouter from "./router/guideRouter.js"
 import reviewRouter from "./router/reviewRouter.js"
 
 import rescheduleRequestRouter from "./router/rescheduleRequestRouter.js";
+import refundRequestRouter from "./router/refundRequestRouter.js";
 
 const app = express();
 
@@ -68,6 +69,7 @@ app.use("/api", reviewRouter)
 
 
 app.use("/api", rescheduleRequestRouter)
+app.use("/api", refundRequestRouter)
 
 app.get("/", (req, res) => {
     res.send("Welcome from Express.");
