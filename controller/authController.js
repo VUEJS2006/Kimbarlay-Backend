@@ -161,3 +161,35 @@ export const logout = asyncHandel(async (req, res) => {
         })
     }
 })
+
+export const userList = asyncHandel(async (req, res) => {
+    try {
+
+        const [userInfo] = await db.query(
+            `
+            SELECT 
+            id,
+            username, 
+            email, 
+            phone, 
+            confirm_password,
+            township, 
+            region, 
+            address
+            ORDER BY id DESC
+            `
+        );
+        return res.status(200).json({
+            message: 'User List Success',
+            success: true,
+            userInfo
+        })
+
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            message: error.message,
+            success: false
+        })
+    }
+})
