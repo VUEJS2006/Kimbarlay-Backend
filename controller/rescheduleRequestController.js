@@ -51,12 +51,12 @@ export const createRescheduleRequest = async( req , res ) => {
             });
         }
 
-        const [ bookings ] =  await db.execute('SELECT * FROM bookings WHERE id = ?', [booking_id])
+        const [ bookings ] =  await db.execute(`SELECT * FROM bookings WHERE id = ? AND user_id = ? AND status IN ('PENDING', 'CONFIRMED','CANCELLED')`, [booking_id])
 
         if(!bookings || !bookings.length) {
             return res.status(400).json({
                 status : false,
-                message : "booking not found in database"
+                message : "Pending or confirmed or canceled booking of your booking_id does not exit in database"
             });
         }
 
