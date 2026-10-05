@@ -5,7 +5,7 @@ import { authenticated, isAdmin } from "../middleware/authenticatedMiddleware.js
 const router = express.Router()
 
 // User Site
-router.post('/mobile/review/create', upload.single("image"), authenticated, reviewCreate);
+router.post('/mobile/review/create', authenticated, upload.single("image"), reviewCreate);
 router.get('/mobile/review/list', authenticated, reviewList);
 
 // Admin Site
