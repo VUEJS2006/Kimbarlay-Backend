@@ -3185,7 +3185,7 @@ CREATE TABLE reschedule_requests (
 
 ### GET /api/airfare/getall
 
-- This route is for getting all data from airports, airlines , routes, flights, banner, categories, cateogry_items, trust_cards, refund_cards, bookings and faqs at one place
+- This route is for getting all data from airports, airlines , routes, flights, banner, categories, cateogry_items, trust_cards, refund_cards, bookings, reschedule_requests and faqs at one place
 - No payload required
 
 ##### Success response 
@@ -3338,6 +3338,28 @@ CREATE TABLE reschedule_requests (
                 "status": "CONFIRMED",
                 "created_at": "2026-10-04T05:59:57.000Z",
                 "updated_at": "2026-10-04T06:10:33.000Z"
+            }
+        ],
+        "reschedule_requests": [
+            {
+                "id": 3,
+                "booking_id": 2,
+                "user_id": 1,
+                "new_travel_date": "05 Sep 2026",
+                "preferred_time": "Morning",
+                "status": "PENDING",
+                "created_at": "2026-10-05T05:29:45.000Z",
+                "updated_at": "2026-10-05T05:29:45.000Z"
+            },
+            {
+                "id": 2,
+                "booking_id": 2,
+                "user_id": 1,
+                "new_travel_date": "05 Sep 2026",
+                "preferred_time": "Morning",
+                "status": "PENDING",
+                "created_at": "2026-10-05T05:29:00.000Z",
+                "updated_at": "2026-10-05T05:29:00.000Z"
             }
         ],
         "banner": {
