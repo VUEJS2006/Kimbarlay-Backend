@@ -475,10 +475,14 @@ export const guideDetails = asyncHandel(async (req, res) => {
                     ),
                     JSON_ARRAY()
                 ) AS images,
+
+
+                (
                     SELECT COUNT(*)
                     FROM review r
                     WHERE r.guide_id = g.id
                 ) AS review_count,
+
 
                 COALESCE(
                     (
