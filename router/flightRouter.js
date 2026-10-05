@@ -8,18 +8,14 @@ flightRouter.get("/flights/search", getSearchFlightsWithRelatedData)
 
 flightRouter.get("/admin/flights", getFlights)
 
-// flightRouter.post("/admin/flight/create" , authenticated , isAdmin , createFlight );
+flightRouter.post("/admin/flight/create" , authenticated , isAdmin , createFlight );
 
-// flightRouter.put("/admin/flight/update" , authenticated , isAdmin , updateFlight);
+flightRouter.put("/admin/flight/update" , authenticated , isAdmin , updateFlight);
 
-// flightRouter.delete('/admin/flight/delete/:id' , authenticated , isAdmin , deleteFlight)
+flightRouter.delete('/admin/flight/delete/:id' , authenticated , isAdmin , deleteFlight)
 
 
-flightRouter.post("/admin/flight/create", authenticated, isAdmin, createFlight);
 
-flightRouter.put("/admin/flight/update", authenticated, isAdmin, updateFlight);
-
-flightRouter.delete('/admin/flight/delete/:id', authenticated, isAdmin, deleteFlight)
 
 
 

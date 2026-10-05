@@ -2461,7 +2461,7 @@ CREATE TABLE trust_cards (
 }
 ```
 
-## 11. SQL code of creating `booking` in database
+## 11. SQL code of creating `bookings` in database
 
 ```sql
 CREATE TABLE bookings (
@@ -2922,6 +2922,265 @@ CREATE TABLE faqs (
 ```
 
 
+## 13. SQL code of creating `reschedule_requests` in database
+
+```sql
+CREATE TABLE reschedule_requests (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    booking_id INT NOT NULL,
+    user_id INT NOT NULL,
+    
+    new_travel_date VARCHAR(50) NOT NULL,
+    preferred_time VARCHAR(50) NOT NULL,
+    
+    status ENUM('PENDING', 'APPROVED', 'REJECTED') NOT NULL DEFAULT 'PENDING',
+    
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (booking_id) REFERENCES bookings(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+```
+
+### GET /api/reschedules
+
+- if you want to get `all reschedules`, no payload required
+- example
+```text
+/api/reschedules
+```
+
+- if you want to get `reschedules related to user_id`, you must add `?user_id=1` at the end of the route
+- example
+```text
+/api/reschedules?user_id=1
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Reschedule Requests are here",
+    "data": [
+        {
+            "id": 4,
+            "booking_id": 2,
+            "user_id": 1,
+            "new_travel_date": "05 Sep 2026",
+            "preferred_time": "Morning",
+            "status": "PENDING",
+            "created_at": "2026-10-05T05:30:36.000Z",
+            "updated_at": "2026-10-05T05:30:36.000Z"
+        },
+        {
+            "id": 3,
+            "booking_id": 2,
+            "user_id": 1,
+            "new_travel_date": "05 Sep 2026",
+            "preferred_time": "Morning",
+            "status": "PENDING",
+            "created_at": "2026-10-05T05:29:45.000Z",
+            "updated_at": "2026-10-05T05:29:45.000Z"
+        },
+        {
+            "id": 2,
+            "booking_id": 2,
+            "user_id": 1,
+            "new_travel_date": "05 Sep 2026",
+            "preferred_time": "Morning",
+            "status": "PENDING",
+            "created_at": "2026-10-05T05:29:00.000Z",
+            "updated_at": "2026-10-05T05:29:00.000Z"
+        }
+    ]
+}
+```
+
+### POST /api/reschedule/request
+
+- only `authenticated` user can use this route
+
+#### Payload 
+
+```json
+{
+  "booking_id": 2,
+  "user_id": 1,
+  "new_travel_date": "05 Sep 2026",
+  "preferred_time": "Morning"
+}
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Reschedule request submitted successfully",
+    "data": {
+        "id": 4,
+        "booking_id": 2,
+        "user_id": 1,
+        "new_travel_date": "05 Sep 2026",
+        "preferred_time": "Morning",
+        "status": "PENDING",
+        "created_at": "2026-10-05T05:30:36.000Z",
+        "updated_at": "2026-10-05T05:30:36.000Z"
+    }
+}
+```
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "User not found in database"
+}
+```
+```json
+{
+    "status": false,
+    "message": "booking_id, user_id, new_travel_date and preferred_time must exit"
+}
+```
+```json
+{
+    "status": false,
+    "message": "booking not found in database"
+}
+```
+
+### PUT /api/reschedule/update/:id
+
+- `:id` is the id of the reschedule to update
+- only `authenticated` user can use this route
+
+#### Payload 
+
+```text
+/api/reschedule/update/1
+```
+```json
+{
+  "new_travel_date": "12 Sep 2026",
+  "preferred_time": "Evening"
+}
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Reschedule request updated successfully",
+    "data": {
+        "id": 1,
+        "booking_id": 2,
+        "user_id": 1,
+        "new_travel_date": "12 Sep 2026",
+        "preferred_time": "Evening",
+        "status": "PENDING",
+        "created_at": "2026-10-05T05:08:42.000Z",
+        "updated_at": "2026-10-05T05:12:16.000Z"
+    }
+}
+```
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Reschedule request not found"
+}
+```
+```json
+{
+    "status": false,
+    "message": "id, new_travel_date and preferred_time must exit"
+}
+```
+
+### PATCH /api/reschedule/change/status/:id
+
+- `:id` is the id of the reschedule to update
+- only `authenticated` user and `admin` can use this route
+
+
+#### Payload 
+
+```text
+/api/reschedule/change/status/1
+```
+```json
+{
+  "status": "APPROVED"
+}
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Reschedule request status changed to APPROVED",
+    "data": {
+        "id": 1,
+        "booking_id": 2,
+        "user_id": 1,
+        "new_travel_date": "12 Sep 2026",
+        "preferred_time": "Evening",
+        "status": "APPROVED",
+        "created_at": "2026-10-05T05:08:42.000Z",
+        "updated_at": "2026-10-05T05:16:15.000Z"
+    }
+}
+```
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "id and status are required"
+}
+```
+```json
+{
+    "status": false,
+    "message": "Invalid status. Status must be one of: PENDING, APPROVED, REJECTED and must be capital letters"
+}
+```
+
+### DELETE /api/reschedule/:id
+
+- `:id` is the id of reschedule to delete
+- only `authenticated` user can use this route
+
+```text
+/api/reschedule/1
+```
+
+#### Success Response
+
+```json
+{
+    "status": false,
+    "message": "Reschedule request deleted successfully"
+}
+```
+
+#### Error response
+
+```json
+{
+    "status": true,
+    "message": "Request not found"
+}
+```
 
 
 ### GET /api/airfare/getall
