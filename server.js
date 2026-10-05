@@ -25,7 +25,7 @@ import trustCardsRouter from "./router/trustCardsRouter.js";
 import bookingRouter from "./router/bookingRouter.js";
 import faqsRouter from "./router/faqsRouter.js";
 import guideTouter from "./router/hotelGuideRouter.js"
-
+import guideRouter from "./router/guideRouter.js"
 
 const app = express();
 
@@ -60,6 +60,7 @@ app.use("/api", trustCardsRouter)
 app.use("/api", bookingRouter)
 app.use("/api", faqsRouter)
 app.use("/api", guideTouter)
+app.use("/api", guideRouter)
 
 app.get("/", (req, res) => {
     res.send("Welcome from Express.");
