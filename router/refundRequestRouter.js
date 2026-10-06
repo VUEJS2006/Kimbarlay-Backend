@@ -7,16 +7,12 @@ const refundRequestRouter = express.Router();
 
 refundRequestRouter.get("/refunds", getRefundRequests)
 
-// refundRequestRouter.post("/refund/request" , authenticated, createRefundRequest)
-refundRequestRouter.post("/refund/request" ,  createRefundRequest)
+refundRequestRouter.post("/refund/request" , authenticated, createRefundRequest)
 
-// refundRequestRouter.put("/refund/update/:id" , authenticated, updateRefundRequest )
-refundRequestRouter.put("/refund/update/:id" , updateRefundRequest )
+refundRequestRouter.put("/refund/update/:id" , authenticated, updateRefundRequest )
 
-// rescheduleRequestRouter.patch("/refund/change/status/:id" , authenticated, isAdmin, updateRefundStatus)
-refundRequestRouter.patch("/refund/change/status/:id" , updateRefundStatus)
+refundRequestRouter.patch("/refund/change/status/:id" , authenticated, isAdmin, updateRefundStatus)
 
-// refundRequestRouter.delete("/refund/:id" , authenticated , deleteRefundRequest)
-refundRequestRouter.delete("/refund/:id" , deleteRefundRequest)
+refundRequestRouter.delete("/refund/:id" , authenticated , deleteRefundRequest)
 
 export default refundRequestRouter;
