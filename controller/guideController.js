@@ -102,6 +102,48 @@ const updateGuideImage = async (guideId, position, file, uploadFolder) => {
     }
 };
 
+const removeOmittedGuideImages = async (guideId, imageEntries) => {
+    const retainedPositions = imageEntries.map(([position]) => position);
+    const [existingImages] = await db.query(
+        `
+        SELECT position, image
+        FROM guide_images
+        WHERE guide_id = ?
+        `,
+        [guideId]
+    );
+    const omittedImages = existingImages.filter(
+        ({ position }) => !retainedPositions.includes(Number(position))
+    );
+
+    if (omittedImages.length === 0) {
+        return;
+    }
+
+    if (retainedPositions.length === 0) {
+        await db.query(
+            `DELETE FROM guide_images WHERE guide_id = ?`,
+            [guideId]
+        );
+    } else {
+        const placeholders = retainedPositions.map(() => "?").join(", ");
+        await db.query(
+            `
+            DELETE FROM guide_images
+            WHERE guide_id = ? AND position NOT IN (${placeholders})
+            `,
+            [guideId, ...retainedPositions]
+        );
+    }
+
+    for (const { image } of omittedImages) {
+        const imagePath = path.join(process.cwd(), image);
+        if (fs.existsSync(imagePath)) {
+            await fs.promises.unlink(imagePath);
+        }
+    }
+};
+
 export const guideCreate = asyncHandel(async (req, res) => {
     try {
 
@@ -498,6 +540,8 @@ export const guideUpdate = asyncHandel(async (req, res) => {
                 uploadFolder
             );
         }
+
+        await removeOmittedGuideImages(id, imageEntries);
 
 
         return res.status(200).json({
