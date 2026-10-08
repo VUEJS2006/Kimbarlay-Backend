@@ -184,22 +184,34 @@ export const guideList = asyncHandel(async (req, res) => {
                 ) AS created_at,
 
                 COALESCE(
-                    (
-                        SELECT JSON_ARRAYAGG(
-                            gi.image
-                        )
-                        FROM (
-                            SELECT
-                                image
-                            FROM guide_images
-                            WHERE guide_id = g.id
-                            ORDER BY position ASC
-                        ) gi
+                    JSON_ARRAYAGG(
+                        CASE
+                            WHEN gi.id IS NOT NULL
+                            THEN gi.image
+                        END
                     ),
                     JSON_ARRAY()
                 ) AS images
 
             FROM guides g
+
+            LEFT JOIN guide_images gi
+                ON gi.guide_id = g.id
+
+            GROUP BY
+                g.id,
+                g.title,
+                g.author,
+                g.badge,
+                g.excerpt,
+                g.tag,
+                g.location,
+                g.rating,
+                g.best_time,
+                g.entry,
+                g.sightseeing,
+                g.summary,
+                g.created_at
 
             ORDER BY g.id DESC
         `);
