@@ -22,40 +22,39 @@ export const guideCreate = asyncHandel(async (req, res) => {
             summary
         } = req.body;
 
-        if (!title, !author, !badge, !rating, !location) {
+        if (
+            !title ||
+            !author ||
+            !badge ||
+            !rating ||
+            !location
+        ) {
             return res.status(400).json({
                 message: "All fields are required!",
                 success: false
             });
         }
-        const uploadFolder = path.join(process.cwd(), "images", "guide");
+
+        if (req.files && req.files.length > 6) {
+            return res.status(400).json({
+                success: false,
+                message: "Maximum 6 images are allowed!"
+            });
+        }
+
+        const uploadFolder = path.join(
+            process.cwd(),
+            "images",
+            "guide"
+        );
+
 
         if (!fs.existsSync(uploadFolder)) {
-            fs.mkdirSync(uploadFolder, { recursive: true });
+            fs.mkdirSync(uploadFolder, {
+                recursive: true
+            });
         }
-        let imagePaths = [];
 
-        if (req.files && req.files.length > 0) {
-
-            for (const file of req.files) {
-
-                const fileName = `${uuid()}.webp`;
-
-                const savePath = path.join(uploadFolder, fileName);
-
-                await sharp(file.buffer)
-                    .resize({
-                        width: 1920,
-                        withoutEnlargement: true
-                    })
-                    .webp({
-                        quality: 90
-                    })
-                    .toFile(savePath);
-
-                imagePaths.push(`images/guide/${fileName}`);
-            }
-        }
         const [result] = await db.query(
             `
             INSERT INTO guides
@@ -88,32 +87,68 @@ export const guideCreate = asyncHandel(async (req, res) => {
                 summary
             ]
         );
-        const guideID = result.insertId;
-        for (const image of imagePaths) {
-            await db.query(
-                `
-                INSERT INTO guide_images
-                (
-                    guide_id,
-                    image
-                )
-                VALUES (?,?)
-                `,
-                [
-                    guideID,
-                    image
-                ]
-            );
 
+
+        const guideID = result.insertId;
+
+        if (req.files && req.files.length > 0) {
+
+            let position = 1;
+
+
+            for (const file of req.files) {
+
+                const fileName = `${uuid()}.webp`;
+
+                const savePath = path.join(
+                    uploadFolder,
+                    fileName
+                );
+
+
+                await sharp(file.buffer)
+                    .resize({
+                        width: 1920,
+                        withoutEnlargement: true
+                    })
+                    .webp({
+                        quality: 90
+                    })
+                    .toFile(savePath);
+
+
+                await db.query(
+                    `
+                    INSERT INTO guide_images
+                    (
+                        guide_id,
+                        position,
+                        image
+                    )
+                    VALUES (?, ?, ?)
+                    `,
+                    [
+                        guideID,
+                        position,
+                        `images/guide/${fileName}`
+                    ]
+                );
+
+
+                position++;
+            }
         }
+
+
         return res.status(201).json({
             success: true,
             message: "Guide created successfully.",
             data: {
-                guideID,
-                images: imagePaths
+                guideID
             }
         });
+
+
     } catch (error) {
 
         console.log(error);
@@ -153,8 +188,13 @@ export const guideList = asyncHandel(async (req, res) => {
                         SELECT JSON_ARRAYAGG(
                             gi.image
                         )
-                        FROM guide_images gi
-                        WHERE gi.guide_id = g.id
+                        FROM (
+                            SELECT
+                                image
+                            FROM guide_images
+                            WHERE guide_id = g.id
+                            ORDER BY position ASC
+                        ) gi
                     ),
                     JSON_ARRAY()
                 ) AS images
@@ -186,6 +226,22 @@ export const guideUpdate = asyncHandel(async (req, res) => {
     try {
 
         const { id } = req.params;
+        const [guide] = await db.query(
+            `
+            SELECT *
+            FROM guides
+            WHERE id = ?
+            `,
+            [id]
+        );
+
+
+        if (guide.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: "Guide not found"
+            });
+        }
 
         let {
             title,
@@ -201,41 +257,51 @@ export const guideUpdate = asyncHandel(async (req, res) => {
             summary
         } = req.body;
 
+        title = title !== undefined
+            ? title
+            : guide[0].title;
 
-        const [guide] = await db.query(
-            `
-            SELECT *
-            FROM guides
-            WHERE id = ?
-            `,
-            [id]
-        );
+        author = author !== undefined
+            ? author
+            : guide[0].author;
 
-        if (guide.length === 0) {
-            return res.status(404).json({
-                success: false,
-                message: "Guide not found"
-            });
-        }
+        badge = badge !== undefined
+            ? badge
+            : guide[0].badge;
 
-        title = title !== undefined ? title : guide[0].title;
-        author = author !== undefined ? author : guide[0].author;
-        badge = badge !== undefined ? badge : guide[0].badge;
-        excerpt = excerpt !== undefined ? excerpt : guide[0].excerpt;
-        tag = tag !== undefined ? tag : guide[0].tag;
-        location = location !== undefined ? location : guide[0].location;
-        rating = rating !== undefined ? rating : guide[0].rating;
-        best_time = best_time !== undefined ? best_time : guide[0].best_time;
-        entry = entry !== undefined ? entry : guide[0].entry;
+        excerpt = excerpt !== undefined
+            ? excerpt
+            : guide[0].excerpt;
+
+        tag = tag !== undefined
+            ? tag
+            : guide[0].tag;
+
+        location = location !== undefined
+            ? location
+            : guide[0].location;
+
+        rating = rating !== undefined
+            ? rating
+            : guide[0].rating;
+
+        best_time = best_time !== undefined
+            ? best_time
+            : guide[0].best_time;
+
+        entry = entry !== undefined
+            ? entry
+            : guide[0].entry;
+
         sightseeing = sightseeing !== undefined
             ? sightseeing
             : guide[0].sightseeing;
+
         summary = summary !== undefined
             ? summary
             : guide[0].summary;
 
-
-        const [data] = await db.query(
+        await db.query(
             `
             UPDATE guides
             SET
@@ -269,92 +335,88 @@ export const guideUpdate = asyncHandel(async (req, res) => {
         );
 
 
-        if (req.files && req.files.length > 0) {
+        const uploadFolder = path.join(
+            process.cwd(),
+            "images",
+            "guide"
+        );
 
 
-            const [oldImages] = await db.query(
-                `
-                SELECT *
-                FROM guide_images
-                WHERE guide_id = ?
-                `,
-                [id]
-            );
-
-            for (const img of oldImages) {
-
-                const oldPath = path.join(
-                    process.cwd(),
-                    img.image
-                );
-
-                if (fs.existsSync(oldPath)) {
-                    fs.unlinkSync(oldPath);
-                }
-            }
-
-            // DELETE OLD IMAGE ROWS
-            await db.query(
-                `
-                DELETE FROM guide_images
-                WHERE guide_id = ?
-                `,
-                [id]
-            );
-
-            const uploadFolder = path.join(
-                process.cwd(),
-                "images",
-                "guide"
-            );
-
-            if (!fs.existsSync(uploadFolder)) {
-                fs.mkdirSync(uploadFolder, {
-                    recursive: true
-                });
-            }
-
-            for (const file of req.files) {
-
-                const fileName = `${uuid()}.webp`;
-
-                const savePath = path.join(
-                    uploadFolder,
-                    fileName
-                );
-
-                await sharp(file.buffer)
-                    .resize({
-                        width: 1920,
-                        withoutEnlargement: true
-                    })
-                    .webp({
-                        quality: 90
-                    })
-                    .toFile(savePath);
-
-                await db.query(
-                    `
-                    INSERT INTO guide_images
-                    (
-                        guide_id,
-                        image
-                    )
-                    VALUES (?,?)
-                    `,
-                    [
-                        id,
-                        `images/guide/${fileName}`
-                    ]
-                );
-            }
+        if (!fs.existsSync(uploadFolder)) {
+            fs.mkdirSync(uploadFolder, {
+                recursive: true
+            });
         }
+
+
+        if (req.files?.image1) {
+
+            await updateGuideImage(
+                id,
+                1,
+                req.files.image1[0],
+                uploadFolder
+            );
+        }
+
+
+        if (req.files?.image2) {
+
+            await updateGuideImage(
+                id,
+                2,
+                req.files.image2[0],
+                uploadFolder
+            );
+        }
+
+        if (req.files?.image3) {
+
+            await updateGuideImage(
+                id,
+                3,
+                req.files.image3[0],
+                uploadFolder
+            );
+        }
+
+        if (req.files?.image4) {
+
+            await updateGuideImage(
+                id,
+                4,
+                req.files.image4[0],
+                uploadFolder
+            );
+        }
+
+        if (req.files?.image5) {
+
+            await updateGuideImage(
+                id,
+                5,
+                req.files.image5[0],
+                uploadFolder
+            );
+        }
+
+
+        if (req.files?.image6) {
+
+            await updateGuideImage(
+                id,
+                6,
+                req.files.image6[0],
+                uploadFolder
+            );
+        }
+
 
         return res.status(200).json({
             success: true,
-            message: "Guide updated successfully.",
-            data
+            message: "Guide updated successfully."
         });
+
 
     } catch (error) {
 
@@ -470,8 +532,13 @@ export const guideDetails = asyncHandel(async (req, res) => {
                         SELECT JSON_ARRAYAGG(
                             gi.image
                         )
-                        FROM guide_images gi
-                        WHERE gi.guide_id = g.id
+                        FROM (
+                            SELECT
+                                image
+                            FROM guide_images
+                            WHERE guide_id = g.id
+                            ORDER BY position ASC
+                        ) gi
                     ),
                     JSON_ARRAY()
                 ) AS images,
@@ -574,11 +641,17 @@ export const guideMobileList = asyncHandel(async (req, res) => {
                         SELECT JSON_ARRAYAGG(
                             gi.image
                         )
-                        FROM guide_images gi
-                        WHERE gi.guide_id = g.id
+                        FROM (
+                            SELECT
+                                image
+                            FROM guide_images
+                            WHERE guide_id = g.id
+                            ORDER BY position ASC
+                        ) gi
                     ),
                     JSON_ARRAY()
                 ) AS images,
+
 
                 COALESCE(
                     (
@@ -607,6 +680,7 @@ export const guideMobileList = asyncHandel(async (req, res) => {
                     ),
                     JSON_ARRAY()
                 ) AS reviews
+
 
             FROM guides g
 
