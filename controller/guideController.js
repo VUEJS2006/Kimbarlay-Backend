@@ -327,7 +327,10 @@ export const guideList = asyncHandel(async (req, res) => {
 
                 COALESCE(
                     JSON_ARRAYAGG(
-                        gi.image
+                        JSON_OBJECT(
+                            'id', gi.id,
+                            'image', gi.image
+                        )
                         ORDER BY gi.position ASC
                     ),
                     JSON_ARRAY()
@@ -373,6 +376,78 @@ export const guideList = asyncHandel(async (req, res) => {
         });
     }
 });
+
+// export const guideList = asyncHandel(async (req, res) => {
+//     try {
+
+//         const [data] = await db.query(`
+//             SELECT
+//                 g.id,
+//                 g.title,
+//                 g.author,
+//                 g.badge,
+//                 g.excerpt,
+//                 g.tag,
+//                 g.location,
+//                 g.rating,
+//                 g.best_time,
+//                 g.entry,
+//                 g.sightseeing,
+//                 g.summary,
+
+//                 DATE_FORMAT(
+//                     g.created_at,
+//                     '%d-%m-%Y'
+//                 ) AS created_at,
+
+//                 COALESCE(
+//                     JSON_ARRAYAGG(
+//                         gi.image
+//                         ORDER BY gi.position ASC
+//                     ),
+//                     JSON_ARRAY()
+//                 ) AS images
+
+//             FROM guides g
+
+//             LEFT JOIN guide_images gi
+//                 ON gi.guide_id = g.id
+
+//             GROUP BY
+//                 g.id,
+//                 g.title,
+//                 g.author,
+//                 g.badge,
+//                 g.excerpt,
+//                 g.tag,
+//                 g.location,
+//                 g.rating,
+//                 g.best_time,
+//                 g.entry,
+//                 g.sightseeing,
+//                 g.summary,
+//                 g.created_at
+
+//             ORDER BY g.id DESC
+//         `);
+
+//         return res.status(200).json({
+//             success: true,
+//             count: data.length,
+//             message: "Guide Success",
+//             data
+//         });
+
+//     } catch (error) {
+
+//         console.log(error);
+
+//         return res.status(500).json({
+//             message: error.message,
+//             success: false
+//         });
+//     }
+// });
 
 // export const guideUpdate = asyncHandel(async (req, res) => {
 //     try {
