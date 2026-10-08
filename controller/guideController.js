@@ -22,25 +22,14 @@ export const guideCreate = asyncHandel(async (req, res) => {
             summary
         } = req.body;
 
-        if (
-            !title ||
-            !author ||
-            !badge ||
-            !rating ||
-            !location
-        ) {
+
+        if (!title || !author || !badge || !rating || !location) {
             return res.status(400).json({
                 message: "All fields are required!",
                 success: false
             });
         }
 
-        if (req.files && req.files.length > 6) {
-            return res.status(400).json({
-                success: false,
-                message: "Maximum 6 images are allowed!"
-            });
-        }
 
         const uploadFolder = path.join(
             process.cwd(),
@@ -48,12 +37,12 @@ export const guideCreate = asyncHandel(async (req, res) => {
             "guide"
         );
 
-
         if (!fs.existsSync(uploadFolder)) {
             fs.mkdirSync(uploadFolder, {
                 recursive: true
             });
         }
+
 
         const [result] = await db.query(
             `
@@ -91,10 +80,10 @@ export const guideCreate = asyncHandel(async (req, res) => {
 
         const guideID = result.insertId;
 
+
         if (req.files && req.files.length > 0) {
 
             let position = 1;
-
 
             for (const file of req.files) {
 
@@ -125,7 +114,7 @@ export const guideCreate = asyncHandel(async (req, res) => {
                         position,
                         image
                     )
-                    VALUES (?, ?, ?)
+                    VALUES (?,?,?)
                     `,
                     [
                         guideID,
@@ -142,10 +131,7 @@ export const guideCreate = asyncHandel(async (req, res) => {
 
         return res.status(201).json({
             success: true,
-            message: "Guide created successfully.",
-            data: {
-                guideID
-            }
+            message: "Guide created successfully."
         });
 
 
