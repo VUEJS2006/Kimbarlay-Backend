@@ -72,7 +72,7 @@ app.use("/api", rescheduleRequestRouter)
 app.use("/api", refundRequestRouter)
 
 app.get("/", (req, res) => {
-    res.send("Welcome from Express.");
+    res.send("Welcome from Express. Nice to meet you");
 });
 
 
