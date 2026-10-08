@@ -23,7 +23,17 @@ export const guideCreate = asyncHandel(async (req, res) => {
         } = req.body;
 
 
-        if (!title || !author || !badge || !rating || !location) {
+        // =========================
+        // VALIDATION
+        // =========================
+
+        if (
+            !title ||
+            !author ||
+            !badge ||
+            !rating ||
+            !location
+        ) {
             return res.status(400).json({
                 message: "All fields are required!",
                 success: false
@@ -31,11 +41,28 @@ export const guideCreate = asyncHandel(async (req, res) => {
         }
 
 
+        // =========================
+        // IMAGE MAX 6
+        // =========================
+
+        if (req.files && req.files.length > 6) {
+            return res.status(400).json({
+                success: false,
+                message: "Maximum 6 images are allowed!"
+            });
+        }
+
+
+        // =========================
+        // UPLOAD FOLDER
+        // =========================
+
         const uploadFolder = path.join(
             process.cwd(),
             "images",
             "guide"
         );
+
 
         if (!fs.existsSync(uploadFolder)) {
             fs.mkdirSync(uploadFolder, {
@@ -43,6 +70,10 @@ export const guideCreate = asyncHandel(async (req, res) => {
             });
         }
 
+
+        // =========================
+        // CREATE GUIDE
+        // =========================
 
         const [result] = await db.query(
             `
@@ -81,9 +112,15 @@ export const guideCreate = asyncHandel(async (req, res) => {
         const guideID = result.insertId;
 
 
+        // =========================
+        // CREATE IMAGES
+        // position = 1,2,3,4,5,6
+        // =========================
+
         if (req.files && req.files.length > 0) {
 
             let position = 1;
+
 
             for (const file of req.files) {
 
@@ -114,7 +151,7 @@ export const guideCreate = asyncHandel(async (req, res) => {
                         position,
                         image
                     )
-                    VALUES (?,?,?)
+                    VALUES (?, ?, ?)
                     `,
                     [
                         guideID,
@@ -131,7 +168,10 @@ export const guideCreate = asyncHandel(async (req, res) => {
 
         return res.status(201).json({
             success: true,
-            message: "Guide created successfully."
+            message: "Guide created successfully.",
+            data: {
+                guideID
+            }
         });
 
 
@@ -170,34 +210,22 @@ export const guideList = asyncHandel(async (req, res) => {
                 ) AS created_at,
 
                 COALESCE(
-                    JSON_ARRAYAGG(
-                        CASE
-                            WHEN gi.id IS NOT NULL
-                            THEN gi.image
-                        END
+                    (
+                        SELECT JSON_ARRAYAGG(
+                            gi.image
+                        )
+                        FROM (
+                            SELECT
+                                image
+                            FROM guide_images
+                            WHERE guide_id = g.id
+                            ORDER BY position ASC
+                        ) gi
                     ),
                     JSON_ARRAY()
                 ) AS images
 
             FROM guides g
-
-            LEFT JOIN guide_images gi
-                ON gi.guide_id = g.id
-
-            GROUP BY
-                g.id,
-                g.title,
-                g.author,
-                g.badge,
-                g.excerpt,
-                g.tag,
-                g.location,
-                g.rating,
-                g.best_time,
-                g.entry,
-                g.sightseeing,
-                g.summary,
-                g.created_at
 
             ORDER BY g.id DESC
         `);
@@ -224,6 +252,12 @@ export const guideUpdate = asyncHandel(async (req, res) => {
     try {
 
         const { id } = req.params;
+
+
+        // =========================
+        // CHECK GUIDE
+        // =========================
+
         const [guide] = await db.query(
             `
             SELECT *
@@ -241,6 +275,11 @@ export const guideUpdate = asyncHandel(async (req, res) => {
             });
         }
 
+
+        // =========================
+        // GET BODY
+        // =========================
+
         let {
             title,
             author,
@@ -254,6 +293,11 @@ export const guideUpdate = asyncHandel(async (req, res) => {
             sightseeing,
             summary
         } = req.body;
+
+
+        // =========================
+        // KEEP OLD DATA
+        // =========================
 
         title = title !== undefined
             ? title
@@ -299,6 +343,11 @@ export const guideUpdate = asyncHandel(async (req, res) => {
             ? summary
             : guide[0].summary;
 
+
+        // =========================
+        // UPDATE GUIDE
+        // =========================
+
         await db.query(
             `
             UPDATE guides
@@ -333,6 +382,10 @@ export const guideUpdate = asyncHandel(async (req, res) => {
         );
 
 
+        // =========================
+        // UPLOAD FOLDER
+        // =========================
+
         const uploadFolder = path.join(
             process.cwd(),
             "images",
@@ -347,6 +400,10 @@ export const guideUpdate = asyncHandel(async (req, res) => {
         }
 
 
+        // =========================
+        // IMAGE 1
+        // =========================
+
         if (req.files?.image1) {
 
             await updateGuideImage(
@@ -358,6 +415,10 @@ export const guideUpdate = asyncHandel(async (req, res) => {
         }
 
 
+        // =========================
+        // IMAGE 2
+        // =========================
+
         if (req.files?.image2) {
 
             await updateGuideImage(
@@ -367,6 +428,11 @@ export const guideUpdate = asyncHandel(async (req, res) => {
                 uploadFolder
             );
         }
+
+
+        // =========================
+        // IMAGE 3
+        // =========================
 
         if (req.files?.image3) {
 
@@ -378,6 +444,11 @@ export const guideUpdate = asyncHandel(async (req, res) => {
             );
         }
 
+
+        // =========================
+        // IMAGE 4
+        // =========================
+
         if (req.files?.image4) {
 
             await updateGuideImage(
@@ -387,6 +458,11 @@ export const guideUpdate = asyncHandel(async (req, res) => {
                 uploadFolder
             );
         }
+
+
+        // =========================
+        // IMAGE 5
+        // =========================
 
         if (req.files?.image5) {
 
@@ -398,6 +474,10 @@ export const guideUpdate = asyncHandel(async (req, res) => {
             );
         }
 
+
+        // =========================
+        // IMAGE 6
+        // =========================
 
         if (req.files?.image6) {
 
