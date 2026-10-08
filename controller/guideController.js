@@ -5,6 +5,103 @@ import path from "path";
 import sharp from "sharp";
 import { v4 as uuid } from "uuid"
 
+const getGuideImageEntries = (files) => {
+    const imageEntries = new Map();
+
+    if (Array.isArray(files)) {
+        files.forEach((file, index) => imageEntries.set(index + 1, file));
+    } else if (files) {
+        (files.images || []).forEach((file, index) => {
+            imageEntries.set(index + 1, file);
+        });
+
+        for (let position = 1; position <= 6; position++) {
+            const file = files[`image${position}`]?.[0];
+            if (file) {
+                imageEntries.set(position, file);
+            }
+        }
+    }
+
+    return [...imageEntries.entries()].sort(([first], [second]) => first - second);
+};
+
+const getGuideImageCount = (files) => {
+    if (Array.isArray(files)) {
+        return files.length;
+    }
+
+    return Object.values(files || {}).reduce(
+        (count, fieldFiles) => count + fieldFiles.length,
+        0
+    );
+};
+
+const saveGuideImage = async (file, uploadFolder) => {
+    const fileName = `${uuid()}.webp`;
+
+    await sharp(file.buffer)
+        .resize({
+            width: 1920,
+            withoutEnlargement: true
+        })
+        .webp({
+            quality: 90
+        })
+        .toFile(path.join(uploadFolder, fileName));
+
+    return `images/guide/${fileName}`;
+};
+
+const updateGuideImage = async (guideId, position, file, uploadFolder) => {
+    const imagePath = await saveGuideImage(file, uploadFolder);
+    let existingImages;
+
+    try {
+        [existingImages] = await db.query(
+            `
+            SELECT image
+            FROM guide_images
+            WHERE guide_id = ? AND position = ?
+            `,
+            [guideId, position]
+        );
+
+        if (existingImages.length > 0) {
+            await db.query(
+                `
+                UPDATE guide_images
+                SET image = ?
+                WHERE guide_id = ? AND position = ?
+                `,
+                [imagePath, guideId, position]
+            );
+        } else {
+            await db.query(
+                `
+                INSERT INTO guide_images (guide_id, position, image)
+                VALUES (?, ?, ?)
+                `,
+                [guideId, position, imagePath]
+            );
+        }
+    } catch (error) {
+        const newImagePath = path.join(process.cwd(), imagePath);
+        if (fs.existsSync(newImagePath)) {
+            await fs.promises.unlink(newImagePath);
+        }
+        throw error;
+    }
+
+    const oldImage = existingImages[0]?.image;
+    if (oldImage) {
+        const oldImagePath = path.join(process.cwd(), oldImage);
+        if (fs.existsSync(oldImagePath)) {
+            await fs.promises.unlink(oldImagePath);
+        }
+    }
+};
+
 export const guideCreate = asyncHandel(async (req, res) => {
     try {
 
@@ -45,7 +142,8 @@ export const guideCreate = asyncHandel(async (req, res) => {
         // IMAGE MAX 6
         // =========================
 
-        if (req.files && req.files.length > 6) {
+        const imageEntries = getGuideImageEntries(req.files);
+        if (getGuideImageCount(req.files) > 6) {
             return res.status(400).json({
                 success: false,
                 message: "Maximum 6 images are allowed!"
@@ -117,32 +215,9 @@ export const guideCreate = asyncHandel(async (req, res) => {
         // position = 1,2,3,4,5,6
         // =========================
 
-        if (req.files && req.files.length > 0) {
-
-            let position = 1;
-
-
-            for (const file of req.files) {
-
-                const fileName = `${uuid()}.webp`;
-
-                const savePath = path.join(
-                    uploadFolder,
-                    fileName
-                );
-
-
-                await sharp(file.buffer)
-                    .resize({
-                        width: 1920,
-                        withoutEnlargement: true
-                    })
-                    .webp({
-                        quality: 90
-                    })
-                    .toFile(savePath);
-
-
+        if (imageEntries.length > 0) {
+            for (const [position, file] of imageEntries) {
+                const imagePath = await saveGuideImage(file, uploadFolder);
                 await db.query(
                     `
                     INSERT INTO guide_images
@@ -156,12 +231,9 @@ export const guideCreate = asyncHandel(async (req, res) => {
                     [
                         guideID,
                         position,
-                        `images/guide/${fileName}`
+                        imagePath
                     ]
                 );
-
-
-                position++;
             }
         }
 
@@ -282,6 +354,14 @@ export const guideUpdate = asyncHandel(async (req, res) => {
             return res.status(404).json({
                 success: false,
                 message: "Guide not found"
+            });
+        }
+
+        const imageEntries = getGuideImageEntries(req.files);
+        if (getGuideImageCount(req.files) > 6) {
+            return res.status(400).json({
+                success: false,
+                message: "Maximum 6 images are allowed!"
             });
         }
 
@@ -410,91 +490,11 @@ export const guideUpdate = asyncHandel(async (req, res) => {
         }
 
 
-        // =========================
-        // IMAGE 1
-        // =========================
-
-        if (req.files?.image1) {
-
+        for (const [position, file] of imageEntries) {
             await updateGuideImage(
                 id,
-                1,
-                req.files.image1[0],
-                uploadFolder
-            );
-        }
-
-
-        // =========================
-        // IMAGE 2
-        // =========================
-
-        if (req.files?.image2) {
-
-            await updateGuideImage(
-                id,
-                2,
-                req.files.image2[0],
-                uploadFolder
-            );
-        }
-
-
-        // =========================
-        // IMAGE 3
-        // =========================
-
-        if (req.files?.image3) {
-
-            await updateGuideImage(
-                id,
-                3,
-                req.files.image3[0],
-                uploadFolder
-            );
-        }
-
-
-        // =========================
-        // IMAGE 4
-        // =========================
-
-        if (req.files?.image4) {
-
-            await updateGuideImage(
-                id,
-                4,
-                req.files.image4[0],
-                uploadFolder
-            );
-        }
-
-
-        // =========================
-        // IMAGE 5
-        // =========================
-
-        if (req.files?.image5) {
-
-            await updateGuideImage(
-                id,
-                5,
-                req.files.image5[0],
-                uploadFolder
-            );
-        }
-
-
-        // =========================
-        // IMAGE 6
-        // =========================
-
-        if (req.files?.image6) {
-
-            await updateGuideImage(
-                id,
-                6,
-                req.files.image6[0],
+                position,
+                file,
                 uploadFolder
             );
         }
