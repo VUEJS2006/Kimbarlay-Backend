@@ -1138,6 +1138,7 @@ export const guideDelete = asyncHandel(async (req, res) => {
     }
 });
 
+
 export const guideDetails = asyncHandel(async (req, res) => {
     try {
 
@@ -1171,30 +1172,22 @@ export const guideDetails = asyncHandel(async (req, res) => {
                     '%d-%m-%Y'
                 ) AS created_at,
 
-
                 COALESCE(
                     (
                         SELECT JSON_ARRAYAGG(
                             gi.image
                         )
-                        FROM (
-                            SELECT
-                                image
-                            FROM guide_images
-                            WHERE guide_id = g.id
-                            ORDER BY position ASC
-                        ) gi
+                        FROM guide_images gi
+                        WHERE gi.guide_id = g.id
                     ),
                     JSON_ARRAY()
                 ) AS images,
-
 
                 (
                     SELECT COUNT(*)
                     FROM review r
                     WHERE r.guide_id = g.id
                 ) AS review_count,
-
 
                 COALESCE(
                     (
@@ -1215,15 +1208,12 @@ export const guideDetails = asyncHandel(async (req, res) => {
                             )
                         )
                         FROM review r
-
                         INNER JOIN users u
                             ON r.user_id = u.id
-
                         WHERE r.guide_id = g.id
                     ),
                     JSON_ARRAY()
                 ) AS reviews
-
 
             FROM guides g
 
@@ -1232,14 +1222,12 @@ export const guideDetails = asyncHandel(async (req, res) => {
             [id]
         );
 
-
         if (data.length === 0) {
             return res.status(404).json({
                 success: false,
                 message: "Guide not found"
             });
         }
-
 
         return res.status(200).json({
             success: true,
@@ -1256,6 +1244,7 @@ export const guideDetails = asyncHandel(async (req, res) => {
         });
     }
 });
+
 
 
 export const guideMobileList = asyncHandel(async (req, res) => {
