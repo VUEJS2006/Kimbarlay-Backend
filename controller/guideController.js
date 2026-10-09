@@ -1257,6 +1257,7 @@ export const guideDetails = asyncHandel(async (req, res) => {
     }
 });
 
+
 export const guideMobileList = asyncHandel(async (req, res) => {
     try {
 
@@ -1280,23 +1281,16 @@ export const guideMobileList = asyncHandel(async (req, res) => {
                     '%d-%m-%Y'
                 ) AS created_at,
 
-
                 COALESCE(
                     (
                         SELECT JSON_ARRAYAGG(
                             gi.image
                         )
-                        FROM (
-                            SELECT
-                                image
-                            FROM guide_images
-                            WHERE guide_id = g.id
-                            ORDER BY position ASC
-                        ) gi
+                        FROM guide_images gi
+                        WHERE gi.guide_id = g.id
                     ),
                     JSON_ARRAY()
                 ) AS images,
-
 
                 COALESCE(
                     (
@@ -1326,12 +1320,10 @@ export const guideMobileList = asyncHandel(async (req, res) => {
                     JSON_ARRAY()
                 ) AS reviews
 
-
             FROM guides g
 
             ORDER BY g.id DESC
         `);
-
 
         return res.status(200).json({
             success: true,
@@ -1350,3 +1342,4 @@ export const guideMobileList = asyncHandel(async (req, res) => {
         });
     }
 });
+
