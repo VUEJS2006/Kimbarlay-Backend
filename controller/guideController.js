@@ -377,87 +377,10 @@ export const guideList = asyncHandel(async (req, res) => {
     }
 });
 
-// export const guideList = asyncHandel(async (req, res) => {
-//     try {
-
-//         const [data] = await db.query(`
-//             SELECT
-//                 g.id,
-//                 g.title,
-//                 g.author,
-//                 g.badge,
-//                 g.excerpt,
-//                 g.tag,
-//                 g.location,
-//                 g.rating,
-//                 g.best_time,
-//                 g.entry,
-//                 g.sightseeing,
-//                 g.summary,
-
-//                 DATE_FORMAT(
-//                     g.created_at,
-//                     '%d-%m-%Y'
-//                 ) AS created_at,
-
-//                 COALESCE(
-//                     JSON_ARRAYAGG(
-//                         gi.image
-//                         ORDER BY gi.position ASC
-//                     ),
-//                     JSON_ARRAY()
-//                 ) AS images
-
-//             FROM guides g
-
-//             LEFT JOIN guide_images gi
-//                 ON gi.guide_id = g.id
-
-//             GROUP BY
-//                 g.id,
-//                 g.title,
-//                 g.author,
-//                 g.badge,
-//                 g.excerpt,
-//                 g.tag,
-//                 g.location,
-//                 g.rating,
-//                 g.best_time,
-//                 g.entry,
-//                 g.sightseeing,
-//                 g.summary,
-//                 g.created_at
-
-//             ORDER BY g.id DESC
-//         `);
-
-//         return res.status(200).json({
-//             success: true,
-//             count: data.length,
-//             message: "Guide Success",
-//             data
-//         });
-
-//     } catch (error) {
-
-//         console.log(error);
-
-//         return res.status(500).json({
-//             message: error.message,
-//             success: false
-//         });
-//     }
-// });
-
 // export const guideUpdate = asyncHandel(async (req, res) => {
 //     try {
 
 //         const { id } = req.params;
-
-
-//         // =========================
-//         // CHECK GUIDE
-//         // =========================
 
 //         const [guide] = await db.query(
 //             `
@@ -476,12 +399,126 @@ export const guideList = asyncHandel(async (req, res) => {
 //             });
 //         }
 
-//         const imageEntries = getGuideImageEntries(req.files);
-//         if (getGuideImageCount(req.files) > 6) {
+//         const files = req.files || [];
+
+//         if (files.length > 6) {
 //             return res.status(400).json({
 //                 success: false,
 //                 message: "Maximum 6 images are allowed!"
 //             });
+//         }
+
+//         const ids = files.map(file => Number(file.fieldname));
+
+//         // Check IDs
+//          const hasInvalidId = ids.some(
+//             imageId =>
+//                 !Number.isInteger(imageId) ||
+//                 imageId <= 0
+//         );
+
+
+//         if (hasInvalidId) {
+//             return res.status(400).json({
+//                 success: false,
+//                 message: "Invalid image ID. Image ID must be a positive number."
+//             });
+//         }
+
+
+//         // Check duplicate IDs
+//         const uniqueIds = new Set(ids);
+
+//         if (uniqueIds.size !== ids.length) {
+//             return res.status(400).json({
+//                 success: false,
+//                 message: "Duplicate image IDs are not allowed."
+//             });
+//         }
+
+
+
+//         // Get old images
+//         let oldImages = [];
+
+//         if (ids.length > 0) {
+
+//             const [rows] = await db.query(
+//                 `
+//                 SELECT id, image
+//                 FROM guide_images
+//                 WHERE guide_id = ?
+//                 AND id IN (?)
+//                 `,
+//                 [id, ids]
+//             );
+
+//             oldImages = rows;
+
+//             if (oldImages.length !== ids.length) {
+//                 return res.status(404).json({
+//                     success: false,
+//                     message: "One or more image IDs were not found for this guide."
+//                 });
+//             }
+//         }
+
+
+
+//         // Store new images and update DB
+//         const oldImagePaths = [];
+
+//         for (const file of files) {
+
+//             const imageId = Number(file.fieldname);
+
+//             const oldImage = oldImages.find(
+//                 item => item.id === imageId
+//             );
+
+
+//             if (!oldImage) {
+//                 return res.status(404).json({
+//                     success: false,
+//                     message: `Image ID ${imageId} not found.`
+//                 });
+//             }
+
+//             const newImage = await storeImageToDynamicFolder(
+//                 file,
+//                 "guide"
+//             );
+
+
+//             if (!newImage) {
+//                 return res.status(400).json({
+//                     success: false,
+//                     message: `Failed to store image for ID ${imageId}.`
+//                 });
+//             }
+
+//             await db.query(
+//                 `
+//                 UPDATE guide_images
+//                 SET image = ?
+//                 WHERE id = ?
+//                 AND guide_id = ?
+//                 `,
+//                 [
+//                     newImage,
+//                     imageId,
+//                     id
+//                 ]
+//             );
+
+//             oldImagePaths.push(oldImage.image);
+//         }
+
+//         // delete old images from store
+//         if (oldImagePaths.length > 0) {
+//             await deleteManyStoredImages(
+//                 oldImagePaths
+//             );
 //         }
 
 
@@ -591,34 +628,6 @@ export const guideList = asyncHandel(async (req, res) => {
 //         );
 
 
-//         // =========================
-//         // UPLOAD FOLDER
-//         // =========================
-
-//         const uploadFolder = path.join(
-//             process.cwd(),
-//             "images",
-//             "guide"
-//         );
-
-
-//         if (!fs.existsSync(uploadFolder)) {
-//             fs.mkdirSync(uploadFolder, {
-//                 recursive: true
-//             });
-//         }
-
-
-//         for (const [position, file] of imageEntries) {
-//             await updateGuideImage(
-//                 id,
-//                 position,
-//                 file,
-//                 uploadFolder
-//             );
-//         }
-
-//         await removeOmittedGuideImages(id, imageEntries);
 
 
 //         return res.status(200).json({
@@ -638,156 +647,313 @@ export const guideList = asyncHandel(async (req, res) => {
 //     }
 // });
 
+
 export const guideUpdate = asyncHandel(async (req, res) => {
+    let connection;
+    let newImagePaths = [];
+    let oldImagePaths = [];
+    let transactionStarted = false;
+    let committed = false;
+
     try {
+        // 1. Validate guide ID
+        const guideId = Number(req.params.id);
 
-        const { id } = req.params;
+        if (!Number.isSafeInteger(guideId) || guideId <= 0) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid guide ID."
+            });
+        }
 
-        const [guide] = await db.query(
-            `
-            SELECT *
-            FROM guides
-            WHERE id = ?
-            `,
-            [id]
+        // 2. Find existing guide
+        const [guideRows] = await db.query(
+            "SELECT * FROM guides WHERE id = ?",
+            [guideId]
         );
 
-
-        if (guide.length === 0) {
+        if (guideRows.length === 0) {
             return res.status(404).json({
                 success: false,
-                message: "Guide not found"
+                message: "Guide not found."
             });
         }
 
+        const guide = guideRows[0];
         const files = req.files || [];
 
-        if (files.length > 6) {
+        // 3. Parse keepImageIds
+        // Omitted: do not change existing images.
+        // []: explicitly remove all existing images.
+        let keepImageIds = null;
+
+        if (req.body.keepImageIds !== undefined) {
+            try {
+                keepImageIds = Array.isArray(req.body.keepImageIds)
+                    ? req.body.keepImageIds
+                    : JSON.parse(req.body.keepImageIds);
+
+                if (
+                    !Array.isArray(keepImageIds) ||
+                    keepImageIds.some((id) => {
+                        const validType =
+                            typeof id === "number" ||
+                            (
+                                typeof id === "string" &&
+                                /^\d+$/.test(id)
+                            );
+
+                        return (
+                            !validType ||
+                            !Number.isSafeInteger(Number(id)) ||
+                            Number(id) <= 0
+                        );
+                    })
+                ) {
+                    throw new Error("Invalid image IDs.");
+                }
+
+                keepImageIds = keepImageIds.map(Number);
+
+                if (
+                    new Set(keepImageIds).size !== keepImageIds.length
+                ) {
+                    return res.status(400).json({
+                        success: false,
+                        message: "Duplicate IDs in keepImageIds."
+                    });
+                }
+            } catch {
+                return res.status(400).json({
+                    success: false,
+                    message:
+                        "keepImageIds must be a valid JSON array of positive image IDs."
+                });
+            }
+        }
+
+        // 4. Validate uploaded file keys.
+        // Existing image ID = replace.
+        // 0 = add new image.
+        const fileIds = files.map((file) => {
+            if (!/^(0|[1-9]\d*)$/.test(file.fieldname)) {
+                return NaN;
+            }
+
+            return Number(file.fieldname);
+        });
+
+        if (
+            fileIds.some(
+                (id) => !Number.isSafeInteger(id) || id < 0
+            )
+        ) {
             return res.status(400).json({
                 success: false,
-                message: "Maximum 6 images are allowed!"
+                message:
+                    "Image file keys must be 0 or a positive image ID."
             });
         }
 
-        const ids = files.map(file => Number(file.fieldname));
+        // Multiple files with key 0 are allowed.
+        // Existing image IDs must be unique.
+        const existingFileIds = fileIds.filter((id) => id !== 0);
 
-        // Check IDs
-         const hasInvalidId = ids.some(
-            imageId =>
-                !Number.isInteger(imageId) ||
-                imageId <= 0
-        );
-
-
-        if (hasInvalidId) {
-            return res.status(400).json({
-                success: false,
-                message: "Invalid image ID. Image ID must be a positive number."
-            });
-        }
-
-
-        // Check duplicate IDs
-        const uniqueIds = new Set(ids);
-
-        if (uniqueIds.size !== ids.length) {
+        if (
+            new Set(existingFileIds).size !== existingFileIds.length
+        ) {
             return res.status(400).json({
                 success: false,
                 message: "Duplicate image IDs are not allowed."
             });
         }
 
+        // If files are uploaded, keepImageIds must be provided.
+        if (files.length > 0 && keepImageIds === null) {
+            return res.status(400).json({
+                success: false,
+                message:
+                    "Send keepImageIds when adding or replacing images."
+            });
+        }
 
+        // Omitted keepImageIds + no files = no image changes.
+        // An explicitly supplied [] means delete all existing images.
+        const isManagingImages = keepImageIds !== null;
 
-        // Get old images
-        let oldImages = [];
+        // 5. Get existing images for this guide.
+        const [currentImages] = await db.query(
+            `
+            SELECT id, image
+            FROM guide_images
+            WHERE guide_id = ?
+            `,
+            [guideId]
+        );
 
-        if (ids.length > 0) {
+        const currentImageMap = new Map(
+            currentImages.map((image) => [
+                Number(image.id),
+                image
+            ])
+        );
 
-            const [rows] = await db.query(
-                `
-                SELECT id, image
-                FROM guide_images
-                WHERE guide_id = ?
-                AND id IN (?)
-                `,
-                [id, ids]
-            );
+        // All IDs in keepImageIds must belong to this guide.
+        if (
+            isManagingImages &&
+            keepImageIds.some((id) => !currentImageMap.has(id))
+        ) {
+            return res.status(400).json({
+                success: false,
+                message:
+                    "One or more keepImageIds do not belong to this guide."
+            });
+        }
 
-            oldImages = rows;
-
-            if (oldImages.length !== ids.length) {
+        // 6. Validate replacement image IDs.
+        for (const imageId of existingFileIds) {
+            if (!currentImageMap.has(imageId)) {
                 return res.status(404).json({
                     success: false,
-                    message: "One or more image IDs were not found for this guide."
+                    message:
+                        `Image ID ${imageId} was not found for this guide.`
+                });
+            }
+
+            if (!keepImageIds.includes(imageId)) {
+                return res.status(400).json({
+                    success: false,
+                    message:
+                        `Image ID ${imageId} must be included in keepImageIds.`
                 });
             }
         }
 
+        // 7. Enforce maximum 6 total images.
+        // Replaced images are already counted in keepImageIds.
+        if (isManagingImages) {
+            const newImageCount = fileIds.filter(
+                (id) => id === 0
+            ).length;
 
+            const totalImages =
+                keepImageIds.length + newImageCount;
 
-        // Store new images and update DB
-        const oldImagePaths = [];
-
-        for (const file of files) {
-
-            const imageId = Number(file.fieldname);
-
-            const oldImage = oldImages.find(
-                item => item.id === imageId
-            );
-
-
-            if (!oldImage) {
-                return res.status(404).json({
+            if (totalImages > 6) {
+                return res.status(400).json({
                     success: false,
-                    message: `Image ID ${imageId} not found.`
+                    message:
+                        "A guide can have a maximum of 6 images.",
+                    totalImages,
+                    maxImages: 6
                 });
             }
+        }
 
-            const newImage = await storeImageToDynamicFolder(
+        // 8. Save uploaded images before changing DB rows.
+        const uploadedFiles = [];
+
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            const imageId = fileIds[i];
+
+            const newPath = await storeImageToDynamicFolder(
                 file,
                 "guide"
             );
 
-
-            if (!newImage) {
-                return res.status(400).json({
-                    success: false,
-                    message: `Failed to store image for ID ${imageId}.`
-                });
+            if (!newPath) {
+                throw new Error(
+                    `Failed to store image for ID ${imageId}.`
+                );
             }
 
-            await db.query(
-                `
-                UPDATE guide_images
-                SET image = ?
-                WHERE id = ?
-                AND guide_id = ?
-                `,
-                [
-                    newImage,
-                    imageId,
-                    id
-                ]
-            );
+            newImagePaths.push(newPath);
 
-            oldImagePaths.push(oldImage.image);
+            uploadedFiles.push({
+                imageId,
+                newPath
+            });
         }
 
-        // delete old images from store
-        if (oldImagePaths.length > 0) {
-            await deleteManyStoredImages(
-                oldImagePaths
-            );
+        // 9. Prepare old file paths for cleanup after commit.
+        if (isManagingImages) {
+            const keepSet = new Set(keepImageIds);
+
+            // Images not included in keepImageIds are removed.
+            oldImagePaths = currentImages
+                .filter(
+                    (image) => !keepSet.has(Number(image.id))
+                )
+                .map((image) => image.image);
         }
 
+        // Replaced images keep their DB IDs, but old files are removed.
+        for (const uploaded of uploadedFiles) {
+            if (uploaded.imageId !== 0) {
+                oldImagePaths.push(
+                    currentImageMap.get(uploaded.imageId).image
+                );
+            }
+        }
 
-        // =========================
-        // GET BODY
-        // =========================
+        // 10. Start DB transaction.
+        connection = await db.getConnection();
 
-        let {
+        await connection.beginTransaction();
+        transactionStarted = true;
+
+        // Replace existing images or insert new images.
+        for (const uploaded of uploadedFiles) {
+            if (uploaded.imageId === 0) {
+                await connection.query(
+                    `
+                    INSERT INTO guide_images (guide_id, image)
+                    VALUES (?, ?)
+                    `,
+                    [guideId, uploaded.newPath]
+                );
+            } else {
+                await connection.query(
+                    `
+                    UPDATE guide_images
+                    SET image = ?
+                    WHERE id = ?
+                    AND guide_id = ?
+                    `,
+                    [
+                        uploaded.newPath,
+                        uploaded.imageId,
+                        guideId
+                    ]
+                );
+            }
+        }
+
+        // Delete image rows omitted from keepImageIds.
+        if (isManagingImages) {
+            const idsToDelete = currentImages
+                .filter(
+                    (image) =>
+                        !keepImageIds.includes(Number(image.id))
+                )
+                .map((image) => Number(image.id));
+
+            if (idsToDelete.length > 0) {
+                await connection.query(
+                    `
+                    DELETE FROM guide_images
+                    WHERE guide_id = ?
+                    AND id IN (?)
+                    `,
+                    [guideId, idsToDelete]
+                );
+            }
+        }
+
+        // 11. Update guide fields.
+        // Fields not supplied keep their existing values.
+        const {
             title,
             author,
             badge,
@@ -801,61 +967,7 @@ export const guideUpdate = asyncHandel(async (req, res) => {
             summary
         } = req.body;
 
-
-        // =========================
-        // KEEP OLD DATA
-        // =========================
-
-        title = title !== undefined
-            ? title
-            : guide[0].title;
-
-        author = author !== undefined
-            ? author
-            : guide[0].author;
-
-        badge = badge !== undefined
-            ? badge
-            : guide[0].badge;
-
-        excerpt = excerpt !== undefined
-            ? excerpt
-            : guide[0].excerpt;
-
-        tag = tag !== undefined
-            ? tag
-            : guide[0].tag;
-
-        location = location !== undefined
-            ? location
-            : guide[0].location;
-
-        rating = rating !== undefined
-            ? rating
-            : guide[0].rating;
-
-        best_time = best_time !== undefined
-            ? best_time
-            : guide[0].best_time;
-
-        entry = entry !== undefined
-            ? entry
-            : guide[0].entry;
-
-        sightseeing = sightseeing !== undefined
-            ? sightseeing
-            : guide[0].sightseeing;
-
-        summary = summary !== undefined
-            ? summary
-            : guide[0].summary;
-
-
-        // =========================
-        // UPDATE GUIDE
-        // =========================
-
-        await db.query(
+        await connection.query(
             `
             UPDATE guides
             SET
@@ -873,38 +985,92 @@ export const guideUpdate = asyncHandel(async (req, res) => {
             WHERE id = ?
             `,
             [
-                title,
-                author,
-                badge,
-                excerpt,
-                tag,
-                location,
-                rating,
-                best_time,
-                entry,
-                sightseeing,
-                summary,
-                id
+                title ?? guide.title,
+                author ?? guide.author,
+                badge ?? guide.badge,
+                excerpt ?? guide.excerpt,
+                tag ?? guide.tag,
+                location ?? guide.location,
+                rating ?? guide.rating,
+                best_time ?? guide.best_time,
+                entry ?? guide.entry,
+                sightseeing ?? guide.sightseeing,
+                summary ?? guide.summary,
+                guideId
             ]
         );
 
+        // Commit all database changes.
+        await connection.commit();
+        committed = true;
 
+        // 12. Delete old files only after a successful commit.
+        let cleanupWarning = false;
 
+        if (oldImagePaths.length > 0) {
+            try {
+                await deleteManyStoredImages(
+                    [...new Set(oldImagePaths)]
+                );
+            } catch (cleanupError) {
+                cleanupWarning = true;
+
+                console.error(
+                    "Old image cleanup failed:",
+                    cleanupError
+                );
+            }
+        }
 
         return res.status(200).json({
             success: true,
-            message: "Guide updated successfully."
+            message: cleanupWarning
+                ? "Guide updated, but some old image files could not be deleted."
+                : "Guide updated successfully.",
+            ...(cleanupWarning && {
+                warning:
+                    "Some old image files may remain on the server."
+            })
         });
 
-
     } catch (error) {
+        console.error(error);
 
-        console.log(error);
+        if (connection && transactionStarted && !committed) {
+            try {
+                await connection.rollback();
+            } catch (rollbackError) {
+                console.error(
+                    "Rollback failed:",
+                    rollbackError
+                );
+            }
+        }
+
+        // If DB operations failed, remove newly saved image files.
+        if (!committed && newImagePaths.length > 0) {
+            try {
+                await deleteManyStoredImages(
+                    [...new Set(newImagePaths)]
+                );
+            } catch (cleanupError) {
+                console.error(
+                    "New image cleanup failed:",
+                    cleanupError
+                );
+            }
+        }
 
         return res.status(500).json({
             success: false,
-            message: error.message
+            message:
+                error.message || "Failed to update guide."
         });
+
+    } finally {
+        if (connection) {
+            connection.release();
+        }
     }
 });
 
