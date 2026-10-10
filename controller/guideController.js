@@ -1189,6 +1189,12 @@ export const guideDetails = asyncHandel(async (req, res) => {
                     WHERE r.guide_id = g.id
                 ) AS review_count,
 
+                (
+                    SELECT COUNT(*)
+                    FROM help_ful hf
+                    WHERE hf.guide_id = g.id
+                ) AS total_helpful,
+
                 COALESCE(
                     (
                         SELECT JSON_ARRAYAGG(

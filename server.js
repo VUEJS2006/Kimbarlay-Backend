@@ -30,7 +30,7 @@ import reviewRouter from "./router/reviewRouter.js"
 
 import rescheduleRequestRouter from "./router/rescheduleRequestRouter.js";
 import refundRequestRouter from "./router/refundRequestRouter.js";
-
+import helpfulRouter from "./router/helpfulRouter.js";
 const app = express();
 
 
@@ -66,6 +66,13 @@ app.use("/api", faqsRouter)
 app.use("/api", guideTouter)
 app.use("/api", guideRouter)
 app.use("/api", reviewRouter)
+app.use("/api", reviewRouter)
+app.use("/api", helpfulRouter)
+
+
+
+
+
 
 
 app.use("/api", rescheduleRequestRouter)
