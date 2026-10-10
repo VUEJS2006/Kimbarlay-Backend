@@ -42,7 +42,7 @@ app.use(
     )
 );
 
-
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json())
 app.use(cookieParser());
 app.use(cors())
