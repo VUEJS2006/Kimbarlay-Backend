@@ -1,13 +1,11 @@
 import db from "../config/db.js"
 import { asyncHandel } from "../middleware/asyncMiddleware.js"
-import fs from "fs";
-import path from "path";
-import sharp from "sharp";
+
 
 export const helpfulCreate = asyncHandel(async (req, res) => {
     try {
 
-        const { guide_id } = req.body;
+        const { guide_id } = req.body || {};
         const userID = req.user.id
 
         if (req.user.role !== "user") {

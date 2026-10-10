@@ -1,6 +1,5 @@
 import { helpfulCreate } from "../controller/helpfulController.js"
 import express from "express";
-import { upload } from "../middleware/upload.js";
 import { authenticated, isAdmin } from "../middleware/authenticatedMiddleware.js";
 const router = express.Router()
 
