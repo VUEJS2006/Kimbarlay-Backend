@@ -98,9 +98,9 @@ export const domesticBookingCreate = asyncHandel(async (req, res) => {
     }
 });
 
+
 export const domesticBookingList = asyncHandel(async (req, res) => {
     try {
-
         if (req.user.role !== "admin") {
             return res.status(403).json({
                 success: false,
@@ -110,13 +110,14 @@ export const domesticBookingList = asyncHandel(async (req, res) => {
 
         const [data] = await db.query(
             `
-            SELECT 
+            SELECT
                 b.id AS booking_id,
                 b.domestic_id,
                 b.user_id,
 
-                DATE_FORMAT(b.check_in, '%d-%m-%Y %H:%i:%s') AS check_in,
-                DATE_FORMAT(b.check_out, '%d-%m-%Y %H:%i:%s') AS check_out,
+                DATE_FORMAT(b.check_in, '%d-%m-%Y') AS check_in,
+                DATE_FORMAT(b.check_out, '%d-%m-%Y') AS check_out,
+
                 b.guests,
                 b.rooms,
                 b.full_name,
@@ -135,17 +136,21 @@ export const domesticBookingList = asyncHandel(async (req, res) => {
 
                 s.username,
                 s.id AS customer_id,
-                DATE_FORMAT(b.created_at, '%d-%m-%Y %H:%i:%s') AS created_at
 
-            
+                DATE_FORMAT(b.created_at, '%d-%m-%Y') AS created_at
+
             FROM domestic_bookings b
-            JOIN domestic_hotels h
-            ON b.domestic_id = h.id
-            JOIN users s
-            ON b.user_id = s.id
+
+            INNER JOIN domestic_hotels h
+                ON b.domestic_id = h.id
+
+            INNER JOIN users s
+                ON b.user_id = s.id
+
             ORDER BY b.id DESC
             `
         );
+
         return res.status(200).json({
             success: true,
             message: "Booking List Success",
@@ -155,12 +160,13 @@ export const domesticBookingList = asyncHandel(async (req, res) => {
 
     } catch (error) {
         console.log(error);
+
         return res.status(500).json({
             success: false,
             message: error.message
         });
     }
-})
+});
 
 export const domesticBookingApproved = asyncHandel(async (req, res) => {
     try {
@@ -283,15 +289,8 @@ export const domesticBookingMobileList = asyncHandel(async (req, res) => {
                 b.domestic_id,
                 b.user_id,
 
-                DATE_FORMAT(
-                    b.check_in,
-                    '%d-%m-%Y %H:%i:%s'
-                ) AS check_in,
-
-                DATE_FORMAT(
-                    b.check_out,
-                    '%d-%m-%Y %H:%i:%s'
-                ) AS check_out,
+                DATE_FORMAT(b.check_in, '%d-%m-%Y') AS check_in,
+                DATE_FORMAT(b.check_out, '%d-%m-%Y') AS check_out,
 
                 b.guests,
                 b.rooms,
