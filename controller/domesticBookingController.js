@@ -233,6 +233,7 @@ export const domesticBookingCancelled = asyncHandel(async (req, res) => {
 })
 
 
+
 export const domesticBookingMobileList = asyncHandel(async (req, res) => {
     try {
         if (req.user.role !== "user") {
@@ -249,8 +250,16 @@ export const domesticBookingMobileList = asyncHandel(async (req, res) => {
                 b.domestic_id,
                 b.user_id,
 
-                DATE_FORMAT(b.check_in, '%d-%m-%Y %H:%i:%s') AS check_in,
-                DATE_FORMAT(b.check_out, '%d-%m-%Y %H:%i:%s') AS check_out,
+                DATE_FORMAT(
+                    b.check_in,
+                    '%d-%m-%Y %H:%i:%s'
+                ) AS check_in,
+
+                DATE_FORMAT(
+                    b.check_out,
+                    '%d-%m-%Y %H:%i:%s'
+                ) AS check_out,
+
                 b.guests,
                 b.rooms,
                 b.full_name,
@@ -269,13 +278,19 @@ export const domesticBookingMobileList = asyncHandel(async (req, res) => {
 
                 s.username,
                 s.id AS customer_id,
-                DATE_FORMAT(b.created_at, '%d-%m-%Y %H:%i:%s') AS created_at
 
+                DATE_FORMAT(
+                    b.created_at,
+                    '%d-%m-%Y %H:%i:%s'
+                ) AS created_at
 
             FROM domestic_bookings b
-            JOIN domestic_hotels h
-            ON b.domestic_id = h.id
-            JOIN users s
+
+            INNER JOIN domestic_hotels h
+                ON b.domestic_id = h.id
+
+            INNER JOIN users s
+                ON b.user_id = s.id
 
             WHERE b.user_id = ?
 
@@ -300,3 +315,4 @@ export const domesticBookingMobileList = asyncHandel(async (req, res) => {
         });
     }
 });
+
