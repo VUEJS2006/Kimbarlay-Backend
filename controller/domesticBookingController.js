@@ -111,27 +111,32 @@ export const domesticBookingList = asyncHandel(async (req, res) => {
         const [data] = await db.query(
             `
             SELECT 
-            b.id,
-            b.domestic_id,
-            b.user_id,
-            b.check_in,
-            b.check_out,
-            b.guests,
-            b.rooms,
-            b.full_name,
-            b.email,
-            b.phone,
-            b.status,
-            b.special_request,
-            h.id,
-            h.title
-            h.price,
-            h.rating,
-            h.color,
-            h.tags,
-            h.description,
-            s.username,
-            s.id
+                  b.id AS booking_id,
+                b.domestic_id,
+                b.user_id,
+
+                DATE_FORMAT(b.check_in, '%d-%m-%Y %H:%i:%s') AS check_in,
+                DATE_FORMAT(b.check_out, '%d-%m-%Y %H:%i:%s') AS check_out,
+                b.guests,
+                b.rooms,
+                b.full_name,
+                b.email,
+                b.phone,
+                b.status,
+                b.special_request,
+
+                h.id AS domestic_hotel_id,
+                h.title,
+                h.price,
+                h.rating,
+                h.color,
+                h.tags,
+                h.description,
+
+                s.username,
+                s.id AS customer_id,
+                DATE_FORMAT(b.created_at, '%d-%m-%Y %H:%i:%s') AS created_at,
+
             
             FROM hotel_bookings b
             JOIN domestic_bookings h
@@ -226,9 +231,9 @@ export const domesticBookingCancelled = asyncHandel(async (req, res) => {
     }
 })
 
+
 export const domesticBookingMobileList = asyncHandel(async (req, res) => {
     try {
-
         if (req.user.role !== "user") {
             return res.status(403).json({
                 success: false,
@@ -238,40 +243,48 @@ export const domesticBookingMobileList = asyncHandel(async (req, res) => {
 
         const [data] = await db.query(
             `
-            SELECT 
-            b.id,
-            b.domestic_id,
-            b.user_id,
-            b.check_in,
-            b.check_out,
-            b.guests,
-            b.rooms,
-            b.full_name,
-            b.email,
-            b.phone,
-            b.status,
-            b.special_request,
-            h.id,
-            h.title
-            h.price,
-            h.rating,
-            h.color,
-            h.tags,
-            h.description,
-            s.username,
-            s.id
+            SELECT
+                b.id AS booking_id,
+                b.domestic_id,
+                b.user_id,
+
+                DATE_FORMAT(b.check_in, '%d-%m-%Y %H:%i:%s') AS check_in,
+                DATE_FORMAT(b.check_out, '%d-%m-%Y %H:%i:%s') AS check_out,
+                b.guests,
+                b.rooms,
+                b.full_name,
+                b.email,
+                b.phone,
+                b.status,
+                b.special_request,
+
+                h.id AS domestic_hotel_id,
+                h.title,
+                h.price,
+                h.rating,
+                h.color,
+                h.tags,
+                h.description,
+
+                s.username,
+                s.id AS customer_id,
+                DATE_FORMAT(b.created_at, '%d-%m-%Y %H:%i:%s') AS created_at,
 
             FROM hotel_bookings b
-            JOIN domestic_bookings h
-            JOIN users s
-            ON b.user_id = s.id
-            WHERE user_id = ?
+
+            INNER JOIN domestic_bookings h
+                ON b.domestic_id = h.id
+
+            INNER JOIN users s
+                ON b.user_id = s.id
+
+            WHERE b.user_id = ?
+
             ORDER BY b.id DESC
             `,
-            [
-                req.user.id
-            ]
+            [req.user.id]
         );
+
         return res.status(200).json({
             success: true,
             message: "Booking List Success",
@@ -281,9 +294,10 @@ export const domesticBookingMobileList = asyncHandel(async (req, res) => {
 
     } catch (error) {
         console.log(error);
+
         return res.status(500).json({
             success: false,
             message: error.message
         });
     }
-})
+});
