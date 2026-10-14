@@ -111,7 +111,7 @@ export const domesticBookingList = asyncHandel(async (req, res) => {
         const [data] = await db.query(
             `
             SELECT 
-                  b.id AS booking_id,
+                b.id AS booking_id,
                 b.domestic_id,
                 b.user_id,
 
@@ -138,8 +138,9 @@ export const domesticBookingList = asyncHandel(async (req, res) => {
                 DATE_FORMAT(b.created_at, '%d-%m-%Y %H:%i:%s') AS created_at
 
             
-            FROM hotel_bookings b
-            JOIN domestic_bookings h
+            FROM domestic_bookings b
+            JOIN domestic_hotels h
+            ON b.domestic_id = h.id
             JOIN users s
             ON b.user_id = s.id
             ORDER BY b.id DESC
@@ -270,13 +271,11 @@ export const domesticBookingMobileList = asyncHandel(async (req, res) => {
                 s.id AS customer_id,
                 DATE_FORMAT(b.created_at, '%d-%m-%Y %H:%i:%s') AS created_at,
 
-            FROM hotel_bookings b
 
-            INNER JOIN domestic_bookings h
-                ON b.domestic_id = h.id
-
-            INNER JOIN users s
-                ON b.user_id = s.id
+            FROM domestic_bookings b
+            JOIN domestic_hotels h
+            ON b.domestic_id = h.id
+            JOIN users s
 
             WHERE b.user_id = ?
 
