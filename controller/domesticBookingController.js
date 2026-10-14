@@ -239,7 +239,7 @@ export const domesticBookingMobileList = asyncHandel(async (req, res) => {
         const [data] = await db.query(
             `
             SELECT 
-            b.id
+            b.id,
             b.domestic_id,
             b.user_id,
             b.check_in,
