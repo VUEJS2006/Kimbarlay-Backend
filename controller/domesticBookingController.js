@@ -231,7 +231,40 @@ export const domesticBookingCancelled = asyncHandel(async (req, res) => {
         });
     }
 })
+export const domesticBookingDelete = asyncHandel(async (req, res) => {
+    try {
 
+        const { id } = req.params;
+        if (req.user.role !== "admin") {
+            return res.status(403).json({
+                success: false,
+                message: "Access denied!"
+            });
+        }
+        const [booking] = await db.query("SELECT * FROM domestic_bookings WHERE id = ?", [id]);
+        if (booking.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: "Booking ID not found!"
+            });
+        }
+
+        const [data] = await db.query("DELETE FROM domestic_bookings WHERE id = ?", [id])
+        return res.status(200).json({
+            success: true,
+            message: "Hotel Booking Delete Successfully",
+            data
+        });
+
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+})
 
 
 export const domesticBookingMobileList = asyncHandel(async (req, res) => {
