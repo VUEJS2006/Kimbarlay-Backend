@@ -33,7 +33,7 @@ export const domesticBookingCreate = asyncHandel(async (req, res) => {
 
         const [domestic] = await db.query(
             `
-            SELECT * FROM domestics WHERE id = ?
+            SELECT * FROM domestic_hotels WHERE id = ?
 
             `,
             [
