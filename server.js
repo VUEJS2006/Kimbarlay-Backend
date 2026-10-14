@@ -27,10 +27,10 @@ import faqsRouter from "./router/faqsRouter.js";
 import guideTouter from "./router/hotelGuideRouter.js"
 import guideRouter from "./router/guideRouter.js"
 import reviewRouter from "./router/reviewRouter.js"
-
 import rescheduleRequestRouter from "./router/rescheduleRequestRouter.js";
 import refundRequestRouter from "./router/refundRequestRouter.js";
 import helpfulRouter from "./router/helpfulRouter.js";
+import domesticBookingRouter from "./router/domesticBookingRouter.js";
 const app = express();
 
 
@@ -68,7 +68,7 @@ app.use("/api", guideRouter)
 app.use("/api", reviewRouter)
 app.use("/api", reviewRouter)
 app.use("/api", helpfulRouter)
-
+app.use("/api", domesticBookingRouter)
 
 
 
