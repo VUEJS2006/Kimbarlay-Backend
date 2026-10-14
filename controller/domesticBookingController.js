@@ -135,7 +135,7 @@ export const domesticBookingList = asyncHandel(async (req, res) => {
 
                 s.username,
                 s.id AS customer_id,
-                DATE_FORMAT(b.created_at, '%d-%m-%Y %H:%i:%s') AS created_at,
+                DATE_FORMAT(b.created_at, '%d-%m-%Y %H:%i:%s') AS created_at
 
             
             FROM hotel_bookings b
