@@ -3,6 +3,7 @@ import db from "../config/db.js";
 
 export const trustAllowedIds = ['card_1', 'card_2', 'card_3'];
 export const refundAllowedIds = ['refund_card_1', 'refund_card_2' , 'refund_card_3' ]
+export const hotelAllowedIds = ['hotel_card_1', 'hotel_card_2' , 'hotel_card_3' ]
 
 export const getAllTrustCards = async ( req , res ) => {
     try {
@@ -30,7 +31,7 @@ export const updateAllTrustCards = async ( req , res ) => {
     try {
         const cards = req.body;
 
-        const rows = await generalUpdateThreeCards({cards , allowedIds : trustAllowedIds , isFromTrust : true , res})
+        const rows = await generalUpdateThreeCards({cards , allowedIds : trustAllowedIds , cardTypeId : 1 , res})
 
         return res.status(200).json({ 
             success : true,
@@ -74,7 +75,7 @@ export const updateAllRefundCards = async ( req , res ) => {
     try {
         const cards = req.body;
 
-        const rows = await generalUpdateThreeCards({cards , allowedIds : refundAllowedIds , isFromTrust : false , res})
+        const rows = await generalUpdateThreeCards({cards , allowedIds : refundAllowedIds , cardTypeId : 2 , res})
 
         return res.status(200).json({ 
             success : true,
@@ -91,12 +92,56 @@ export const updateAllRefundCards = async ( req , res ) => {
     }
 }
 
-const generalUpdateThreeCards = async({cards , allowedIds , isFromTrust , res}) => {
+
+export const getAllHotelCards = async ( req , res ) => {
+    try {
+        const [rows] = await db.execute(
+            'SELECT * FROM trust_cards WHERE id IN (?, ?, ?) ORDER BY id ASC',
+            hotelAllowedIds
+        );
+
+        return res.status(200).json({ 
+            success : true,
+            message: 'All hotels cards are here',
+            data : rows
+        });
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ 
+            success: false,
+            message: err.message 
+        });
+    }
+}
+
+export const updateAllHotelsCards = async ( req , res ) => {
+    try {
+        const cards = req.body;
+
+        const rows = await generalUpdateThreeCards({cards , allowedIds : hotelAllowedIds , cardTypeId : 3 , res})
+
+        return res.status(200).json({ 
+            success : true,
+            message: 'All hotels cards updated successfully',
+            data : rows
+        });
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ 
+            success: false,
+            message: err.message 
+        });
+    }
+}
+
+const generalUpdateThreeCards = async({cards , allowedIds , cardTypeId , res}) => {
     try {
         if (!Array.isArray(cards) || cards.length !== 3) {
             return res.status(400).json({
                 success: false,
-                message: `Request body must be an array containing exactly 3 ${isFromTrust ? "trust" : "refund"} cards.`
+                message: `Request body must be an array containing exactly 3 ${cardTypeId === 1 ? "trust" : ""}${cardTypeId === 2 ? "refund" : ""}${cardTypeId === 3 ? "hotel" : ""} cards.`
             });
         }
 
@@ -104,7 +149,7 @@ const generalUpdateThreeCards = async({cards , allowedIds , isFromTrust , res}) 
             if (!allowedIds.includes(card.id)) {
                 return res.status(400).json({
                     success: false,
-                    message: `Invalid Card ID: '${card.id}'. ID must be one of ${isFromTrust ? "'card_1', 'card_2', or 'card_3'" : "'refund_card_1', 'refund_card_2', or 'refund_card_3'"}.`
+                    message: `Invalid Card ID: '${card.id}'. ID must be one of ${cardTypeId === 1 ? "'card_1', 'card_2', or 'card_3'" : ""}${cardTypeId === 2 ? "'refund_card_1', 'refund_card_2', or 'refund_card_3'" : ""}${cardTypeId === 3 ? "'hotel_card_1', 'hotel_card_2' , or 'hotel_card_3'" : ""}.`
                 });
             }
 
@@ -123,7 +168,7 @@ const generalUpdateThreeCards = async({cards , allowedIds , isFromTrust , res}) 
         if (!hasAllThree) {
             return res.status(400).json({
                 success: false,
-                message: `You must provide all 3 cards: ${isFromTrust ? "'card_1', 'card_2', or 'card_3'" : "'refund_card_1', 'refund_card_2', or 'refund_card_3'"}.`
+                message: `You must provide all 3 cards: ${cardTypeId === 1 ? "'card_1', 'card_2', and 'card_3'" : ""}${cardTypeId === 2 ? "'refund_card_1', 'refund_card_2', and 'refund_card_3'" : ""}${cardTypeId === 3 ? "'hotel_card_1', 'hotel_card_2' , and 'hotel_card_3'" : ""}.`
             });
         }
 

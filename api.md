@@ -2461,6 +2461,141 @@ CREATE TABLE trust_cards (
 }
 ```
 
+
+### For Hotel Cards
+
+### GET /api/hotel_cards
+
+- No payload required
+
+#### Success Response
+
+```json
+{
+    "success": true,
+    "message": "All hotels cards are here",
+    "data": [
+        {
+            "id": "hotel_card_1",
+            "title": "One-stop corporate travel services",
+            "description": "Massive travel products, full-process services, intelligent control, help enterprises cost savings of up to 30%!",
+            "color": "#479B9B",
+            "updated_at": "2026-10-15T03:21:31.000Z"
+        },
+        {
+            "id": "hotel_card_2",
+            "title": "Public settlement",
+            "description": "15 minutes of fast opening of the company account, 30+20 days of long accounting period, self-service reconciliation, unified invoicing, distribution!",
+            "color": "#F38B3C",
+            "updated_at": "2026-10-15T03:21:31.000Z"
+        },
+        {
+            "id": "hotel_card_3",
+            "title": "Tailor-made business programs",
+            "description": "Powerful product technology & service solutions to support the scale of more than 500 large enterprises customized",
+            "color": "#479B9B",
+            "updated_at": "2026-10-15T03:21:31.000Z"
+        }
+    ]
+}
+```
+
+### PUT /api/hotel_cards/update/all
+
+- Id must be only `hotel_card_1`, `hotel_card_2` or `hotel_card_3`
+- Order by Id like `hotel_card_1` is always the first one.
+
+
+#### Payload
+
+```json
+[
+  {
+    "id": "hotel_card_1",
+    "title": "One-stop corporate travel services",
+    "description": "Massive travel products, full-process services, intelligent control, help enterprises cost savings of up to 30%!",
+    "color": "#479B9B"
+  },
+  {
+    "id": "hotel_card_2",
+    "title": "Public settlement",
+    "description": "15 minutes of fast opening of the company account, 30+20 days of long accounting period, self-service reconciliation, unified invoicing, distribution!",
+    "color": "#F38B3C"
+  },
+  {
+    "id": "hotel_card_3",
+    "title": "Tailor-made business programs",
+    "description": "Powerful product technology & service solutions to support the scale of more than 500 large enterprises customized",
+    "color": "#479B9B"
+  }
+]
+```
+
+#### Success Response
+
+```json
+{
+    "success": true,
+    "message": "All hotels cards updated successfully",
+    "data": [
+        {
+            "id": "hotel_card_1",
+            "title": "One-stop corporate travel services",
+            "description": "Massive travel products, full-process services, intelligent control, help enterprises cost savings of up to 30%!",
+            "color": "#479B9B",
+            "updated_at": "2026-10-15T03:21:06.000Z"
+        },
+        {
+            "id": "hotel_card_2",
+            "title": "Public settlement",
+            "description": "15 minutes of fast opening of the company account, 30+20 days of long accounting period, self-service reconciliation, unified invoicing, distribution!",
+            "color": "#F38B3C",
+            "updated_at": "2026-10-15T03:21:06.000Z"
+        },
+        {
+            "id": "hotel_card_3",
+            "title": "Tailor-made business programs",
+            "description": "Powerful product technology & service solutions to support the scale of more than 500 large enterprises customized",
+            "color": "#479B9B",
+            "updated_at": "2026-10-15T03:21:06.000Z"
+        }
+    ]
+}
+```
+
+#### Error Response
+
+- Status : `400`
+
+```json
+{
+    "success": false,
+    "message": "Request body must be an array containing exactly 3 hotel cards."
+}
+```
+
+```json
+{
+    "success": false,
+    "message": "Invalid Card ID: 'hotel_caddrd_3'. ID must be one of 'hotel_card_1', 'hotel_card_2' , or 'hotel_card_3'."
+}
+```
+
+```json
+{
+    "success": false,
+    "message": "Title, description, and color are required for card 'hotel_card_3'."
+}
+```
+
+```json
+{
+    "success": false,
+    "message": "You must provide all 3 cards: 'refund_card_1', 'refund_card_2', or 'refund_card_3'."
+}
+```
+
+
 ## 11. SQL code of creating `bookings` in database
 
 ```sql
