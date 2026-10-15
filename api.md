@@ -2591,9 +2591,243 @@ CREATE TABLE trust_cards (
 ```json
 {
     "success": false,
-    "message": "You must provide all 3 cards: 'refund_card_1', 'refund_card_2', or 'refund_card_3'."
+    "message": "You must provide all 3 cards: 'hotel_card_1', 'hotel_card_2', or 'hotel_card_3'."
 }
 ```
+
+### For travel security Cards
+
+### GET /api/travel_security_cards
+
+- No payload required
+
+#### Success Response
+
+```json
+{
+    "success": true,
+    "message": "All travel security cards are here",
+    "data": [
+        {
+            "id": "travel_security_card_1",
+            "title": "hotel_reassured",
+            "description": "hotels_worldwide",
+            "color": "#D2F4F2",
+            "updated_at": "2026-10-15T07:14:53.000Z"
+        },
+        {
+            "id": "travel_security_card_2",
+            "title": "airline_safe",
+            "description": "global_routes",
+            "color": "#FFEEDB",
+            "updated_at": "2026-10-15T07:14:53.000Z"
+        },
+        {
+            "id": "travel_security_card_3",
+            "title": "train_reliable",
+            "description": "refunds",
+            "color": "#FFDCDC",
+            "updated_at": "2026-10-15T07:14:53.000Z"
+        },
+        {
+            "id": "travel_security_card_4",
+            "title": "tourism_safe",
+            "description": "emergency",
+            "color": "#D2F4F2",
+            "updated_at": "2026-10-15T07:14:53.000Z"
+        },
+        {
+            "id": "travel_security_card_5",
+            "title": "finance_safe",
+            "description": "compliance",
+            "color": "#FFEEDB",
+            "updated_at": "2026-10-15T07:14:53.000Z"
+        },
+        {
+            "id": "travel_security_card_6",
+            "title": "gourmet",
+            "description": "best_prices",
+            "color": "#D2F4F2",
+            "updated_at": "2026-10-15T07:14:53.000Z"
+        },
+        {
+            "id": "travel_security_card_7",
+            "title": "member_benefits",
+            "description": "more_savings",
+            "color": "#FFDCDC",
+            "updated_at": "2026-10-15T07:14:53.000Z"
+        },
+        {
+            "id": "travel_security_card_8",
+            "title": "live_travel",
+            "description": "broadcasts",
+            "color": "#FFEEDB",
+            "updated_at": "2026-10-15T07:14:53.000Z"
+        }
+    ]
+}
+```
+
+### PUT /api/travel_security_cards/update/all
+
+- Id must be only between `travel_security_card_1` to `travel_security_card_8`
+- Order by Id like `travel_security_card_1` is always the first one.
+
+
+#### Payload
+
+```json
+[
+  {
+    "id": "travel_security_card_1",
+    "title": "hotel_reassured",
+    "description": "hotels_worldwide",
+    "color": "#D2F4F2"
+  },
+  {
+    "id": "travel_security_card_2",
+    "title": "airline_safe",
+    "description": "global_routes",
+    "color": "#FFEEDB"
+  },
+  {
+    "id": "travel_security_card_3",
+    "title": "train_reliable",
+    "description": "refunds",
+    "color": "#FFDCDC"
+  },
+  {
+    "id": "travel_security_card_4",
+    "title": "tourism_safe",
+    "description": "emergency",
+    "color": "#D2F4F2"
+  },
+  {
+    "id": "travel_security_card_5",
+    "title": "finance_safe",
+    "description": "compliance",
+    "color": "#FFEEDB"
+  },
+  {
+    "id": "travel_security_card_6",
+    "title": "gourmet",
+    "description": "best_prices",
+    "color": "#D2F4F2"
+  },
+  {
+    "id": "travel_security_card_7",
+    "title": "member_benefits",
+    "description": "more_savings",
+    "color": "#FFDCDC"
+  },
+  {
+    "id": "travel_security_card_8",
+    "title": "live_travel",
+    "description": "broadcasts",
+    "color": "#FFEEDB"
+  }
+]
+```
+
+#### Success Response
+
+```json
+{
+    "success": true,
+    "message": "All travel security cards updated successfully",
+    "data": [
+        {
+            "id": "travel_security_card_1",
+            "title": "hotel_reassured",
+            "description": "hotels_worldwide",
+            "color": "#D2F4F2",
+            "updated_at": "2026-10-15T07:14:53.000Z"
+        },
+        {
+            "id": "travel_security_card_2",
+            "title": "airline_safe",
+            "description": "global_routes",
+            "color": "#FFEEDB",
+            "updated_at": "2026-10-15T07:14:53.000Z"
+        },
+        {
+            "id": "travel_security_card_3",
+            "title": "train_reliable",
+            "description": "refunds",
+            "color": "#FFDCDC",
+            "updated_at": "2026-10-15T07:14:53.000Z"
+        },
+        {
+            "id": "travel_security_card_4",
+            "title": "tourism_safe",
+            "description": "emergency",
+            "color": "#D2F4F2",
+            "updated_at": "2026-10-15T07:14:53.000Z"
+        },
+        {
+            "id": "travel_security_card_5",
+            "title": "finance_safe",
+            "description": "compliance",
+            "color": "#FFEEDB",
+            "updated_at": "2026-10-15T07:14:53.000Z"
+        },
+        {
+            "id": "travel_security_card_6",
+            "title": "gourmet",
+            "description": "best_prices",
+            "color": "#D2F4F2",
+            "updated_at": "2026-10-15T07:14:53.000Z"
+        },
+        {
+            "id": "travel_security_card_7",
+            "title": "member_benefits",
+            "description": "more_savings",
+            "color": "#FFDCDC",
+            "updated_at": "2026-10-15T07:14:53.000Z"
+        },
+        {
+            "id": "travel_security_card_8",
+            "title": "live_travel",
+            "description": "broadcasts",
+            "color": "#FFEEDB",
+            "updated_at": "2026-10-15T07:14:53.000Z"
+        }
+    ]
+}
+```
+
+#### Error Response
+
+- Status : `400`
+
+```json
+{
+    "success": false,
+    "message": "Request body must be an array containing exactly 8 travel security cards."
+}
+```
+
+```json
+{
+    "success": false,
+    "message": "Invalid Card ID: 'travel_card_1'. ID must be one of travel_security_card_1 , travel_security_card_2 , travel_security_card_3 , travel_security_card_4 , travel_security_card_5 , travel_security_card_6 , travel_security_card_7 , travel_security_card_8."
+}
+```
+
+```json
+{
+    "success": false,
+    "message": "Title, description, and color are required for card 'travel_security_card_3'."
+}
+```
+
+```json
+{
+    "success": false,
+    "message": "You must provide all 8 cards: travel_security_card_1 , travel_security_card_2 , travel_security_card_3 , travel_security_card_4 , travel_security_card_5 , travel_security_card_6 , travel_security_card_7 , travel_security_card_8."
+}
+```
+
 
 
 ## 11. SQL code of creating `bookings` in database
