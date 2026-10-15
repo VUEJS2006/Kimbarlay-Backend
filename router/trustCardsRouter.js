@@ -1,6 +1,6 @@
 import express from "express";
 import { authenticated, isAdmin } from "../middleware/authenticatedMiddleware.js";
-import { getAllHotelCards, getAllRefundCards, getAllTravelSecurityCards, getAllTrustCards, updateAllHotelsCards, updateAllRefundCards, updateAllTravelSecurityCards, updateAllTrustCards } from "../controller/trustCardsController.js";
+import { getAllActionButtons, getAllHotelCards, getAllRefundCards, getAllTravelSecurityCards, getAllTrustCards, updateAllActionButtons, updateAllHotelsCards, updateAllRefundCards, updateAllTravelSecurityCards, updateAllTrustCards } from "../controller/trustCardsController.js";
 
 
 const trustCardsRouter = express.Router();
@@ -30,7 +30,10 @@ trustCardsRouter.get("/travel_security_cards", getAllTravelSecurityCards)
 
 trustCardsRouter.put("/travel_security_cards/update/all", authenticated, isAdmin, updateAllTravelSecurityCards)
 
-// for action
+// for action button
+trustCardsRouter.get("/action_buttons", getAllActionButtons)
+
+trustCardsRouter.put("/action_buttons/update/all", authenticated, isAdmin, updateAllActionButtons)
 
 
 export default trustCardsRouter;

@@ -2195,7 +2195,7 @@ CREATE TABLE trust_cards (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 ```
-### For Trust Cards
+### 10.1 For Trust Cards
 
 ### GET /api/trust_cards
 
@@ -2303,7 +2303,7 @@ CREATE TABLE trust_cards (
 ```json
 {
     "success": false,
-    "message": "Request body must be an array containing exactly 3 trust cards."
+    "message": "Request body must be an array containing exactly 3 trust items."
 }
 ```
 
@@ -2328,7 +2328,7 @@ CREATE TABLE trust_cards (
 }
 ```
 
-### For Refund Cards
+### 10.2 For Refund Cards
 
 ### GET /api/refund_cards
 
@@ -2436,7 +2436,7 @@ CREATE TABLE trust_cards (
 ```json
 {
     "success": false,
-    "message": "Request body must be an array containing exactly 3 refund cards."
+    "message": "Request body must be an array containing exactly 3 refund items."
 }
 ```
 
@@ -2462,7 +2462,7 @@ CREATE TABLE trust_cards (
 ```
 
 
-### For Hotel Cards
+### 10.3 For Hotel Cards
 
 ### GET /api/hotel_cards
 
@@ -2561,7 +2561,7 @@ CREATE TABLE trust_cards (
 ```json
 {
     "success": false,
-    "message": "Request body must be an array containing exactly 3 hotel cards."
+    "message": "Request body must be an array containing exactly 3 hotel items."
 }
 ```
 
@@ -2586,7 +2586,7 @@ CREATE TABLE trust_cards (
 }
 ```
 
-### For travel security Cards
+### 10.4 For travel security Cards
 
 ### GET /api/travel_security_cards
 
@@ -2770,7 +2770,7 @@ CREATE TABLE trust_cards (
 ```json
 {
     "success": false,
-    "message": "Request body must be an array containing exactly 8 travel security cards."
+    "message": "Request body must be an array containing exactly 8 travel security items."
 }
 ```
 
@@ -2797,6 +2797,120 @@ CREATE TABLE trust_cards (
 
 
 
+### 10.5 For Action Buttons
+
+### GET /api/action_buttons
+
+- No payload required
+
+#### Success Response
+
+```json
+{
+    "success": true,
+    "message": "All travel security cards are here",
+    "data": [
+        {
+            "id": "action_button_1",
+            "label": "hotel_joining",
+            "updated_at": "2026-10-15T08:35:48.000Z"
+        },
+        {
+            "id": "action_button_2",
+            "label": "agent_joining",
+            "updated_at": "2026-10-15T08:35:48.000Z"
+        },
+        {
+            "id": "action_button_3",
+            "label": "e-booking",
+            "updated_at": "2026-10-15T08:35:48.000Z"
+        }
+    ]
+}
+```
+
+### PUT /api/action_buttons/update/all
+
+- Id must be only `action_button_1`, `action_button_2` or `action_button_3`
+- Order by Id like `action_button_1` is always the first one.
+
+
+#### Payload
+
+```json
+[
+  {
+    "id": "action_button_1",
+    "label": "hotel_joining"
+  },
+  {
+    "id": "action_button_2",
+    "label": "agent_joining"
+  },
+  {
+    "id": "action_button_3",
+    "label": "e-booking"
+  }
+]
+```
+
+#### Success Response
+
+```json
+{
+    "success": true,
+    "message": "All travel security cards updated successfully",
+    "data": [
+        {
+            "id": "action_button_1",
+            "label": "hotel_joining",
+            "updated_at": "2026-10-15T08:35:48.000Z"
+        },
+        {
+            "id": "action_button_2",
+            "label": "agent_joining",
+            "updated_at": "2026-10-15T08:35:48.000Z"
+        },
+        {
+            "id": "action_button_3",
+            "label": "e-booking",
+            "updated_at": "2026-10-15T08:35:48.000Z"
+        }
+    ]
+}
+```
+
+#### Error Response
+
+- Status : `400`
+
+```json
+{
+    "success": false,
+    "message": "Request body must be an array containing exactly 3 action button items."
+}
+```
+
+```json
+{
+    "success": false,
+    "message": "Invalid Card ID: 'action_button1'. ID must be one of action_button_1 , action_button_2 , action_button_3."
+}
+```
+
+```json
+{
+    "success": false,
+    "message": "Label is required for card 'action_button_1'."
+}
+```
+
+```json
+{
+    "success": false,
+    "message": "You must provide all 3 action buttons : action_button_1 , action_button_2 , action_button_3."
+}
+```
 
 
 ## 11. SQL code of creating `bookings` in database
