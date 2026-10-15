@@ -12,5 +12,5 @@ router.delete('/admin/domestic/hotel/delete/:id', authenticated, isAdmin, domest
 
 
 // Website Site
-router.get('/mobile/domestic/hotel/list', authenticated, isAdmin, domesticHotelList)
+router.get('/mobile/domestic/hotel/list', authenticated, domesticHotelList)
 export default router;
