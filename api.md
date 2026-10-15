@@ -1643,6 +1643,8 @@ CREATE TABLE IF NOT EXISTS banners (
 );
 ```
 
+## 7.1 airfair
+
 ### GET /api/promo/banner
 
 - Call this route, to get the banner like when the app start
@@ -1726,6 +1728,87 @@ fetch("domain/api/promo/banner", {
     "message": "title and image must exit."
 }
 ```
+
+## 7.2 Oversea Banner
+
+### GET /api/oversea/banner
+
+- Call this route, to get the banner like when the app start
+- No payload
+
+#### Success Response
+
+```json
+{
+    "success": true,
+    "data": {
+        "title": "Hotel.",
+        "subtitle": null,
+        "image_url": "http://localhost:5000/images/oversea_banner/ddb58d16-c775-4c3e-8729-4127e34e2299.webp",
+        "updated_at": "2026-10-15T11:11:41.000Z"
+    }
+}
+```
+
+### PUT /api/oversea/banner
+
+#### Request Body
+
+- This endpoint accepts data using `multipart/form-data`.
+- The following fields should be included in the request body as `FormData`:
+
+- One of `image` or `image_url` must exit. 
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `title` | string | Yes | The main title of the banner |
+| `subtitle` | string | No | The first subtitle of the banner |
+| `image` | file | Yes | Image file to upload |
+| `image_url` | string | Yes | The image_url of the banner |
+
+#### Example
+
+```js
+const formData = new FormData();
+
+formData.append("title", "Hotel.");
+formData.append("subtitle", "subtitle"); // optional
+
+formData.append("image", imageFile);
+//or
+formData.append("image_url", "https://cdn.kimberley.com/new-banner.jpg");
+
+
+fetch("domain/api/oversea/banner", {
+  method: "PUT",
+  body: formData
+});
+```
+
+#### Success Response
+
+```json
+{
+    "success": true,
+    "message": "Oversea hotel banner is successfully updated.",
+    "data": {
+        "title": "Hotel.",
+        "subtitle": null,
+        "image_url": "http://localhost:5000/images/oversea_banner/ddb58d16-c775-4c3e-8729-4127e34e2299.webp",
+        "updated_at": "2026-10-15T11:11:41.000Z"
+    }
+}
+```
+
+#### Error Response
+
+```json
+{
+    "success": false,
+    "message": "title and image must exit."
+}
+```
+
 
 ## 8. SQL code of creating `express_report_categories` in database
 
@@ -2195,7 +2278,9 @@ CREATE TABLE trust_cards (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 ```
-### 10.1 For Trust Cards
+
+
+## 10.1 For Trust Cards
 
 ### GET /api/trust_cards
 
@@ -2328,7 +2413,7 @@ CREATE TABLE trust_cards (
 }
 ```
 
-### 10.2 For Refund Cards
+## 10.2 For Refund Cards
 
 ### GET /api/refund_cards
 
@@ -2462,7 +2547,7 @@ CREATE TABLE trust_cards (
 ```
 
 
-### 10.3 For Hotel Cards
+## 10.3 For Hotel Cards
 
 ### GET /api/hotel_cards
 
@@ -2479,19 +2564,22 @@ CREATE TABLE trust_cards (
             "id": "hotel_card_1",
             "title": "One-stop corporate travel services",
             "description": "Massive travel products, full-process services, intelligent control, help enterprises cost savings of up to 30%!",
-            "updated_at": "2026-10-15T08:00:34.000Z"
+            "color": "#479B9B",
+            "updated_at": "2026-10-15T11:45:09.000Z"
         },
         {
             "id": "hotel_card_2",
             "title": "Public settlement",
             "description": "15 minutes of fast opening of the company account, 30+20 days of long accounting period, self-service reconciliation, unified invoicing, distribution!",
-            "updated_at": "2026-10-15T08:00:34.000Z"
+            "color": "#F38B3C",
+            "updated_at": "2026-10-15T11:45:09.000Z"
         },
         {
             "id": "hotel_card_3",
             "title": "Tailor-made business programs",
             "description": "Powerful product technology & service solutions to support the scale of more than 500 large enterprises customized",
-            "updated_at": "2026-10-15T08:00:34.000Z"
+            "color": "#479B9B",
+            "updated_at": "2026-10-15T11:45:09.000Z"
         }
     ]
 }
@@ -2510,17 +2598,20 @@ CREATE TABLE trust_cards (
   {
     "id": "hotel_card_1",
     "title": "One-stop corporate travel services",
-    "description": "Massive travel products, full-process services, intelligent control, help enterprises cost savings of up to 30%!"
+    "description": "Massive travel products, full-process services, intelligent control, help enterprises cost savings of up to 30%!",
+    "color": "#479B9B"
   },
   {
     "id": "hotel_card_2",
     "title": "Public settlement",
-    "description": "15 minutes of fast opening of the company account, 30+20 days of long accounting period, self-service reconciliation, unified invoicing, distribution!"
+    "description": "15 minutes of fast opening of the company account, 30+20 days of long accounting period, self-service reconciliation, unified invoicing, distribution!",
+    "color": "#F38B3C"
   },
   {
     "id": "hotel_card_3",
     "title": "Tailor-made business programs",
-    "description": "Powerful product technology & service solutions to support the scale of more than 500 large enterprises customized"
+    "description": "Powerful product technology & service solutions to support the scale of more than 500 large enterprises customized",
+    "color": "#479B9B"
   }
 ]
 ```
@@ -2536,19 +2627,22 @@ CREATE TABLE trust_cards (
             "id": "hotel_card_1",
             "title": "One-stop corporate travel services",
             "description": "Massive travel products, full-process services, intelligent control, help enterprises cost savings of up to 30%!",
-            "updated_at": "2026-10-15T08:00:34.000Z"
+            "color": "#479B9B",
+            "updated_at": "2026-10-15T11:45:09.000Z"
         },
         {
             "id": "hotel_card_2",
             "title": "Public settlement",
             "description": "15 minutes of fast opening of the company account, 30+20 days of long accounting period, self-service reconciliation, unified invoicing, distribution!",
-            "updated_at": "2026-10-15T08:00:34.000Z"
+            "color": "#F38B3C",
+            "updated_at": "2026-10-15T11:45:09.000Z"
         },
         {
             "id": "hotel_card_3",
             "title": "Tailor-made business programs",
             "description": "Powerful product technology & service solutions to support the scale of more than 500 large enterprises customized",
-            "updated_at": "2026-10-15T08:00:34.000Z"
+            "color": "#479B9B",
+            "updated_at": "2026-10-15T11:45:09.000Z"
         }
     ]
 }
@@ -2575,7 +2669,7 @@ CREATE TABLE trust_cards (
 ```json
 {
     "success": false,
-    "message": "Title, and description are required for card 'hotel_card_1'."
+    "message": "Title, description, and color are required for card 'hotel_card_3'."
 }
 ```
 
@@ -2586,7 +2680,7 @@ CREATE TABLE trust_cards (
 }
 ```
 
-### 10.4 For travel security Cards
+## 10.4 For travel security Cards
 
 ### GET /api/travel_security_cards
 
@@ -2603,49 +2697,57 @@ CREATE TABLE trust_cards (
             "id": "travel_security_card_1",
             "title": "hotel_reassured",
             "description": "hotels_worldwide",
-            "updated_at": "2026-10-15T07:56:52.000Z"
+            "color": "#D2F4F2",
+            "updated_at": "2026-10-15T11:49:45.000Z"
         },
         {
             "id": "travel_security_card_2",
             "title": "airline_safe",
             "description": "global_routes",
-            "updated_at": "2026-10-15T07:56:52.000Z"
+            "color": "#FFEEDB",
+            "updated_at": "2026-10-15T11:49:45.000Z"
         },
         {
             "id": "travel_security_card_3",
             "title": "train_reliable",
             "description": "refunds",
-            "updated_at": "2026-10-15T07:56:52.000Z"
+            "color": "#FFDCDC",
+            "updated_at": "2026-10-15T11:49:45.000Z"
         },
         {
             "id": "travel_security_card_4",
             "title": "tourism_safe",
             "description": "emergency",
-            "updated_at": "2026-10-15T07:56:52.000Z"
+            "color": "#D2F4F2",
+            "updated_at": "2026-10-15T11:49:45.000Z"
         },
         {
             "id": "travel_security_card_5",
             "title": "finance_safe",
             "description": "compliance",
-            "updated_at": "2026-10-15T07:56:52.000Z"
+            "color": "#FFEEDB",
+            "updated_at": "2026-10-15T11:49:45.000Z"
         },
         {
             "id": "travel_security_card_6",
             "title": "gourmet",
             "description": "best_prices",
-            "updated_at": "2026-10-15T07:56:52.000Z"
+            "color": "#D2F4F2",
+            "updated_at": "2026-10-15T11:49:45.000Z"
         },
         {
             "id": "travel_security_card_7",
             "title": "member_benefits",
             "description": "more_savings",
-            "updated_at": "2026-10-15T07:56:52.000Z"
+            "color": "#FFDCDC",
+            "updated_at": "2026-10-15T11:49:45.000Z"
         },
         {
             "id": "travel_security_card_8",
             "title": "live_travel",
             "description": "broadcasts",
-            "updated_at": "2026-10-15T07:56:52.000Z"
+            "color": "#FFEEDB",
+            "updated_at": "2026-10-15T11:49:45.000Z"
         }
     ]
 }
@@ -2664,42 +2766,50 @@ CREATE TABLE trust_cards (
   {
     "id": "travel_security_card_1",
     "title": "hotel_reassured",
-    "description": "hotels_worldwide"
+    "description": "hotels_worldwide",
+    "color": "#D2F4F2"
   },
   {
     "id": "travel_security_card_2",
     "title": "airline_safe",
-    "description": "global_routes"
+    "description": "global_routes",
+    "color": "#FFEEDB"
   },
   {
     "id": "travel_security_card_3",
     "title": "train_reliable",
-    "description": "refunds"
+    "description": "refunds",
+    "color": "#FFDCDC"
   },
   {
     "id": "travel_security_card_4",
     "title": "tourism_safe",
-    "description": "emergency"
+    "description": "emergency",
+    "color": "#D2F4F2"
   },
   {
     "id": "travel_security_card_5",
     "title": "finance_safe",
-    "description": "compliance"
+    "description": "compliance",
+    "color": "#FFEEDB"
   },
   {
     "id": "travel_security_card_6",
     "title": "gourmet",
-    "description": "best_prices"
+    "description": "best_prices",
+    "color": "#D2F4F2"
   },
   {
     "id": "travel_security_card_7",
     "title": "member_benefits",
-    "description": "more_savings"
+    "description": "more_savings",
+    "color": "#FFDCDC"
   },
   {
     "id": "travel_security_card_8",
     "title": "live_travel",
-    "description": "broadcasts"
+    "description": "broadcasts",
+    "color": "#FFEEDB"
   }
 ]
 ```
@@ -2715,49 +2825,57 @@ CREATE TABLE trust_cards (
             "id": "travel_security_card_1",
             "title": "hotel_reassured",
             "description": "hotels_worldwide",
-            "updated_at": "2026-10-15T07:56:52.000Z"
+            "color": "#D2F4F2",
+            "updated_at": "2026-10-15T11:49:45.000Z"
         },
         {
             "id": "travel_security_card_2",
             "title": "airline_safe",
             "description": "global_routes",
-            "updated_at": "2026-10-15T07:56:52.000Z"
+            "color": "#FFEEDB",
+            "updated_at": "2026-10-15T11:49:45.000Z"
         },
         {
             "id": "travel_security_card_3",
             "title": "train_reliable",
             "description": "refunds",
-            "updated_at": "2026-10-15T07:56:52.000Z"
+            "color": "#FFDCDC",
+            "updated_at": "2026-10-15T11:49:45.000Z"
         },
         {
             "id": "travel_security_card_4",
             "title": "tourism_safe",
             "description": "emergency",
-            "updated_at": "2026-10-15T07:56:52.000Z"
+            "color": "#D2F4F2",
+            "updated_at": "2026-10-15T11:49:45.000Z"
         },
         {
             "id": "travel_security_card_5",
             "title": "finance_safe",
             "description": "compliance",
-            "updated_at": "2026-10-15T07:56:52.000Z"
+            "color": "#FFEEDB",
+            "updated_at": "2026-10-15T11:49:45.000Z"
         },
         {
             "id": "travel_security_card_6",
             "title": "gourmet",
             "description": "best_prices",
-            "updated_at": "2026-10-15T07:56:52.000Z"
+            "color": "#D2F4F2",
+            "updated_at": "2026-10-15T11:49:45.000Z"
         },
         {
             "id": "travel_security_card_7",
             "title": "member_benefits",
             "description": "more_savings",
-            "updated_at": "2026-10-15T07:56:52.000Z"
+            "color": "#FFDCDC",
+            "updated_at": "2026-10-15T11:49:45.000Z"
         },
         {
             "id": "travel_security_card_8",
             "title": "live_travel",
             "description": "broadcasts",
-            "updated_at": "2026-10-15T07:56:52.000Z"
+            "color": "#FFEEDB",
+            "updated_at": "2026-10-15T11:49:45.000Z"
         }
     ]
 }
@@ -2784,7 +2902,7 @@ CREATE TABLE trust_cards (
 ```json
 {
     "success": false,
-    "message": "Title, and description are required for card 'travel_security_card_3'."
+    "message": "Title, description, and color are required for card 'travel_security_card_1'."
 }
 ```
 
@@ -2797,7 +2915,7 @@ CREATE TABLE trust_cards (
 
 
 
-### 10.5 For Action Buttons
+## 10.5 For Action Buttons
 
 ### GET /api/action_buttons
 
@@ -2911,6 +3029,133 @@ CREATE TABLE trust_cards (
     "message": "You must provide all 3 action buttons : action_button_1 , action_button_2 , action_button_3."
 }
 ```
+
+
+
+## 10.6 For Oversea Footers
+
+### GET /api/oversea_footers
+
+- No payload required
+
+#### Success Response
+
+```json
+{
+    "success": true,
+    "message": "All oversea footers are here",
+    "data": [
+        {
+            "id": "oversea_footer_1",
+            "title": "Top Countries/Regions",
+            "description": "Thailand... Korea H... Japan H... Hotels in... America... Vietnam... Australia... France h... Maldives... Italy hotels",
+            "updated_at": "2026-10-15T11:37:49.000Z"
+        },
+        {
+            "id": "oversea_footer_2",
+            "title": "Hot cities",
+            "description": "Dubai H... Singapor... Phuket... Bali Hotels... Las Veg... Boracay... Kuala Lu... Seoul H... Chiang... Paris hot... London... New Yor...",
+            "updated_at": "2026-10-15T11:37:49.000Z"
+        },
+        {
+            "id": "oversea_footer_3",
+            "title": "Category: Popular brands",
+            "description": "Hilton H... Sheraton... Super 8... InterCon... Marriott... Kempinski... Ramada... The Wes... Hyatt Re... Sofitel H... Waldorf...",
+            "updated_at": "2026-10-15T11:37:49.000Z"
+        }
+    ]
+}
+```
+
+### PUT /api/oversea_footers/update/all
+
+- Id must be only `hotel_card_1`, `hotel_card_2` or `hotel_card_3`
+- Order by Id like `hotel_card_1` is always the first one.
+
+
+#### Payload
+
+```json
+[
+  {
+    "id": "oversea_footer_1",
+    "title": "Top Countries/Regions",
+    "description": "Thailand... Korea H... Japan H... Hotels in... America... Vietnam... Australia... France h... Maldives... Italy hotels"
+  },
+  {
+    "id": "oversea_footer_2",
+    "title": "Hot cities",
+    "description": "Dubai H... Singapor... Phuket... Bali Hotels... Las Veg... Boracay... Kuala Lu... Seoul H... Chiang... Paris hot... London... New Yor..."
+  },
+  {
+    "id": "oversea_footer_3",
+    "title": "Category: Popular brands",
+    "description": "Hilton H... Sheraton... Super 8... InterCon... Marriott... Kempinski... Ramada... The Wes... Hyatt Re... Sofitel H... Waldorf..."
+  }
+]
+```
+
+#### Success Response
+
+```json
+{
+    "success": true,
+    "message": "All oversea footers updated successfully",
+    "data": [
+        {
+            "id": "oversea_footer_1",
+            "title": "Top Countries/Regions",
+            "description": "Thailand... Korea H... Japan H... Hotels in... America... Vietnam... Australia... France h... Maldives... Italy hotels",
+            "updated_at": "2026-10-15T11:37:27.000Z"
+        },
+        {
+            "id": "oversea_footer_2",
+            "title": "Hot cities",
+            "description": "Dubai H... Singapor... Phuket... Bali Hotels... Las Veg... Boracay... Kuala Lu... Seoul H... Chiang... Paris hot... London... New Yor...",
+            "updated_at": "2026-10-15T11:37:27.000Z"
+        },
+        {
+            "id": "oversea_footer_3",
+            "title": "Category: Popular brands",
+            "description": "Hilton H... Sheraton... Super 8... InterCon... Marriott... Kempinski... Ramada... The Wes... Hyatt Re... Sofitel H... Waldorf...",
+            "updated_at": "2026-10-15T11:37:27.000Z"
+        }
+    ]
+}
+```
+
+#### Error Response
+
+- Status : `400`
+
+```json
+{
+    "success": false,
+    "message": "Request body must be an array containing exactly 3 hotel items."
+}
+```
+
+```json
+{
+    "success": false,
+    "message": "Invalid Card ID: 'hotel_caddrd_3'. ID must be one of 'hotel_card_1', 'hotel_card_2' , or 'hotel_card_3'."
+}
+```
+
+```json
+{
+    "success": false,
+    "message": "Title, and description are required for card 'hotel_card_1'."
+}
+```
+
+```json
+{
+    "success": false,
+    "message": "You must provide all 3 cards: 'hotel_card_1', 'hotel_card_2', or 'hotel_card_3'."
+}
+```
+
 
 
 ## 11. SQL code of creating `bookings` in database
