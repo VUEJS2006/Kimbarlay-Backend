@@ -31,6 +31,7 @@ import rescheduleRequestRouter from "./router/rescheduleRequestRouter.js";
 import refundRequestRouter from "./router/refundRequestRouter.js";
 import helpfulRouter from "./router/helpfulRouter.js";
 import domesticBookingRouter from "./router/domesticBookingRouter.js";
+import overseaBookingRouter from "./router/overseaBookingRouter.js";
 const app = express();
 
 
@@ -69,7 +70,7 @@ app.use("/api", reviewRouter)
 app.use("/api", reviewRouter)
 app.use("/api", helpfulRouter)
 app.use("/api", domesticBookingRouter)
-
+app.use("/api", overseaBookingRouter)
 
 
 
