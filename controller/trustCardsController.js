@@ -6,6 +6,7 @@ export const refundAllowedIds = ['refund_card_1', 'refund_card_2' , 'refund_card
 export const hotelAllowedIds = ['hotel_card_1', 'hotel_card_2' , 'hotel_card_3' ]
 export const travelSecurityAllowedIds = [1, 2, 3, 4, 5, 6, 7, 8].map(item => "travel_security_card_" + item)
 export const actionButtonAllowedIds = [1, 2, 3].map(item => "action_button_" + item)
+export const overseaFooterAllowedIds = [1, 2, 3].map(item => "oversea_footer_" + item)
 
 
 export const getAllTrustCards = async ( req , res ) => {
@@ -103,12 +104,10 @@ export const getAllHotelCards = async ( req , res ) => {
             hotelAllowedIds
         );
 
-        const rowsWithoutColor = rows.map(item => ({id : item.id , title : item.title , description : item.description , updated_at : item.updated_at}))
-
         return res.status(200).json({ 
             success : true,
             message: 'All hotels cards are here',
-            data : rowsWithoutColor
+            data : rows
         });
 
     } catch (error) {
@@ -126,12 +125,11 @@ export const updateAllHotelsCards = async ( req , res ) => {
 
         const rows = await generalUpdateThreeCards({cards , allowedIds : hotelAllowedIds , cardTypeId : 3 , res})
 
-        const rowsWithoutColor = rows.map(item => ({id : item.id , title : item.title , description : item.description , updated_at : item.updated_at}))
         
         return res.status(200).json({ 
             success : true,
             message: 'All hotels cards updated successfully',
-            data : rowsWithoutColor
+            data : rows
         });
 
     } catch (error) {
@@ -150,13 +148,11 @@ export const getAllTravelSecurityCards = async ( req , res ) => {
             travelSecurityAllowedIds
         );
 
-        const rowsWithoutColor = rows.map(item => ({id : item.id , title : item.title , description : item.description , updated_at : item.updated_at}))
-
 
         return res.status(200).json({ 
             success : true,
             message: 'All travel security cards are here',
-            data : rowsWithoutColor
+            data : rows
         });
 
     } catch (error) {
@@ -174,12 +170,10 @@ export const updateAllTravelSecurityCards = async ( req , res ) => {
 
         const rows = await generalUpdateThreeCards({cards , allowedIds : travelSecurityAllowedIds , cardTypeId : 4 , res});
 
-        const rowsWithoutColor = rows.map(item => ({id : item.id , title : item.title , description : item.description , updated_at : item.updated_at}))
-
         return res.status(200).json({ 
             success : true,
             message: 'All travel security cards updated successfully',
-            data : rowsWithoutColor
+            data : rows
         });
 
     } catch (error) {
@@ -241,12 +235,65 @@ export const updateAllActionButtons = async ( req , res ) => {
     }
 }
 
+
+
+
+export const getAllOverseaFooters = async ( req , res ) => {
+    try {
+        const [rows] = await db.execute(
+            `SELECT * FROM trust_cards WHERE id IN (${overseaFooterAllowedIds.map(_ => "?").join(",")}) ORDER BY id ASC`,
+            overseaFooterAllowedIds
+        );
+
+        const rowsWithoutColor = rows.map(item => ({id : item.id , title : item.title , description : item.description , updated_at : item.updated_at}))
+
+
+        return res.status(200).json({ 
+            success : true,
+            message: 'All oversea footers are here',
+            data : rowsWithoutColor
+        });
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ 
+            success: false,
+            message: err.message 
+        });
+    }
+}
+
+export const updateAllOverseaFooters = async ( req , res ) => {
+    try {
+        const cards = req.body;
+
+        const rows = await generalUpdateThreeCards({cards , allowedIds : overseaFooterAllowedIds , cardTypeId : 6 , res});
+
+        const rowsWithoutColor = rows.map(item => ({id : item.id , title : item.title , description : item.description , updated_at : item.updated_at}))
+
+        return res.status(200).json({ 
+            success : true,
+            message: 'All oversea footers updated successfully',
+            data : rowsWithoutColor
+        });
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ 
+            success: false,
+            message: err.message 
+        });
+    }
+}
+
+
+// general function for this controller
 const generalUpdateThreeCards = async({cards , allowedIds , cardTypeId , res}) => {
     try {
         if (!Array.isArray(cards) || (cardTypeId === 4 ? cards.length !== 8 : cards.length !== 3)) {
             return res.status(400).json({
                 success: false,
-                message: `Request body must be an array containing exactly ${cardTypeId === 1 ? "3 trust" : ""}${cardTypeId === 2 ? "3 refund" : ""}${cardTypeId === 3 ? "3 hotel" : ""}${cardTypeId === 4 ? "8 travel security" : ""}${cardTypeId === 5 ? "3 action button" : ""} items.`
+                message: `Request body must be an array containing exactly ${cardTypeId === 1 ? "3 trust" : ""}${cardTypeId === 2 ? "3 refund" : ""}${cardTypeId === 3 ? "3 hotel" : ""}${cardTypeId === 4 ? "8 travel security" : ""}${cardTypeId === 5 ? "3 action button" : ""}${cardTypeId === 6 ? "3 oversea footer" : ""} items.`
             });
         }
 
@@ -254,18 +301,18 @@ const generalUpdateThreeCards = async({cards , allowedIds , cardTypeId , res}) =
             if (!allowedIds.includes(card.id)) {
                 return res.status(400).json({
                     success: false,
-                    message: `Invalid Card ID: '${card.id}'. ID must be one of ${cardTypeId === 1 ? "'card_1', 'card_2', or 'card_3'" : ""}${cardTypeId === 2 ? "'refund_card_1', 'refund_card_2', or 'refund_card_3'" : ""}${cardTypeId === 3 ? "'hotel_card_1', 'hotel_card_2' , or 'hotel_card_3'" : ""}${cardTypeId === 4 ? travelSecurityAllowedIds.join(" , ") : ""}${cardTypeId === 5 ? actionButtonAllowedIds.join(" , ") : ""}.`
+                    message: `Invalid Card ID: '${card.id}'. ID must be one of ${cardTypeId === 1 ? "'card_1', 'card_2', or 'card_3'" : ""}${cardTypeId === 2 ? "'refund_card_1', 'refund_card_2', or 'refund_card_3'" : ""}${cardTypeId === 3 ? "'hotel_card_1', 'hotel_card_2' , or 'hotel_card_3'" : ""}${cardTypeId === 4 ? travelSecurityAllowedIds.join(" , ") : ""}${cardTypeId === 5 ? actionButtonAllowedIds.join(" , ") : ""}${cardTypeId === 6 ? overseaFooterAllowedIds.join(" , ") : ""}.`
                 });
             }
 
             const isValid = card.title && card.description && card.color;
             const isValidForHotel = card.title && card.description;
-            if (!isValid && cardTypeId < 3) {
+            if (!isValid && [1,2,3,4].includes(cardTypeId)) {
                 return res.status(400).json({
                     success: false,
                     message: `Title, description, and color are required for card '${card.id}'.`
                 });
-            } else if ( !isValidForHotel && [3,4].includes(cardTypeId) ) {
+            } else if ( !isValidForHotel && [6].includes(cardTypeId) ) {
                 return res.status(400).json({
                     success: false,
                     message: `Title, and description are required for card '${card.id}'.`
@@ -273,7 +320,7 @@ const generalUpdateThreeCards = async({cards , allowedIds , cardTypeId , res}) =
             } else if ( !card.label && [5].includes(cardTypeId) ) {
                  return res.status(400).json({
                     success: false,
-                    message: `Label is required for card '${card.id}'.`
+                    message: `Label is required for action button '${card.id}'.`
                 });
             }
         }
@@ -284,7 +331,7 @@ const generalUpdateThreeCards = async({cards , allowedIds , cardTypeId , res}) =
         if (!hasAllCards) {
             return res.status(400).json({
                 success: false,
-                message: `You must provide all ${cardTypeId === 1 ? "3 cards: 'card_1', 'card_2', and 'card_3'" : ""}${cardTypeId === 2 ? "3 cards: 'refund_card_1', 'refund_card_2', and 'refund_card_3'" : ""}${cardTypeId === 3 ? "3 cards: 'hotel_card_1', 'hotel_card_2' , and 'hotel_card_3'" : ""}${cardTypeId === 4 ? "8 cards: "  + travelSecurityAllowedIds.join(" , ") : ""}${cardTypeId === 5 ? "3 action buttons : "  + actionButtonAllowedIds.join(" , ") : ""}.`
+                message: `You must provide all ${cardTypeId === 1 ? "3 cards: 'card_1', 'card_2', and 'card_3'" : ""}${cardTypeId === 2 ? "3 cards: 'refund_card_1', 'refund_card_2', and 'refund_card_3'" : ""}${cardTypeId === 3 ? "3 cards: 'hotel_card_1', 'hotel_card_2' , and 'hotel_card_3'" : ""}${cardTypeId === 4 ? "8 cards: "  + travelSecurityAllowedIds.join(" , ") : ""}${cardTypeId === 5 ? "3 action buttons : "  + actionButtonAllowedIds.join(" , ") : ""}${cardTypeId === 6 ? "3 oversea footers : "  + overseaFooterAllowedIds.join(" , ") : ""}.`
             });
         }
 
