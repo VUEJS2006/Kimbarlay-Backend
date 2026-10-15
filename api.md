@@ -3069,8 +3069,8 @@ CREATE TABLE trust_cards (
 
 ### PUT /api/oversea_footers/update/all
 
-- Id must be only `hotel_card_1`, `hotel_card_2` or `hotel_card_3`
-- Order by Id like `hotel_card_1` is always the first one.
+- Id must be only `oversea_footer_1`, `oversea_footer_2` or `oversea_footer_3`
+- Order by Id like `oversea_footer_1` is always the first one.
 
 
 #### Payload
@@ -3131,30 +3131,160 @@ CREATE TABLE trust_cards (
 ```json
 {
     "success": false,
-    "message": "Request body must be an array containing exactly 3 hotel items."
+    "message": "Request body must be an array containing exactly 3 oversea footer items."
 }
 ```
 
 ```json
 {
     "success": false,
-    "message": "Invalid Card ID: 'hotel_caddrd_3'. ID must be one of 'hotel_card_1', 'hotel_card_2' , or 'hotel_card_3'."
+    "message": "Invalid Card ID: 'oversea_fooer_2'. ID must be one of oversea_footer_1 , oversea_footer_2 , oversea_footer_3."
 }
 ```
 
 ```json
 {
     "success": false,
-    "message": "Title, and description are required for card 'hotel_card_1'."
+    "message": "Title, and description are required for 'oversea_footer_2'."
 }
 ```
 
 ```json
 {
     "success": false,
-    "message": "You must provide all 3 cards: 'hotel_card_1', 'hotel_card_2', or 'hotel_card_3'."
+    "message": "You must provide all 3 oversea footers : oversea_footer_1 , oversea_footer_2 , oversea_footer_3."
 }
 ```
+
+
+
+
+## 10.7 For Oversea Headers
+
+### GET /api/oversea_footers
+
+- No payload required
+
+#### Success Response
+
+```json
+{
+    "success": true,
+    "message": "All oversea headers are here",
+    "data": [
+        {
+            "id": "oversea_header_1",
+            "title": "Stay guarantee",
+            "description": "Guaranteed compensation for those without a home",
+            "updated_at": "2026-10-15T12:19:19.000Z"
+        },
+        {
+            "id": "oversea_header_2",
+            "title": "Professional customer service",
+            "description": "Customer service is available 24/7",
+            "updated_at": "2026-10-15T12:19:19.000Z"
+        },
+        {
+            "id": "oversea_header_3",
+            "title": "Emergency support",
+            "description": "Emergency Assistance",
+            "updated_at": "2026-10-15T12:19:19.000Z"
+        }
+    ]
+}
+```
+
+### PUT /api/oversea_headers/update/all
+
+- Id must be only `oversea_header_1`, `oversea_header_2` or `oversea_header_3`
+- Order by Id like `oversea_header_1` is always the first one.
+
+
+#### Payload
+
+```json
+[
+  {
+    "id": "oversea_header_1",
+    "title": "Stay guarantee",
+    "description": "Guaranteed compensation for those without a home"
+  },
+  {
+    "id": "oversea_header_2",
+    "title": "Professional customer service",
+    "description": "Customer service is available 24/7"
+  },
+  {
+    "id": "oversea_header_3",
+    "title": "Emergency support",
+    "description": "Emergency Assistance"
+  }
+]
+```
+
+#### Success Response
+
+```json
+{
+    "success": true,
+    "message": "All oversea headers updated successfully",
+    "data": [
+        {
+            "id": "oversea_header_1",
+            "title": "Stay guarantee",
+            "description": "Guaranteed compensation for those without a home",
+            "updated_at": "2026-10-15T12:19:19.000Z"
+        },
+        {
+            "id": "oversea_header_2",
+            "title": "Professional customer service",
+            "description": "Customer service is available 24/7",
+            "updated_at": "2026-10-15T12:19:19.000Z"
+        },
+        {
+            "id": "oversea_header_3",
+            "title": "Emergency support",
+            "description": "Emergency Assistance",
+            "updated_at": "2026-10-15T12:19:19.000Z"
+        }
+    ]
+}
+```
+
+#### Error Response
+
+- Status : `400`
+
+```json
+{
+    "success": false,
+    "message": "Request body must be an array containing exactly 3 oversea header items."
+}
+```
+
+```json
+{
+    "success": false,
+    "message": "Invalid Card ID: 'oversea_header_2sss'. ID must be one of oversea_header_1 , oversea_header_2 , oversea_header_3."
+}
+```
+
+```json
+{
+    "success": false,
+    "message": "Invalid Card ID: 'undefined'. ID must be one of oversea_header_1 , oversea_header_2 , oversea_header_3."
+}
+```
+
+```json
+{
+    "success": false,
+    "message": "You must provide all 3 oversea headers : oversea_footer_1 , oversea_footer_2 , oversea_footer_3."
+}
+```
+
+
+
 
 
 
