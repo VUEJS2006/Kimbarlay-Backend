@@ -4,7 +4,7 @@ import db from "../config/db.js";
 export const trustAllowedIds = ['card_1', 'card_2', 'card_3'];
 export const refundAllowedIds = ['refund_card_1', 'refund_card_2' , 'refund_card_3' ]
 export const hotelAllowedIds = ['hotel_card_1', 'hotel_card_2' , 'hotel_card_3' ]
-// export const travelSecurityAllowedIds = ['travel_security_card_1', 'travel_security_card_2' , 'travel_security_card_3' , 'travel_security_card_4', 'travel_security_card_5' , 'travel_security_card_6'  , 'travel_security_card_7', 'travel_security_card_8' ]
+
 export const travelSecurityAllowedIds = [1, 2, 3, 4, 5, 6, 7, 8].map(item => "travel_security_card_" + item)
 
 export const getAllTrustCards = async ( req , res ) => {
@@ -102,10 +102,12 @@ export const getAllHotelCards = async ( req , res ) => {
             hotelAllowedIds
         );
 
+        const rowsWithoutColor = rows.map(item => ({id : item.id , title : item.title , description : item.description , updated_at : item.updated_at}))
+
         return res.status(200).json({ 
             success : true,
             message: 'All hotels cards are here',
-            data : rows
+            data : rowsWithoutColor
         });
 
     } catch (error) {
@@ -123,10 +125,12 @@ export const updateAllHotelsCards = async ( req , res ) => {
 
         const rows = await generalUpdateThreeCards({cards , allowedIds : hotelAllowedIds , cardTypeId : 3 , res})
 
+        const rowsWithoutColor = rows.map(item => ({id : item.id , title : item.title , description : item.description , updated_at : item.updated_at}))
+        
         return res.status(200).json({ 
             success : true,
             message: 'All hotels cards updated successfully',
-            data : rows
+            data : rowsWithoutColor
         });
 
     } catch (error) {
@@ -145,10 +149,13 @@ export const getAllTravelSecurityCards = async ( req , res ) => {
             travelSecurityAllowedIds
         );
 
+        const rowsWithoutColor = rows.map(item => ({id : item.id , title : item.title , description : item.description , updated_at : item.updated_at}))
+
+
         return res.status(200).json({ 
             success : true,
             message: 'All travel security cards are here',
-            data : rows
+            data : rowsWithoutColor
         });
 
     } catch (error) {
@@ -164,12 +171,14 @@ export const updateAllTravelSecurityCards = async ( req , res ) => {
     try {
         const cards = req.body;
 
-        const rows = await generalUpdateThreeCards({cards , allowedIds : travelSecurityAllowedIds , cardTypeId : 4 , res})
+        const rows = await generalUpdateThreeCards({cards , allowedIds : travelSecurityAllowedIds , cardTypeId : 4 , res});
+
+        const rowsWithoutColor = rows.map(item => ({id : item.id , title : item.title , description : item.description , updated_at : item.updated_at}))
 
         return res.status(200).json({ 
             success : true,
             message: 'All travel security cards updated successfully',
-            data : rows
+            data : rowsWithoutColor
         });
 
     } catch (error) {
@@ -201,12 +210,18 @@ const generalUpdateThreeCards = async({cards , allowedIds , cardTypeId , res}) =
             }
 
             const isValid = card.title && card.description && card.color;
-            if (!isValid) {
+            const isValidForHotel = card.title && card.description;
+            if (!isValid && cardTypeId < 3) {
                 return res.status(400).json({
                     success: false,
                     message: `Title, description, and color are required for card '${card.id}'.`
                 });
-            }
+            } else if ( !isValidForHotel && [3,4].includes(cardTypeId) ) {
+                return res.status(400).json({
+                    success: false,
+                    message: `Title, and description are required for card '${card.id}'.`
+                });
+            } 
         }
 
         const submittedIds = cards.map(c => c.id);
@@ -219,7 +234,7 @@ const generalUpdateThreeCards = async({cards , allowedIds , cardTypeId , res}) =
             });
         }
 
-        const values = cards.map(c => [c.id, c.title, c.description, c.color]);
+        const values = cards.map(c => [c.id, c.title, c.description, c.color ? c.color : "#fff"]);
 
         const query = `
         INSERT INTO trust_cards (id, title, description, color)

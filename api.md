@@ -2479,22 +2479,19 @@ CREATE TABLE trust_cards (
             "id": "hotel_card_1",
             "title": "One-stop corporate travel services",
             "description": "Massive travel products, full-process services, intelligent control, help enterprises cost savings of up to 30%!",
-            "color": "#479B9B",
-            "updated_at": "2026-10-15T03:21:31.000Z"
+            "updated_at": "2026-10-15T08:00:34.000Z"
         },
         {
             "id": "hotel_card_2",
             "title": "Public settlement",
             "description": "15 minutes of fast opening of the company account, 30+20 days of long accounting period, self-service reconciliation, unified invoicing, distribution!",
-            "color": "#F38B3C",
-            "updated_at": "2026-10-15T03:21:31.000Z"
+            "updated_at": "2026-10-15T08:00:34.000Z"
         },
         {
             "id": "hotel_card_3",
             "title": "Tailor-made business programs",
             "description": "Powerful product technology & service solutions to support the scale of more than 500 large enterprises customized",
-            "color": "#479B9B",
-            "updated_at": "2026-10-15T03:21:31.000Z"
+            "updated_at": "2026-10-15T08:00:34.000Z"
         }
     ]
 }
@@ -2513,20 +2510,17 @@ CREATE TABLE trust_cards (
   {
     "id": "hotel_card_1",
     "title": "One-stop corporate travel services",
-    "description": "Massive travel products, full-process services, intelligent control, help enterprises cost savings of up to 30%!",
-    "color": "#479B9B"
+    "description": "Massive travel products, full-process services, intelligent control, help enterprises cost savings of up to 30%!"
   },
   {
     "id": "hotel_card_2",
     "title": "Public settlement",
-    "description": "15 minutes of fast opening of the company account, 30+20 days of long accounting period, self-service reconciliation, unified invoicing, distribution!",
-    "color": "#F38B3C"
+    "description": "15 minutes of fast opening of the company account, 30+20 days of long accounting period, self-service reconciliation, unified invoicing, distribution!"
   },
   {
     "id": "hotel_card_3",
     "title": "Tailor-made business programs",
-    "description": "Powerful product technology & service solutions to support the scale of more than 500 large enterprises customized",
-    "color": "#479B9B"
+    "description": "Powerful product technology & service solutions to support the scale of more than 500 large enterprises customized"
   }
 ]
 ```
@@ -2542,22 +2536,19 @@ CREATE TABLE trust_cards (
             "id": "hotel_card_1",
             "title": "One-stop corporate travel services",
             "description": "Massive travel products, full-process services, intelligent control, help enterprises cost savings of up to 30%!",
-            "color": "#479B9B",
-            "updated_at": "2026-10-15T03:21:06.000Z"
+            "updated_at": "2026-10-15T08:00:34.000Z"
         },
         {
             "id": "hotel_card_2",
             "title": "Public settlement",
             "description": "15 minutes of fast opening of the company account, 30+20 days of long accounting period, self-service reconciliation, unified invoicing, distribution!",
-            "color": "#F38B3C",
-            "updated_at": "2026-10-15T03:21:06.000Z"
+            "updated_at": "2026-10-15T08:00:34.000Z"
         },
         {
             "id": "hotel_card_3",
             "title": "Tailor-made business programs",
             "description": "Powerful product technology & service solutions to support the scale of more than 500 large enterprises customized",
-            "color": "#479B9B",
-            "updated_at": "2026-10-15T03:21:06.000Z"
+            "updated_at": "2026-10-15T08:00:34.000Z"
         }
     ]
 }
@@ -2584,7 +2575,7 @@ CREATE TABLE trust_cards (
 ```json
 {
     "success": false,
-    "message": "Title, description, and color are required for card 'hotel_card_3'."
+    "message": "Title, and description are required for card 'hotel_card_1'."
 }
 ```
 
@@ -2612,57 +2603,49 @@ CREATE TABLE trust_cards (
             "id": "travel_security_card_1",
             "title": "hotel_reassured",
             "description": "hotels_worldwide",
-            "color": "#D2F4F2",
-            "updated_at": "2026-10-15T07:14:53.000Z"
+            "updated_at": "2026-10-15T07:56:52.000Z"
         },
         {
             "id": "travel_security_card_2",
             "title": "airline_safe",
             "description": "global_routes",
-            "color": "#FFEEDB",
-            "updated_at": "2026-10-15T07:14:53.000Z"
+            "updated_at": "2026-10-15T07:56:52.000Z"
         },
         {
             "id": "travel_security_card_3",
             "title": "train_reliable",
             "description": "refunds",
-            "color": "#FFDCDC",
-            "updated_at": "2026-10-15T07:14:53.000Z"
+            "updated_at": "2026-10-15T07:56:52.000Z"
         },
         {
             "id": "travel_security_card_4",
             "title": "tourism_safe",
             "description": "emergency",
-            "color": "#D2F4F2",
-            "updated_at": "2026-10-15T07:14:53.000Z"
+            "updated_at": "2026-10-15T07:56:52.000Z"
         },
         {
             "id": "travel_security_card_5",
             "title": "finance_safe",
             "description": "compliance",
-            "color": "#FFEEDB",
-            "updated_at": "2026-10-15T07:14:53.000Z"
+            "updated_at": "2026-10-15T07:56:52.000Z"
         },
         {
             "id": "travel_security_card_6",
             "title": "gourmet",
             "description": "best_prices",
-            "color": "#D2F4F2",
-            "updated_at": "2026-10-15T07:14:53.000Z"
+            "updated_at": "2026-10-15T07:56:52.000Z"
         },
         {
             "id": "travel_security_card_7",
             "title": "member_benefits",
             "description": "more_savings",
-            "color": "#FFDCDC",
-            "updated_at": "2026-10-15T07:14:53.000Z"
+            "updated_at": "2026-10-15T07:56:52.000Z"
         },
         {
             "id": "travel_security_card_8",
             "title": "live_travel",
             "description": "broadcasts",
-            "color": "#FFEEDB",
-            "updated_at": "2026-10-15T07:14:53.000Z"
+            "updated_at": "2026-10-15T07:56:52.000Z"
         }
     ]
 }
@@ -2681,50 +2664,42 @@ CREATE TABLE trust_cards (
   {
     "id": "travel_security_card_1",
     "title": "hotel_reassured",
-    "description": "hotels_worldwide",
-    "color": "#D2F4F2"
+    "description": "hotels_worldwide"
   },
   {
     "id": "travel_security_card_2",
     "title": "airline_safe",
-    "description": "global_routes",
-    "color": "#FFEEDB"
+    "description": "global_routes"
   },
   {
     "id": "travel_security_card_3",
     "title": "train_reliable",
-    "description": "refunds",
-    "color": "#FFDCDC"
+    "description": "refunds"
   },
   {
     "id": "travel_security_card_4",
     "title": "tourism_safe",
-    "description": "emergency",
-    "color": "#D2F4F2"
+    "description": "emergency"
   },
   {
     "id": "travel_security_card_5",
     "title": "finance_safe",
-    "description": "compliance",
-    "color": "#FFEEDB"
+    "description": "compliance"
   },
   {
     "id": "travel_security_card_6",
     "title": "gourmet",
-    "description": "best_prices",
-    "color": "#D2F4F2"
+    "description": "best_prices"
   },
   {
     "id": "travel_security_card_7",
     "title": "member_benefits",
-    "description": "more_savings",
-    "color": "#FFDCDC"
+    "description": "more_savings"
   },
   {
     "id": "travel_security_card_8",
     "title": "live_travel",
-    "description": "broadcasts",
-    "color": "#FFEEDB"
+    "description": "broadcasts"
   }
 ]
 ```
@@ -2740,57 +2715,49 @@ CREATE TABLE trust_cards (
             "id": "travel_security_card_1",
             "title": "hotel_reassured",
             "description": "hotels_worldwide",
-            "color": "#D2F4F2",
-            "updated_at": "2026-10-15T07:14:53.000Z"
+            "updated_at": "2026-10-15T07:56:52.000Z"
         },
         {
             "id": "travel_security_card_2",
             "title": "airline_safe",
             "description": "global_routes",
-            "color": "#FFEEDB",
-            "updated_at": "2026-10-15T07:14:53.000Z"
+            "updated_at": "2026-10-15T07:56:52.000Z"
         },
         {
             "id": "travel_security_card_3",
             "title": "train_reliable",
             "description": "refunds",
-            "color": "#FFDCDC",
-            "updated_at": "2026-10-15T07:14:53.000Z"
+            "updated_at": "2026-10-15T07:56:52.000Z"
         },
         {
             "id": "travel_security_card_4",
             "title": "tourism_safe",
             "description": "emergency",
-            "color": "#D2F4F2",
-            "updated_at": "2026-10-15T07:14:53.000Z"
+            "updated_at": "2026-10-15T07:56:52.000Z"
         },
         {
             "id": "travel_security_card_5",
             "title": "finance_safe",
             "description": "compliance",
-            "color": "#FFEEDB",
-            "updated_at": "2026-10-15T07:14:53.000Z"
+            "updated_at": "2026-10-15T07:56:52.000Z"
         },
         {
             "id": "travel_security_card_6",
             "title": "gourmet",
             "description": "best_prices",
-            "color": "#D2F4F2",
-            "updated_at": "2026-10-15T07:14:53.000Z"
+            "updated_at": "2026-10-15T07:56:52.000Z"
         },
         {
             "id": "travel_security_card_7",
             "title": "member_benefits",
             "description": "more_savings",
-            "color": "#FFDCDC",
-            "updated_at": "2026-10-15T07:14:53.000Z"
+            "updated_at": "2026-10-15T07:56:52.000Z"
         },
         {
             "id": "travel_security_card_8",
             "title": "live_travel",
             "description": "broadcasts",
-            "color": "#FFEEDB",
-            "updated_at": "2026-10-15T07:14:53.000Z"
+            "updated_at": "2026-10-15T07:56:52.000Z"
         }
     ]
 }
@@ -2817,7 +2784,7 @@ CREATE TABLE trust_cards (
 ```json
 {
     "success": false,
-    "message": "Title, description, and color are required for card 'travel_security_card_3'."
+    "message": "Title, and description are required for card 'travel_security_card_3'."
 }
 ```
 
@@ -2827,6 +2794,8 @@ CREATE TABLE trust_cards (
     "message": "You must provide all 8 cards: travel_security_card_1 , travel_security_card_2 , travel_security_card_3 , travel_security_card_4 , travel_security_card_5 , travel_security_card_6 , travel_security_card_7 , travel_security_card_8."
 }
 ```
+
+
 
 
 

@@ -30,5 +30,7 @@ trustCardsRouter.get("/travel_security_cards", getAllTravelSecurityCards)
 
 trustCardsRouter.put("/travel_security_cards/update/all", authenticated, isAdmin, updateAllTravelSecurityCards)
 
+// for action
+
 
 export default trustCardsRouter;
