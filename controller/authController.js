@@ -143,6 +143,26 @@ export const verifyOTP = asyncHandel(async (req, res) => {
                 success: false
             });
         }
+
+
+        const [existingUser] = await db.query(
+            "SELECT id FROM users WHERE email = ?",
+            [email]
+        );
+
+        if (existingUser.length > 0) {
+            await db.query(
+                "DELETE FROM otp_codes WHERE email = ?",
+                [email]
+            );
+
+            return res.status(409).json({
+                message: "Email already exists!",
+                success: false
+            });
+        }
+
+
         await db.query(
             `INSERT INTO users
        (username, email, phone, password, township, region, address)
