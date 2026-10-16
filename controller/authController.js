@@ -47,10 +47,10 @@ export const register = asyncHandel(async (req, res) => {
             });
         }
 
-       
+
         const hashedPassword = await bcrypt.hash(password, 12);
 
-      
+
         const otp = generateOTP();
 
         await db.query(
@@ -58,7 +58,7 @@ export const register = asyncHandel(async (req, res) => {
             [email]
         );
 
-      
+
         await db.query(
             `INSERT INTO otp_codes (email, otp, expires_at)
              VALUES (?, ?, DATE_ADD(NOW(), INTERVAL 20 MINUTE))`,
@@ -67,7 +67,7 @@ export const register = asyncHandel(async (req, res) => {
 
         await sentOTP(email, otp);
 
-     
+
         const generateToken = jwt.sign(
             {
                 username,
@@ -136,33 +136,13 @@ export const verifyOTP = asyncHandel(async (req, res) => {
             });
         }
 
-      
+
         if (user.email !== email) {
             return res.status(400).json({
                 message: "Email does not match token",
                 success: false
             });
         }
-
-      
-        const [existingUser] = await db.query(
-            "SELECT id FROM users WHERE email = ?",
-            [email]
-        );
-
-        if (existingUser.length > 0) {
-            await db.query(
-                "DELETE FROM otp_codes WHERE email = ?",
-                [email]
-            );
-
-            return res.status(409).json({
-                message: "Email already exists!",
-                success: false
-            });
-        }
-
-    
         await db.query(
             `INSERT INTO users
        (username, email, phone, password, township, region, address)
