@@ -1,5 +1,4 @@
 import nodemailer from "nodemailer";
-import path from "path";
 
 const transporter = nodemailer.createTransport({
     service: "gmail",
@@ -14,11 +13,6 @@ export const sentOTP = async (email, otp) => {
         from: `"Kimberley Travel and Tours" <${process.env.HOST_EMAIL}>`,
         to: email,
         subject: "Your Verification Code - Kimberley Travel",
-        attachments: [{
-            filename: 'logo.jpg',
-            path: path.join(process.cwd(), 'assets', 'logo.jpg'),
-            cid: 'kimberley_logo'
-        }],
         html: `
         <!DOCTYPE html>
         <html>
@@ -37,20 +31,16 @@ export const sentOTP = async (email, otp) => {
                         <!-- Main Card (Glassmorphic Dark-Teal Vibe) -->
                         <table width="100%" cellpadding="0" cellspacing="0" style="max-width: 460px; background: rgba(22, 48, 44, 0.75); border: 1px solid rgba(92, 189, 176, 0.3); border-radius: 24px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5); overflow: hidden;">
                             
-                            <!-- Header with Glowing Accent Line -->
+                            <!-- Header with Text & Glowing Accent Line -->
                             <tr>
-                                <td style="padding: 35px 25px 20px 25px; text-align: center;">
-                                    
-                                    <!-- Logo with Emerald Ring -->
-                                    <div style="display: inline-block; padding: 4px; background: linear-gradient(135deg, #5CBDB0, #173e38); border-radius: 50%; box-shadow: 0 6px 20px rgba(92, 189, 176, 0.3);">
-                                        <img src="cid:kimberley_logo" alt="Kimberley Travel Logo" style="width: 75px; height: 75px; border-radius: 50%; display: block; object-fit: cover;">
-                                    </div>
-                                    
-                                    <h2 style="margin: 15px 0 0 0; color: #ffffff; font-size: 22px; font-weight: 700; letter-spacing: 1px;">
-                                        Kimberley Travel & Tours
-                                    </h2>
-                                    
-                                    <div style="width: 40px; height: 3px; background: #5CBDB0; margin: 10px auto 0 auto; border-radius: 2px;"></div>
+                                <td style="padding: 40px 25px 20px 25px; text-align: center;">
+                                    <h1 style="margin: 0; color: #ffffff; font-size: 24px; font-weight: 800; letter-spacing: 1.5px; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">
+                                        KIMBERLEY
+                                    </h1>
+                                    <p style="margin: 5px 0 0 0; color: #5CBDB0; font-size: 13px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase;">
+                                        Travel & Tours
+                                    </p>
+                                    <div style="width: 50px; height: 3px; background: #5CBDB0; margin: 15px auto 0 auto; border-radius: 2px;"></div>
                                 </td>
                             </tr>
 
