@@ -146,7 +146,7 @@ export const sentOTP = async (email, otp) => {
                                         <p class="otp-code">${otp}</p>
                                     </div>
 
-                                    <p class="expiry-note">This code will expire in <b>5 minutes</b>.</p>
+                                    <p class="expiry-note">This code will expire in <b>10 minutes</b>.</p>
                                     
                                     <p class="travel-tagline">"Discover the world with comfort and style."</p>
                                 </td>
