@@ -3,69 +3,204 @@ import { asyncHandel } from "../middleware/asyncMiddleware.js"
 import jwt from "jsonwebtoken"
 import bcrypt from "bcryptjs"
 import "dotenv/config"
+import { sentOTP } from "../helper/mailService.js"
 
 
 
 export const register = asyncHandel(async (req, res) => {
     try {
+        const {
+            username,
+            email,
+            phone,
+            password,
+            confirm_password,
+            township,
+            region,
+            address
+        } = req.body;
 
-        const { username, email, phone, password, confirm_password, township, region, address, } = req.body;
-
-        if (!username || !email || !password || !phone) {
-            return res.status(401).json({
-                message: "All field are required",
+        if (!username || !email || !password || !phone || !confirm_password) {
+            return res.status(400).json({
+                message: "All fields are required",
                 success: false
-            })
+            });
         }
 
-        const [checkEmail] = await db.query("SELECT * FROM users WHERE email = ?", [email]);
-        if (checkEmail.length > 0) {
-            return res.status(401).json({
-                message: "Email Already Exist!",
-                success: false
-            })
-        }
         if (password !== confirm_password) {
-            return res.status(401).json({
-                message: "Password must be the same!",
+            return res.status(400).json({
+                message: "Passwords do not match!",
                 success: false
-            })
+            });
         }
-        const hashedPassword = await bcrypt.hash(password, 12)
-        const role = "user";
-        const [data] = await db.query(
-            `
-            INSERT INTO users (username,email,phone,password,township,region,address,role) VALUES (?,?,?,?,?,?,?,?)
-            `,
-            [username, email, phone, hashedPassword, township, region, address, role]
-        )
+
+        const [checkEmail] = await db.query(
+            "SELECT id FROM users WHERE email = ?",
+            [email]
+        );
+
+        if (checkEmail.length > 0) {
+            return res.status(409).json({
+                message: "Email already exists!",
+                success: false
+            });
+        }
+
+       
+        const hashedPassword = await bcrypt.hash(password, 12);
+
+      
+        const otp = generateOTP();
+
+        await db.query(
+            "DELETE FROM otp_codes WHERE email = ?",
+            [email]
+        );
+
+      
+        await db.query(
+            `INSERT INTO otp_codes (email, otp, expires_at)
+             VALUES (?, ?, DATE_ADD(NOW(), INTERVAL 20 MINUTE))`,
+            [email, otp]
+        );
+
+        await sentOTP(email, otp);
+
+     
         const generateToken = jwt.sign(
             {
-                id: data.insertId,
                 username,
                 email,
-                role
+                phone,
+                hashedPassword,
+                township,
+                region,
+                address,
+                role: "user"
             },
             process.env.JWT_SECRET,
-            { expiresIn: "30m" }
+            { expiresIn: "20m" }
         );
-        res.status(201).json({
-            message: "Register successfully",
+
+        return res.status(200).json({
+            message: "OTP sent successfully",
             success: true,
-            token: generateToken,
+            token: generateToken
         });
 
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+});
+
+
+export const verifyOTP = asyncHandel(async (req, res) => {
+    try {
+        const { email, otp, token } = req.body;
+
+        if (!email || !otp || !token) {
+            return res.status(400).json({
+                message: "All fields are required!",
+                success: false
+            });
+        }
+
+        const [checkOTP] = await db.query(
+            `SELECT id
+             FROM otp_codes
+             WHERE email = ?
+    AND otp = ?
+        AND expires_at > NOW()`,
+            [email, otp]
+        );
+
+        if (checkOTP.length === 0) {
+            return res.status(400).json({
+                message: "Invalid or expired OTP",
+                success: false
+            });
+        }
+
+        let user;
+
+        try {
+            user = jwt.verify(token, process.env.JWT_SECRET);
+        } catch (error) {
+            return res.status(400).json({
+                message: "Invalid or expired token",
+                success: false
+            });
+        }
+
+      
+        if (user.email !== email) {
+            return res.status(400).json({
+                message: "Email does not match token",
+                success: false
+            });
+        }
+
+      
+        const [existingUser] = await db.query(
+            "SELECT id FROM users WHERE email = ?",
+            [email]
+        );
+
+        if (existingUser.length > 0) {
+            await db.query(
+                "DELETE FROM otp_codes WHERE email = ?",
+                [email]
+            );
+
+            return res.status(409).json({
+                message: "Email already exists!",
+                success: false
+            });
+        }
+
+    
+        await db.query(
+            `INSERT INTO users
+       (username, email, phone, password, township, region, address)
+        VALUES(?, ?, ?, ?, ?, ?, ?)`,
+            [
+                user.username,
+                user.email,
+                user.phone,
+                user.hashedPassword,
+                user.township || null,
+                user.region || null,
+                user.address || null
+            ]
+        );
+
+        await db.query(
+            "DELETE FROM otp_codes WHERE email = ?",
+            [email]
+        );
+
+        await sendMail(
+            email,
+            "Account Registration Successful",
+            "<h3>Please sign in to Kimberley Travel & Tours.</h3>"
+        );
+
+        return res.status(201).json({
+            message: "Register Success",
+            success: true
+        });
 
     } catch (error) {
-        return res.status(500).json(
-            {
-                success: false,
-                message: error.message
-
-            }
-        );
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        });
     }
-})
+});
+
 
 export const login = asyncHandel(async (req, res) => {
     try {
