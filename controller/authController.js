@@ -3,7 +3,7 @@ import { asyncHandel } from "../middleware/asyncMiddleware.js"
 import jwt from "jsonwebtoken"
 import bcrypt from "bcryptjs"
 import "dotenv/config"
-import { sentOTP } from "../helper/mailService.js"
+import { sendMail, sentOTP } from "../helper/mailService.js"
 import { generateOTP } from "../helper/otpService.js"
 
 
