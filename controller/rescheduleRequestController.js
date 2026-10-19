@@ -51,7 +51,7 @@ export const createRescheduleRequest = async( req , res ) => {
             });
         }
 
-        const [ bookings ] =  await db.execute(`SELECT * FROM bookings WHERE id = ? AND user_id = ? AND status IN ('PENDING', 'CONFIRMED','CANCELLED')`, [booking_id])
+        const [ bookings ] =  await db.execute(`SELECT * FROM bookings WHERE id = ? AND user_id = ? AND status IN ('PENDING', 'CONFIRMED','CANCELLED')`, [booking_id , user_id])
 
         if(!bookings || !bookings.length) {
             return res.status(400).json({
