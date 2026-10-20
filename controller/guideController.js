@@ -1211,6 +1211,7 @@ export const guideDetails = asyncHandel(async (req, res) => {
                         INNER JOIN users u
                             ON r.user_id = u.id
                         WHERE r.guide_id = g.id
+                        ORDER BY r.guide_id
                     ),
                     JSON_ARRAY()
                 ) AS reviews
