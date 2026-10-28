@@ -35,6 +35,7 @@ import overseaBookingRouter from "./router/overseaBookingRouter.js";
 import allReviewRouter from "./router/allReviewRouter.js"
 import tourBannerRouter from "./router/TravelRouter/tourBannerRouter.js"
 import tourSectionRouter from "./router/TravelRouter/tourSectionRouter.js"
+import tourDestinationRouter from "./router/TravelRouter/toueDestinationRouter.js"
 const app = express();
 
 
@@ -79,7 +80,7 @@ app.use("/api", rescheduleRequestRouter)
 app.use("/api", refundRequestRouter)
 app.use("/api", tourBannerRouter)
 app.use("/api", tourSectionRouter)
-
+app.use("/api", tourDestinationRouter)
 
 app.get("/", (req, res) => {
     res.send("Welcome from Express. Nice to meet you");
