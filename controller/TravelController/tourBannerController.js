@@ -45,7 +45,7 @@ export const bannerCreate = asyncHandel(async (req, res) => {
 
         const [data] = await db.query(
             `
-            INSERT INTO tourbanners (title,hightlight,subtitle,image) VALUES (?,?,?,?,?)
+            INSERT INTO tourbanners (title,hightlight,subtitle,image) VALUES (?,?,?,?)
             `,
             [
                 title, hightlight, subtitle, imagePath
@@ -83,6 +83,7 @@ export const bannerList = asyncHandel(async (req, res) => {
 
             FROM 
             tourbanners
+            ORDER BY id DESC 
             `
         )
         return res.status(200).json({
@@ -248,6 +249,7 @@ export const bannerMobileList = asyncHandel(async (req, res) => {
 
             FROM 
             tourbanners
+            ORDER BY id DESC 
             `
         )
         return res.status(200).json({
