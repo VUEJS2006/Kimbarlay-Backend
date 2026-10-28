@@ -105,8 +105,7 @@ export const bannerList = asyncHandel(async (req, res) => {
 export const bannerUpdate = asyncHandel(async (req, res) => {
     try {
 
-        const { id } = req.body;
-        const { title, subtitle, hightlight } = req.body;
+        const { id } = req.params;
 
         const [banners] = await db.query("SELECT * FROM tourbanners WHERE id = ?", [id]);
 
@@ -117,16 +116,12 @@ export const bannerUpdate = asyncHandel(async (req, res) => {
             });
         }
 
-        let updateImage = [banners[0].image];
+        const title = req.body.title ?? banners[0].title;
+        const subtitle = req.body.subtitle ?? banners[0].subtitle;
+        const hightlight = req.body.hightlight ?? banners[0].hightlight;
+
+        let updateImage = banners[0].image;
         if (req.file) {
-            if (banners[0].image) {
-                const oldPath = path.join(process.cwd(), banners[0].image);
-
-                if (fs.existsSync(oldPath)) {
-                    fs.unlinkSync(oldPath)
-                }
-            }
-
             const uploadFolder = path.join(process.cwd(), "images", "tourBanner");
 
             if (!fs.existsSync(uploadFolder)) {
@@ -166,6 +161,15 @@ export const bannerUpdate = asyncHandel(async (req, res) => {
                 id
             ]
         );
+
+        if (req.file && banners[0].image) {
+            const oldPath = path.join(process.cwd(), banners[0].image);
+
+            if (fs.existsSync(oldPath)) {
+                fs.unlinkSync(oldPath);
+            }
+        }
+
         return res.status(200).json({
             success: true,
             message: "Touer Banner  Update Successfully",
