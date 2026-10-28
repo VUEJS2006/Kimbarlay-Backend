@@ -10,7 +10,7 @@ router.get('/mobile/tour/section/list', authenticated, sectionMobileList);
 
 // Admin Site
 router.post('/admin/tour/section/create', authenticated, isAdmin, sectionCreate)
-router.delete('/admin/tour/section/list', authenticated, isAdmin, sectionList);
-router.get('/admin/tour/section/update/:id', authenticated, isAdmin, sectionUpdate)
+router.get('/admin/tour/section/list', authenticated, isAdmin, sectionList);
+router.put('/admin/tour/section/update/:id', authenticated, isAdmin, sectionUpdate)
 router.delete('/admin/tour/section/delete/:id', authenticated, isAdmin, sectionDelete);
 export default router;

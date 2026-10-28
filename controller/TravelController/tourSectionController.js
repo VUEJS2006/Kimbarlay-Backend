@@ -148,7 +148,7 @@ export const sectionDelete = asyncHandel(async (req, res) => {
                 success: false
             });
         }
-
+      
         await db.query(
             `
             DELETE FROM toursections
