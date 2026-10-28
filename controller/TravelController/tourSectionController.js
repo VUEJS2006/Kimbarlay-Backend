@@ -1,8 +1,4 @@
 
-import fs from "fs";
-import path from "path";
-import sharp from "sharp";
-import { v4 as uuid } from "uuid"
 import db from "../../config/db.js";
 import { asyncHandel } from "../../middleware/asyncMiddleware.js";
 
@@ -12,7 +8,7 @@ import { asyncHandel } from "../../middleware/asyncMiddleware.js";
 export const sectionCreate = asyncHandel(async (req, res) => {
     try {
 
-        const { title, icon, subtitle, color } = req.body;
+        const { title, icon, subtitle, color = null } = req.body;
 
         if (!title || !icon || !subtitle) {
             return res.status(400).json({
@@ -84,8 +80,7 @@ export const sectionList = asyncHandel(async (req, res) => {
 export const sectionUpdate = asyncHandel(async (req, res) => {
     try {
 
-        const { id } = req.body;
-        const { title, subtitle, icon, color } = req.body;
+        const { id } = req.params;
 
         const [sections] = await db.query("SELECT * FROM toursections WHERE id = ?", [id]);
 
@@ -95,6 +90,11 @@ export const sectionUpdate = asyncHandel(async (req, res) => {
                 success: false
             });
         }
+
+        const title = req.body.title ?? sections[0].title;
+        const subtitle = req.body.subtitle ?? sections[0].subtitle;
+        const icon = req.body.icon ?? sections[0].icon;
+        const color = req.body.color ?? sections[0].color;
 
 
         const [data] = await db.query(

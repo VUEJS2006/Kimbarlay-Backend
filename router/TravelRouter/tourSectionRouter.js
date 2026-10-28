@@ -1,7 +1,6 @@
 import { sectionCreate, sectionList, sectionUpdate, sectionDelete, sectionMobileList } from "../../controller/TravelController/tourSectionController.js"
 import express from "express";
 
-import { upload } from "../../middleware/upload.js";
 import { authenticated, isAdmin } from "../../middleware/authenticatedMiddleware.js";
 const router = express.Router()
 
