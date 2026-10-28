@@ -33,7 +33,8 @@ import helpfulRouter from "./router/helpfulRouter.js";
 import domesticBookingRouter from "./router/domesticBookingRouter.js";
 import overseaBookingRouter from "./router/overseaBookingRouter.js";
 import allReviewRouter from "./router/allReviewRouter.js"
-import tourbannerRouter from "./router/TravelRouter/tourBannerRouter.js"
+import tourBannerRouter from "./router/TravelRouter/tourBannerRouter.js"
+import tourSectionRouter from "./router/TravelRouter/tourSectionRouter.js"
 const app = express();
 
 
@@ -76,8 +77,8 @@ app.use("/api", overseaBookingRouter)
 app.use("/api", allReviewRouter)
 app.use("/api", rescheduleRequestRouter)
 app.use("/api", refundRequestRouter)
-app.use("/api", tourbannerRouter)
-
+app.use("/api", tourBannerRouter)
+app.use("/api", tourSectionRouter)
 
 
 app.get("/", (req, res) => {
