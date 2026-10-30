@@ -83,6 +83,7 @@ export const packageUpdate = asyncHandel(async (req, res) => {
     try {
 
         const { id } = req.params;
+        const { title, duration, original_price, price, discount, available_depart } = req.body;
 
         const [packages] = await db.query("SELECT * FROM tourpackages WHERE id = ?", [id]);
 
