@@ -100,79 +100,94 @@ export const destinationList = asyncHandel(async (req, res) => {
     }
 })
 
+
 export const destinationUpdate = asyncHandel(async (req, res) => {
     try {
-
-        const { id } = req.body;
+        const { id } = req.params;
         const { name } = req.body;
 
-        const [destinations] = await db.query("SELECT * FROM tourdestinations WHERE id = ?", [id]);
+        console.log("ID:", id);
+        console.log("BODY:", req.body);
+
+      
+
+        const [destinations] = await db.query(
+            "SELECT * FROM tourdestinations WHERE id = ?",
+            [id]
+        );
 
         if (destinations.length === 0) {
             return res.status(404).json({
-                message: "Tour Destination not found!",
-                success: false
+                success: false,
+                message: "Tour Destination not found!"
             });
         }
 
-        let updateImage = [destinations[0].image];
+        // Old image ကို မူလအတိုင်း ထားမယ်
+        let updateImage = destinations[0].image;
+
         if (req.file) {
-            if (destinations[0].image) {
-                const oldPath = path.join(process.cwd(), destinations[0].image);
-
-                if (fs.existsSync(oldPath)) {
-                    fs.unlinkSync(oldPath)
-                }
-            }
-
-            const uploadFolder = path.join(process.cwd(), "images", "tourDestination");
+            const uploadFolder = path.join(
+                process.cwd(),
+                "images",
+                "tourDestination"
+            );
 
             if (!fs.existsSync(uploadFolder)) {
-                fs.mkdirSync(uploadFolder, { recursive: true })
+                fs.mkdirSync(uploadFolder, { recursive: true });
             }
 
             const fileName = `${uuid()}.webp`;
             const savePath = path.join(uploadFolder, fileName);
+
             await sharp(req.file.buffer)
                 .resize({
                     width: 1920,
                     withoutEnlargement: true
                 })
-                .webp({
-                    quality: 95
-                })
+                .webp({ quality: 95 })
                 .toFile(savePath);
 
             updateImage = `images/tourDestination/${fileName}`;
+
+            // New image အောင်မြင်စွာသိမ်းပြီးမှ old image ဖျက်မယ်
+            if (destinations[0].image) {
+                const oldPath = path.join(
+                    process.cwd(),
+                    destinations[0].image
+                );
+
+                if (fs.existsSync(oldPath)) {
+                    fs.unlinkSync(oldPath);
+                }
+            }
         }
 
         const [data] = await db.query(
             `
-            UPDATE tourdestinations SET 
-            name = ?,
-            image = ?
-
+            UPDATE tourdestinations
+            SET name = ?, image = ?
             WHERE id = ?
             `,
-            [
-                name,
-                updateImage,
-                id
-            ]
+            [name, updateImage, id]
         );
+
         return res.status(200).json({
             success: true,
-            message: "Touer Destination  Update Successfully",
+            message: "Tour Destination Update Successfully",
             data
         });
 
     } catch (error) {
+        console.log(error);
+
         return res.status(500).json({
             success: false,
             message: error.message
         });
     }
-})
+});
+
 
 export const destinationDelete = asyncHandel(async (req, res) => {
     try {
