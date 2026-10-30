@@ -9,8 +9,8 @@ const router = express.Router()
 router.get('/mobile/tour/destination/list', authenticated, destinationMobileList);
 
 // Admin Site
-router.post('/admin/tour/destination/create', upload.single("image"), authenticated, isAdmin, destinationCreate)
+router.post('/admin/tour/destination/create', authenticated, isAdmin, destinationCreate)
 router.get('/admin/tour/destination/list', authenticated, isAdmin, destinationList);
-router.put('/admin/tour/destination/update/:id', upload.single("image"), authenticated, isAdmin, destinationUpdate)
+router.put('/admin/tour/destination/update/:id', authenticated, isAdmin, destinationUpdate)
 router.delete('/admin/tour/destination/delete/:id', authenticated, isAdmin, destinationDelete);
 export default router;
