@@ -79,10 +79,20 @@ export const departList = asyncHandel(async (req, res) => {
 export const departUpdate = asyncHandel(async (req, res) => {
     try {
 
-        const { id } = req.body;
+        const { id } = req.params;
         const { name } = req.body;
 
-        const [departs] = await db.query("SELECT * FROM departs WHERE id = ?", [id]);
+        if (!id || !name) {
+            return res.status(400).json({
+                success: false,
+                message: "ID and name are required!"
+            });
+        }
+
+        const [departs] = await db.query(
+            "SELECT * FROM departs WHERE id = ?",
+            [id]
+        );
 
         if (departs.length === 0) {
             return res.status(404).json({
@@ -91,31 +101,30 @@ export const departUpdate = asyncHandel(async (req, res) => {
             });
         }
 
-
         const [data] = await db.query(
             `
-            UPDATE departs SET 
-            name = ?
+            UPDATE departs
+            SET name = ?
             WHERE id = ?
             `,
-            [
-                name,
-                id
-            ]
+            [name, id]
         );
+
         return res.status(200).json({
             success: true,
-            message: "Depart  Update Successfully",
+            message: "Depart Update Successfully",
             data
         });
 
     } catch (error) {
+        console.log(error);
+
         return res.status(500).json({
             success: false,
             message: error.message
         });
     }
-})
+});
 
 export const departDelete = asyncHandel(async (req, res) => {
     try {
