@@ -62,7 +62,7 @@ export const getSearchFlightsWithRelatedData = async(req , res) => {
         let [flights] = await db.execute(query , [`%${from}%`]);
 
         if(to) {
-            flights = flights.filter(item => item.to_airport_city && item.to_airport_city.toLowerCase().includes(to.toLowerCase())).map(item => (item.airline_logo.startsWith("images") ? {...item , airline_logo : changeToImageFullUrl(item.airline_logo)} : item))
+            flights = flights.filter(item => item.to_airport_city && item.to_airport_city.toLowerCase().includes(to.toLowerCase())).map(item => (item.airline_logo && item.airline_logo.startsWith("images") ? {...item , airline_logo : changeToImageFullUrl(item.airline_logo)} : item))
         }
 
         res.status(200).json({

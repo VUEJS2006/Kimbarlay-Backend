@@ -44,16 +44,16 @@ export const getAllForAirfare = async(req , res) => {
         return res.status(200).json({
             success: true,
             data : {
-                airports : airports.map(item => (item.image_url.startsWith("images") ? {...item , image_url : changeToImageFullUrl(item.image_url)} : item )),
-                airlines : airlines.map(item => (item.logo_url.startsWith("images") ? {...item , logo_url : changeToImageFullUrl(item.logo_url)} : item )),
+                airports : airports.map(item => (item.image_url && item.image_url.startsWith("images") ? {...item , image_url : changeToImageFullUrl(item.image_url)} : item )),
+                airlines : airlines.map(item => (item.logo_url && item.logo_url.startsWith("images") ? {...item , logo_url : changeToImageFullUrl(item.logo_url)} : item )),
                 routes,
                 flights,
                 bookings,
                 reschedule_requests,
                 refund_requests,
                 banner : banners[0],
-                categories : categories.map(item => (item.icon_url.startsWith("images") ? {...item , icon_url : changeToImageFullUrl(item.icon_url)} : item )),
-                cateogry_items : items.map(item => (item.image_url.startsWith("images") ? {...item , image_url : changeToImageFullUrl(item.image_url)} : item )),
+                categories : categories.map(item => (item.icon_url && item.icon_url.startsWith("images") ? {...item , icon_url : changeToImageFullUrl(item.icon_url)} : item )),
+                cateogry_items : items.map(item => (item.image_url && item.image_url.startsWith("images") ? {...item , image_url : changeToImageFullUrl(item.image_url)} : item )),
                 trustCards,
                 refundCards,
                 faqs : faqs.map(item => ({...item , is_active : (item.is_active === 1) }))
@@ -74,7 +74,7 @@ export const getAirport = async(req , res) => {
         const query = `SELECT * FROM airports ORDER BY id DESC`;
         const [rows] = await db.execute(query);
 
-        const data = rows.map(item => (item.image_url.startsWith("images") ? {...item , image_url : changeToImageFullUrl(item.image_url) } : item ))
+        const data = rows.map(item => (item.image_url && item.image_url.startsWith("images") ? {...item , image_url : changeToImageFullUrl(item.image_url) } : item ))
 
         return res.status(200).json({
             success: true,
@@ -121,7 +121,7 @@ export const createAirport = async(req , res) => {
         res.status(201).json({
             success : true,
             message: 'Airport created successfully',
-            data: rows[0].image_url.startsWith("images") ?  {...rows[0] , image_url : changeToImageFullUrl(rows[0].image_url)} : rows[0]
+            data: rows[0].image_url && rows[0].image_url.startsWith("images") ?  {...rows[0] , image_url : changeToImageFullUrl(rows[0].image_url)} : rows[0]
         });
     } catch(error) {
         res.status(500).json({
@@ -179,7 +179,7 @@ export const updateAirport = async(req , res) => {
         res.status(201).json({
             success : true,
             message: 'Airport updated successfully',
-            data: updatedRow[0].image_url.startsWith("images") ?  {...updatedRow[0] , image_url : changeToImageFullUrl(updatedRow[0].image_url)} : updatedRow[0]
+            data: updatedRow[0].image_url && updatedRow[0].image_url.startsWith("images") ?  {...updatedRow[0] , image_url : changeToImageFullUrl(updatedRow[0].image_url)} : updatedRow[0]
         });
     } catch(error) {
         res.status(500).json({

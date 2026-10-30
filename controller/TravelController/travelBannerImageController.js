@@ -6,7 +6,7 @@ export const getAllTavelBannerImage = async (req , res) => {
     try {
         const [rows] = await db.execute("SELECT * FROM travel_banner_images ORDER BY id ASC");
 
-        const data = rows.map(item => (item.travel_banner_image_url.startsWith("images") ? {...item , travel_banner_image_url : changeToImageFullUrl(item.travel_banner_image_url)} : item ))
+        const data = rows.map(item => (item.travel_banner_image_url && item.travel_banner_image_url.startsWith("images") ? {...item , travel_banner_image_url : changeToImageFullUrl(item.travel_banner_image_url)} : item ))
 
         res.status(200).json({
             status : true,
@@ -93,7 +93,7 @@ export const updateTavelBannerImage = async (req , res) => {
         return res.status(200).json({
             status : true,
             message : "Successfully udated.",
-            data : rows[0].travel_banner_image_url.startsWith("images") ? {...rows[0] , travel_banner_image_url : changeToImageFullUrl(rows[0].travel_banner_image_url)} : rows[0]
+            data : rows[0].travel_banner_image_url && rows[0].travel_banner_image_url.startsWith("images") ? {...rows[0] , travel_banner_image_url : changeToImageFullUrl(rows[0].travel_banner_image_url)} : rows[0]
         })
 
     } catch(err) {
