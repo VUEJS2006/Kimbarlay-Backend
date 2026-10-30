@@ -8,7 +8,7 @@ export const getAirlines = async (req, res) => {
         const query = `SELECT * FROM airlines ORDER BY id DESC`;
         const [rows] = await db.execute(query);
 
-        const data = rows.map(item => ({...item , logo_url : changeToImageFullUrl(item.logo_url) }))
+        const data = rows.map(item => (item.logo_url.startsWith("images") ? {...item , logo_url : changeToImageFullUrl(item.logo_url) } : item ))
 
         return res.status(200).json({
             success: true,
@@ -58,7 +58,7 @@ export const createAirline = async (req, res) => {
         return res.status(201).json({
             success: true,
             message: "Airline created successfully",
-            data: {...createdRow[0] , logo_url : changeToImageFullUrl(createdRow[0].logo_url)}
+            data: createdRow[0].logo_url.startsWith("images") ? {...createdRow[0] , logo_url : changeToImageFullUrl(createdRow[0].logo_url)} : createdRow[0]
         });
 
     } catch (error) {
@@ -114,7 +114,7 @@ export const updateAirline = async (req, res) => {
         return res.status(200).json({
             success: true,
             message: "Airline updated successfully",
-            data: {...updatedRow[0] , logo_url : changeToImageFullUrl(updatedRow[0].logo_url)}
+            data: updatedRow[0].logo_url.startsWith("images") ? {...updatedRow[0] , logo_url : changeToImageFullUrl(updatedRow[0].logo_url)} : updatedRow[0]
         });
 
     } catch (error) {

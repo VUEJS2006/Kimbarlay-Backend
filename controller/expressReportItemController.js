@@ -7,7 +7,7 @@ export const getAllExpressReportItem = async(req , res) => {
 
         res.status(200).json({
             success : true , 
-            data : items.map(item => ({...item , image_url : changeToImageFullUrl(item.image_url)}))
+            data : items.map(item => (item.image_url.startsWith("images") ? {...item , image_url : changeToImageFullUrl(item.image_url)} : item))
         })
     } catch(err) {
         res.status(500).json({
@@ -65,7 +65,7 @@ export const createExpressReportItem = async(req , res) => {
         res.status(201).json({
             success: true,
             message: 'Item created successfully',
-            data: {...rows[0] , image_url : changeToImageFullUrl(rows[0].image_url)}
+            data: image ? {...rows[0] , image_url : changeToImageFullUrl(rows[0].image_url)} : rows[0]
         });
 
     } catch(err) {
@@ -130,7 +130,7 @@ export const updateExpressReportItem = async(req , res) => {
         res.status(200).json({
             success: true,
             message: 'Item updated successfully',
-            data: {...rows[0] , image_url : changeToImageFullUrl(rows[0].image_url)}
+            data: rows[0].image_url.startsWith("images") ? {...rows[0] , image_url : changeToImageFullUrl(rows[0].image_url)} : rows[0]
         });
 
     } catch(err) {

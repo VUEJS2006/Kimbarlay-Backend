@@ -4579,6 +4579,536 @@ CREATE TABLE refund_requests (
 }
 ```
 
+---
 
 # Travel
+
+## 1. SQL code of creating `special_offers_and_deals` in database
+
+```sql
+CREATE TABLE special_offers_and_deals (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    meta VARCHAR(255),
+    CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+```
+
+### GET /api/special_offer_and_deal/all
+
+- No payment required
+
+#### Response
+
+```json
+{
+    "status": true,
+    "message": "All items are here",
+    "data": [
+        {
+            "id": 1,
+            "title": "Early Bird Discount 2",
+            "description": "Book 60 days in advance and get 15% off selected tours 2",
+            "meta": "Valid until: Dec 31, 2025 2",
+            "CreatedAt": "2026-10-30T08:59:17.000Z",
+            "updatedAt": "2026-10-30T09:10:32.000Z"
+        },
+        {
+            "id": 2,
+            "title": "Early Bird Discount 3",
+            "description": "Book 60 days in advance and get 15% off selected tours 3",
+            "meta": "Valid until: Dec 31, 2025 3",
+            "CreatedAt": "2026-10-30T09:12:49.000Z",
+            "updatedAt": "2026-10-30T09:12:49.000Z"
+        }
+    ]
+}
+```
+
+### POST /api/special_offer_and_deal
+
+- `Only admin` can use this route.
+
+#### Payload
+
+- `title` must exit
+
+```json
+{
+    "title" : "Early Bird Discount",
+    "description" : "Book 60 days in advance and get 15% off selected tours",
+    "meta" : "Valid until: Dec 31, 2025"
+}
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully created",
+    "data": {
+        "id": 1,
+        "title": "Early Bird Discount",
+        "description": "Book 60 days in advance and get 15% off selected tours",
+        "meta": "Valid until: Dec 31, 2025",
+        "CreatedAt": "2026-10-30T08:59:17.000Z",
+        "updatedAt": "2026-10-30T08:59:17.000Z"
+    }
+}
+```
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Title is required"
+}
+```
+
+
+### PUT /api/special_offer_and_deal
+
+- `Only admin` can use this route.
+
+#### Payload
+
+-  `id` and `title` must exit
+
+```json
+{
+    "id" : 1,
+    "title" : "Early Bird Discount 2",
+    "description" : "Book 60 days in advance and get 15% off selected tours 2",
+    "meta" : "Valid until: Dec 31, 2025 2"
+}
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully udated.",
+    "data": {
+        "id": 1,
+        "title": "Early Bird Discount 2",
+        "description": "Book 60 days in advance and get 15% off selected tours 2",
+        "meta": "Valid until: Dec 31, 2025 2",
+        "CreatedAt": "2026-10-30T08:59:17.000Z",
+        "updatedAt": "2026-10-30T09:10:32.000Z"
+    }
+}
+```
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Wrong  or invalid Id!"
+}
+```
+
+```json
+{
+    "status": false,
+    "message": "Id and title are required"
+}
+```
+
+### DELETE /api/special_offer_and_deal/:id
+
+- `:id` is the id of item to delete
+
+#### Example 
+
+```text
+/api/special_offer_and_deal/1
+
+/api/special_offer_and_deal/2
+```
+
+#### Success response
+
+```json
+{
+    "status": true,
+    "message": "Successfully deleted."
+}
+```
+
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Wrong or invalid id!"
+}
+```
+
+
+## 2. SQL code of creating `travel_group_on_banners` in database
+
+```sql
+CREATE TABLE travel_group_on_banners (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    group_title VARCHAR(255) NOT NULL,
+    items TEXT,
+    CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+```
+
+
+### GET /api/travel_group_on_banners/all
+
+- No payment required
+
+#### Response
+
+```json
+{
+    "status": true,
+    "message": "All items are here",
+    "data": [
+        {
+            "id": 1,
+            "group_title": "Popular Cities 2",
+            "items": "Harbin, Lijiang, Sanya, Beijing, Shanghai 2",
+            "CreatedAt": "2026-10-30T10:04:46.000Z",
+            "updatedAt": "2026-10-30T10:13:00.000Z"
+        },
+        {
+            "id": 2,
+            "group_title": "Islands & Spots",
+            "items": "Bali, Phuket, Iceland, Hong Kong, Taiwan",
+            "CreatedAt": "2026-10-30T10:07:54.000Z",
+            "updatedAt": "2026-10-30T10:07:54.000Z"
+        }
+    ]
+}
+```
+
+
+### POST /api/travel_group_on_banners
+
+- `Only admin` can use this route.
+
+#### Payload
+
+- `groupTitle` must exit
+
+```json
+{
+    "groupTitle" : "Islands & Spots",
+    "items" : "Bali, Phuket, Iceland, Hong Kong, Taiwan"
+}
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully created",
+    "data": {
+        "id": 2,
+        "group_title": "Islands & Spots",
+        "items": "Bali, Phuket, Iceland, Hong Kong, Taiwan",
+        "CreatedAt": "2026-10-30T10:07:54.000Z",
+        "updatedAt": "2026-10-30T10:07:54.000Z"
+    }
+}
+```
+
+#### Error response
+
+```json
+{
+    "status": false,
+    "message": "Group title is required"
+}
+```
+
+### PUT /api/travel_group_on_banners
+
+- `Only admin` can use this route.
+
+#### Payload
+
+-  `id` and `groupTitle` must exit
+
+```json
+{
+    "id" : 1,
+    "groupTitle" : "Popular Cities 2",
+    "items" : "Harbin, Lijiang, Sanya, Beijing, Shanghai 2"
+}
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully udated.",
+    "data": {
+        "id": 1,
+        "group_title": "Popular Cities 2",
+        "items": "Harbin, Lijiang, Sanya, Beijing, Shanghai 2",
+        "CreatedAt": "2026-10-30T10:04:46.000Z",
+        "updatedAt": "2026-10-30T10:13:00.000Z"
+    }
+}
+```
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Wrong  or invalid Id!"
+}
+```
+
+```json
+{
+    "status": false,
+    "message": "Id and group title are required"
+}
+```
+
+
+### DELETE /api/travel_group_on_banners/:id
+
+- `:id` is the id of item to delete
+
+#### Example 
+
+```text
+/api/travel_group_on_banners/1
+
+/api/travel_group_on_banners/2
+```
+
+#### Success response
+
+```json
+{
+    "status": true,
+    "message": "Successfully deleted."
+}
+```
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Wrong or invalid id!"
+}
+```
+
+
+## 3. SQL code of creating `travel_banner_images` in database
+
+```sql
+CREATE TABLE travel_banner_images (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    travel_banner_image_url TEXT NOT NULL,
+    CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+```
+
+### GET /api/travel_banner_images/all
+
+- No payload required
+
+#### Response
+
+```json
+{
+    "status": true,
+    "message": "All items are here",
+    "data": [
+        {
+            "id": 1,
+            "travel_banner_image_url": "http://localhost:5000/images/travel_banner/99f0e42c-6f7b-478d-84df-20201642697a.webp",
+            "CreatedAt": "2026-10-30T10:46:56.000Z",
+            "updatedAt": "2026-10-30T10:46:56.000Z"
+        },
+        {
+            "id": 2,
+            "travel_banner_image_url": "http://localhost:5000/images/travel_banner/873f4b3a-7447-4b5e-8d28-6887d8ad11c3.webp",
+            "CreatedAt": "2026-10-30T10:48:18.000Z",
+            "updatedAt": "2026-10-30T10:48:18.000Z"
+        },
+        {
+            "id": 3,
+            "travel_banner_image_url": "https://i.pinimg.com/736x/78/8c/8f/788c8f18e5853a01a1776f00f709b6cb.jpg",
+            "CreatedAt": "2026-10-30T10:53:33.000Z",
+            "updatedAt": "2026-10-30T10:53:33.000Z"
+        }
+    ]
+}
+```
+
+### POST /api/travel_banner_images
+
+- `Only admin` can use this route.
+
+#### Request Body
+
+- This endpoint accepts data using `multipart/form-data`.
+- The following fields should be included in the request body as `FormData`:
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `image` | file | YES | Image file to upload |
+| `image_url` | string | YES | The image_url of the banner |
+
+#### Example
+
+```js
+const formData = new FormData();
+
+formData.append("image", imageFile);
+//or
+formData.append("image_url", "https://i.pinimg.com/736x/78/8c/8f/788c8f18e5853a01a1776f00f709b6cb.jpg");
+
+
+fetch("domain/api/travel_banner_image", {
+  method: "POST",
+  body: formData
+});
+```
+
+#### Success response
+
+```json
+{
+    "status": true,
+    "message": "Successfully created",
+    "data": {
+        "id": 2,
+        "travel_banner_image_url": "http://localhost:5000/images/travel_banner/873f4b3a-7447-4b5e-8d28-6887d8ad11c3.webp",
+        "CreatedAt": "2026-10-30T10:48:18.000Z",
+        "updatedAt": "2026-10-30T10:48:18.000Z"
+    }
+}
+```
+
+### Error response
+
+```json
+{
+    "status": false,
+    "message": "Image file or image_url is required"
+}
+```
+
+
+### PUT /api/travel_banner_images
+
+- `Only admin` can use this route.
+
+#### Request Body
+
+- This endpoint accepts data using `multipart/form-data`.
+- The following fields should be included in the request body as `FormData`:
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `id` | number | YES | id to delete |
+| `image` | file | YES | Image file to upload |
+| `image_url` | string | YES | The image_url of the banner |
+
+#### Example
+
+```js
+const formData = new FormData();
+
+formData.append("id", 2);
+
+formData.append("image", imageFile);
+//or
+formData.append("image_url", "https://i.pinimg.com/736x/78/8c/8f/788c8f18e5853a01a1776f00f709b6cb.jpg");
+
+
+fetch("domain/api/travel_banner_image", {
+  method: "PUT",
+  body: formData
+});
+```
+
+#### Success response
+
+```json
+{
+    "status": true,
+    "message": "Successfully udated.",
+    "data": {
+        "id": 2,
+        "travel_banner_image_url": "https://i.pinimg.com/736x/78/8c/8f/788c8f18e5853a01a1776f00f709b6cb.jpg",
+        "CreatedAt": "2026-10-30T10:48:18.000Z",
+        "updatedAt": "2026-10-30T11:37:31.000Z"
+    }
+}
+```
+
+### Error response
+
+```json
+{
+    "status": false,
+    "message": "Id and one of Image file or image_url are required"
+}
+```
+
+```json
+{
+    "status": false,
+    "message": "Wrong  or invalid Id!"
+}
+```
+
+
+### DELETE /api/travel_banner_images/:id
+
+- `:id` is the id of item to delete
+
+#### Example 
+
+```text
+/api/travel_banner_images/1
+
+/api/travel_banner_images/2
+```
+
+#### Success response
+
+```json
+{
+    "status": true,
+    "message": "Successfully deleted."
+}
+```
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Wrong or invalid id!"
+}
+```
+
+
+
 
