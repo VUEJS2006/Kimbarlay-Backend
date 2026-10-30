@@ -7,7 +7,7 @@ export const getExpressReportCategories = async(req , res) => {
         
         res.status(201).json({
             success : true,
-            data :  categories.map(item => ({...item , icon_url : changeToImageFullUrl(item.icon_url)}))
+            data :  categories.map(item => (item.icon_url.startsWith("images") ? {...item , icon_url : changeToImageFullUrl(item.icon_url)} : item))
         })
     } catch(err) {
         res.status(500).json({
@@ -52,7 +52,7 @@ export const createExpressReportCategory = async(req , res) => {
         res.status(201).json({
             success : true,
             message : "New Category is successfully created.",
-            data : {...rows[0] , icon_url : changeToImageFullUrl(rows[0].icon_url) }
+            data : rows[0].icon_url.startsWith("images") ? {...rows[0] , icon_url : changeToImageFullUrl(rows[0].icon_url) } : rows[0]
         })
 
     } catch(err) {
@@ -111,7 +111,7 @@ export const updateExpressReportCategory = async(req , res) => {
         res.status(201).json({
             success : true,
             message : "Category is successfully updated.",
-            data : {...rows[0] , icon_url : changeToImageFullUrl(rows[0].icon_url) }
+            data : rows[0].icon_url.startsWith("images") ? {...rows[0] , icon_url : changeToImageFullUrl(rows[0].icon_url) } : rows[0]
         })
 
     } catch(err) {
