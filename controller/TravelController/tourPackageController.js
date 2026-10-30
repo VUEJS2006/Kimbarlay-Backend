@@ -108,7 +108,6 @@ export const packageUpdate = asyncHandel(async (req, res) => {
             `,
             [
                 title,
-                subtitle,
                 duration,
                 original_price,
                 price,
