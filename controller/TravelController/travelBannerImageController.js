@@ -92,7 +92,7 @@ export const updateTavelBannerImage = async (req , res) => {
 
         return res.status(200).json({
             status : true,
-            message : "Successfully udated.",
+            message : "Successfully updated.",
             data : rows[0].travel_banner_image_url && rows[0].travel_banner_image_url.startsWith("images") ? {...rows[0] , travel_banner_image_url : changeToImageFullUrl(rows[0].travel_banner_image_url)} : rows[0]
         })
 

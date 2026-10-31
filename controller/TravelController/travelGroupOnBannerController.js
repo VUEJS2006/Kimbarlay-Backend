@@ -75,7 +75,7 @@ export const updateTavelGroupOnBanners = async (req , res) => {
 
         return res.status(200).json({
             status : true,
-            message : "Successfully udated.",
+            message : "Successfully updated.",
             data : rows[0]
         })
 
