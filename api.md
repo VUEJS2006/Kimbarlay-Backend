@@ -4580,6 +4580,7 @@ CREATE TABLE refund_requests (
 ```
 
 ---
+---
 
 # Travel
 
@@ -4692,7 +4693,7 @@ CREATE TABLE special_offers_and_deals (
 ```json
 {
     "status": true,
-    "message": "Successfully udated.",
+    "message": "Successfully updated.",
     "data": {
         "id": 1,
         "title": "Early Bird Discount 2",
@@ -4723,6 +4724,7 @@ CREATE TABLE special_offers_and_deals (
 ### DELETE /api/special_offer_and_deal/:id
 
 - `:id` is the id of item to delete
+- `Only admin` can use this route.
 
 #### Example 
 
@@ -4856,7 +4858,7 @@ CREATE TABLE travel_group_on_banners (
 ```json
 {
     "status": true,
-    "message": "Successfully udated.",
+    "message": "Successfully updated.",
     "data": {
         "id": 1,
         "group_title": "Popular Cities 2",
@@ -4887,6 +4889,7 @@ CREATE TABLE travel_group_on_banners (
 ### DELETE /api/travel_group_on_banners/:id
 
 - `:id` is the id of item to delete
+- `Only admin` can use this route.
 
 #### Example 
 
@@ -5052,7 +5055,7 @@ fetch("domain/api/travel_banner_image", {
 ```json
 {
     "status": true,
-    "message": "Successfully udated.",
+    "message": "Successfully updated.",
     "data": {
         "id": 2,
         "travel_banner_image_url": "https://i.pinimg.com/736x/78/8c/8f/788c8f18e5853a01a1776f00f709b6cb.jpg",
@@ -5082,6 +5085,7 @@ fetch("domain/api/travel_banner_image", {
 ### DELETE /api/travel_banner_images/:id
 
 - `:id` is the id of item to delete
+- `Only admin` can use this route.
 
 #### Example 
 
@@ -5089,6 +5093,191 @@ fetch("domain/api/travel_banner_image", {
 /api/travel_banner_images/1
 
 /api/travel_banner_images/2
+```
+
+#### Success response
+
+```json
+{
+    "status": true,
+    "message": "Successfully deleted."
+}
+```
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Wrong or invalid id!"
+}
+```
+
+
+## 4. SQL code of creating `testimonials` in database
+
+```sql
+CREATE TABLE testimonials (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    customer_name VARCHAR(255) NOT NULL,
+    destination VARCHAR(255) NOT NULL,
+    avatar_image_url VARCHAR(500),
+    rating DECIMAL(2,1) CHECK (rating >= 1.0 AND rating <= 5.0),
+    review_text TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+```
+
+
+### GET /api/travel_testimonials/all
+
+- No payment required
+
+#### Response
+
+```json
+{
+    "status": true,
+    "message": "All items are here",
+    "data": [
+        {
+            "id": 1,
+            "customer_name": "Li Ming",
+            "destination": "Traveled to Zhangjiajie",
+            "avatar_image_url": "https://randomuser.me/api/portraits/men/54.jpg",
+            "rating": "4.8",
+            "review_text": "Zhangjiajie was breathtaking!",
+            "created_at": "2026-10-30T22:34:09.000Z",
+            "updated_at": "2026-10-30T22:34:09.000Z"
+        },
+        {
+            "id": 2,
+            "customer_name": "Li Ming 3",
+            "destination": "Traveled to Zhangjiajie 3",
+            "avatar_image_url": "https://randomuser.me/api/portraits/men/54.jpg 3",
+            "rating": "4.4",
+            "review_text": "Zhangjiajie was breathtaking! 3",
+            "created_at": "2026-10-30T22:55:45.000Z",
+            "updated_at": "2026-10-30T23:19:28.000Z"
+        }
+    ]
+}
+```
+
+### POST /api/travel_testimonials
+
+- `Only admin` can use this route.
+
+#### Payload
+
+- `All items` are required
+
+```json
+{
+  "customerName": "Li Ming",
+  "destination": "Traveled to Zhangjiajie",
+  "avatarImageUrl": "https://randomuser.me/api/portraits/men/54.jpg",
+  "rating": 4.8,
+  "reviewText": "Zhangjiajie was breathtaking!"
+}
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully created",
+    "data": {
+        "id": 1,
+        "customer_name": "Li Ming",
+        "destination": "Traveled to Zhangjiajie",
+        "avatar_image_url": "https://randomuser.me/api/portraits/men/54.jpg",
+        "rating": "4.8",
+        "review_text": "Zhangjiajie was breathtaking!",
+        "created_at": "2026-10-30T22:34:09.000Z",
+        "updated_at": "2026-10-30T22:34:09.000Z"
+    }
+}
+```
+
+#### Error response
+
+```json
+{
+    "status": false,
+    "message": "Customer name, destination, avatar image url, rating and review text are required"
+}
+```
+
+
+### PUT /api/travel_testimonials
+
+- `Only admin` can use this route.
+
+#### Payload
+
+-  `id` and `all items` must exit
+
+```json
+{
+  "id" : 2,
+  "customerName": "Li Ming 3",
+  "destination": "Traveled to Zhangjiajie 3",
+  "avatarImageUrl": "https://randomuser.me/api/portraits/men/54.jpg 3",
+  "rating": 4.4,
+  "reviewText": "Zhangjiajie was breathtaking! 3"
+}
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully updated.",
+    "data": {
+        "id": 2,
+        "customer_name": "Li Ming 3",
+        "destination": "Traveled to Zhangjiajie 3",
+        "avatar_image_url": "https://randomuser.me/api/portraits/men/54.jpg 3",
+        "rating": "4.4",
+        "review_text": "Zhangjiajie was breathtaking! 3",
+        "created_at": "2026-10-30T22:55:45.000Z",
+        "updated_at": "2026-10-30T23:19:28.000Z"
+    }
+}
+```
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Wrong  or invalid Id!"
+}
+```
+
+```json
+{
+    "status": false,
+    "message": "Id, customer name, destination, avatar image url, rating and review text are required"
+}
+```
+
+
+### DELETE /api/travel_testimonials/:id
+
+- `:id` is the id of item to delete
+- `Only admin` can use this route.
+
+#### Example 
+
+```text
+/api/travel_testimonials/1
+
+/api/travel_testimonials/2
 ```
 
 #### Success response
