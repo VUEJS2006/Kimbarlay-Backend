@@ -5171,6 +5171,239 @@ CREATE TABLE testimonials (
 
 #### Payload
 
+- This endpoint accepts data using `multipart/form-data`.
+- The following fields should be included in the request body as `FormData`:
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `customerName` | string | YES | customer name |
+| `destination` | string | YES | destination |
+| `rating` | decimal | YES | rating |
+| `reviewText` | string | YES | reviewText |
+| `image` | file | YES | Image file to upload |
+| `avatarImageUrl` | string | YES | The image_url of the banner |
+
+#### Example
+
+```js
+const formData = new FormData();
+
+formData.append("customerName", "Li Ming");
+formData.append("destination",  "Traveled to Zhangjiajie");
+formData.append("rating", 4.8);
+formData.append("reviewText", "Zhangjiajie was breathtaking!");
+
+formData.append("image", imageFile);
+//or
+formData.append("avatarImageUrl", "https://i.pinimg.com/736x/78/8c/8f/788c8f18e5853a01a1776f00f709b6cb.jpg");
+
+
+fetch("domain/api/travel_testimonials", {
+  method: "POST",
+  body: formData
+});
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully created",
+    "data": {
+        "id": 3,
+        "customer_name": "Li Ming",
+        "destination": "Traveled to Zhangjiajie",
+        "avatar_image_url": "http://localhost:5000/images/travel_testimonial/7601c250-aaae-45a3-95ff-03dfc8f6fba8.webp",
+        "rating": "4.8",
+        "review_text": "Zhangjiajie was breathtaking!",
+        "created_at": "2026-10-31T02:30:49.000Z",
+        "updated_at": "2026-10-31T02:30:49.000Z"
+    }
+}
+```
+
+#### Error response
+
+```json
+{
+    "status": false,
+    "message": "Customer name, destination, avatar image url, rating and review text are required"
+}
+```
+
+
+### PUT /api/travel_testimonials
+
+- `Only admin` can use this route.
+
+#### Payload
+
+- This endpoint accepts data using `multipart/form-data`.
+- The following fields should be included in the request body as `FormData`:
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `id` | number | YES | id of the row to update |
+| `customerName` | string | YES | customer name |
+| `destination` | string | YES | destination |
+| `rating` | decimal | YES | rating |
+| `reviewText` | string | YES | reviewText |
+| `image` | file | YES | Image file to upload |
+| `avatarImageUrl` | string | YES | The image_url of the banner |
+
+#### Example
+
+```js
+const formData = new FormData();
+
+formData.append("id", 3);
+formData.append("customerName", "Li Ming 2");
+formData.append("destination",  "Traveled to Zhangjiajie 2");
+formData.append("rating", 4.4);
+formData.append("reviewText", "Zhangjiajie was breathtaking! 1");
+
+formData.append("image", imageFile);
+//or
+formData.append("avatarImageUrl", "https://i.pinimg.com/736x/78/8c/8f/788c8f18e5853a01a1776f00f709b6cb.jpg");
+
+
+fetch("domain/api/travel_testimonials", {
+  method: "PUT",
+  body: formData
+});
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully updated.",
+    "data": {
+        "id": 3,
+        "customer_name": "Li Ming 2",
+        "destination": "Traveled to Zhangjiajie 2",
+        "avatar_image_url": "https://i.pinimg.com/736x/78/8c/8f/788c8f18e5853a01a1776f00f709b6cb.jpg",
+        "rating": "4.4",
+        "review_text": "Zhangjiajie was breathtaking! 1",
+        "created_at": "2026-10-31T02:30:49.000Z",
+        "updated_at": "2026-10-31T02:34:51.000Z"
+    }
+}
+```
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Wrong  or invalid Id!"
+}
+```
+
+```json
+{
+    "status": false,
+    "message": "Id, customer name, destination, avatar image url, rating and review text are required"
+}
+```
+
+
+### DELETE /api/travel_testimonials/:id
+
+- `:id` is the id of item to delete
+- `Only admin` can use this route.
+
+#### Example 
+
+```text
+/api/travel_testimonials/1
+
+/api/travel_testimonials/2
+```
+
+#### Success response
+
+```json
+{
+    "status": true,
+    "message": "Successfully deleted."
+}
+```
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Wrong or invalid id!"
+}
+```
+
+
+
+<!-- 
+## 5. SQL code of creating `tour_package` in database
+
+```sql
+CREATE TABLE tourism_tour_package (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    package_name VARCHAR(255) NOT NULL,
+    category ENUM('Domestic', 'Local', 'Overseas') NOT NULL DEFAULT 'Domestic',
+    price DECIMAL(10,2) NOT NULL,
+    old_price DECIMAL(10,2) NULL,
+    rating DECIMAL(2,1) CHECK (rating >= 1.0 AND rating <= 5.0),
+    discount_tag VARCHAR(50) NULL,
+    description TEXT,
+    image_url VARCHAR(500),
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+```
+
+
+### GET /api/travel_testimonials/all
+
+- No payment required
+
+#### Response
+
+```json
+{
+    "status": true,
+    "message": "All items are here",
+    "data": [
+        {
+            "id": 1,
+            "customer_name": "Li Ming",
+            "destination": "Traveled to Zhangjiajie",
+            "avatar_image_url": "https://randomuser.me/api/portraits/men/54.jpg",
+            "rating": "4.8",
+            "review_text": "Zhangjiajie was breathtaking!",
+            "created_at": "2026-10-30T22:34:09.000Z",
+            "updated_at": "2026-10-30T22:34:09.000Z"
+        },
+        {
+            "id": 2,
+            "customer_name": "Li Ming 3",
+            "destination": "Traveled to Zhangjiajie 3",
+            "avatar_image_url": "https://randomuser.me/api/portraits/men/54.jpg 3",
+            "rating": "4.4",
+            "review_text": "Zhangjiajie was breathtaking! 3",
+            "created_at": "2026-10-30T22:55:45.000Z",
+            "updated_at": "2026-10-30T23:19:28.000Z"
+        }
+    ]
+}
+```
+
+### POST /api/travel_testimonials
+
+- `Only admin` can use this route.
+
+#### Payload
+
 - `All items` are required
 
 ```json
@@ -5296,8 +5529,6 @@ CREATE TABLE testimonials (
     "status": false,
     "message": "Wrong or invalid id!"
 }
-```
-
-
+``` -->
 
 

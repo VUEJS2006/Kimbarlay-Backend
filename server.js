@@ -43,6 +43,7 @@ import specialOffersAndDealsRouter from "./router/TravelRouter/specialOffersAndD
 import travelGroupOnBannerRouter from "./router/TravelRouter/travelGroupOnBannerRouter.js";
 import travelBannerImageRouter from "./router/TravelRouter/travelBannerImageRouter.js";
 import travelTestimonialRouter from "./router/TravelRouter/travelTestimonialRouter.js";
+import tourismTourPackageRouter from "./router/TravelRouter/tourismTourPackageRouter.js";
 
 
 
@@ -99,6 +100,7 @@ app.use("/api", specialOffersAndDealsRouter)
 app.use("/api", travelGroupOnBannerRouter)
 app.use("/api",travelBannerImageRouter)
 app.use("/api",travelTestimonialRouter)
+app.use("/api",tourismTourPackageRouter)
 
 app.get("/", (req, res) => {
     res.send("Welcome from Express. Nice to meet you");
