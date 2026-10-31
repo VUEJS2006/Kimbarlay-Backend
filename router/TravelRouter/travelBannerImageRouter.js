@@ -11,7 +11,7 @@ travelBannerImageRouter.post("/travel_banner_images" , upload.single("image") , 
 
 travelBannerImageRouter.put("/travel_banner_images" , upload.single("image") , authenticated , isAdmin ,  updateTavelBannerImage )
 
-travelBannerImageRouter.delete("/travel_banner_images/:id" ,  deleteTavelBannerImage )
+travelBannerImageRouter.delete("/travel_banner_images/:id" , authenticated , isAdmin ,  deleteTavelBannerImage )
 
 
 export default travelBannerImageRouter;
