@@ -11,7 +11,7 @@ tourismTourPackageRouter.post("/tourism_tour_packages" , upload.single("image") 
 
 tourismTourPackageRouter.put("/tourism_tour_packages" , upload.single("image") , authenticated , isAdmin , updateTourismTourPackages )
 
-tourismTourPackageRouter.delete("/tourism_tour_packages/:id" ,   deleteTavelTourismTourPackages )
+tourismTourPackageRouter.delete("/tourism_tour_packages/:id" , authenticated , isAdmin ,  deleteTavelTourismTourPackages )
 
 
 export default tourismTourPackageRouter;
