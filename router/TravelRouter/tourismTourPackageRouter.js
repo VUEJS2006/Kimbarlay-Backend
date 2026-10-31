@@ -1,15 +1,17 @@
 import express from "express"
 import { authenticated, isAdmin } from "../../middleware/authenticatedMiddleware.js";
+import { createTourismTourPackages, deleteTavelTourismTourPackages, getAllTourismTourPackages, updateTourismTourPackages } from "../../controller/TravelController/tourismTourPackageController.js";
+import { upload } from "../../middleware/upload.js";
 
 const tourismTourPackageRouter = express.Router();
 
-// tourismTourPackageRouter.get("/travel_testimonials/all" ,  getAllTavelTestimonials )
+tourismTourPackageRouter.get("/tourism_tour_packages/all" ,  getAllTourismTourPackages )
 
-// tourismTourPackageRouter.post("/tourism_tour_packages" ,  createTavelTestimonials )
+tourismTourPackageRouter.post("/tourism_tour_packages" , upload.single("image") , authenticated , isAdmin ,  createTourismTourPackages )
 
-// tourismTourPackageRouter.put("/travel_testimonials" , authenticated , isAdmin ,  updateTavelTestimonials )
+tourismTourPackageRouter.put("/tourism_tour_packages" , upload.single("image") , authenticated , isAdmin , updateTourismTourPackages )
 
-// tourismTourPackageRouter.delete("/travel_testimonials/:id" ,   deleteTavelTestimonials )
+tourismTourPackageRouter.delete("/tourism_tour_packages/:id" ,   deleteTavelTourismTourPackages )
 
 
 export default tourismTourPackageRouter;

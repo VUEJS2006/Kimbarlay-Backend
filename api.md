@@ -5343,8 +5343,8 @@ fetch("domain/api/travel_testimonials", {
 
 
 
-<!-- 
-## 5. SQL code of creating `tour_package` in database
+
+## 5. SQL code of creating `tourism_tour_package` in database
 
 ```sql
 CREATE TABLE tourism_tour_package (
@@ -5363,7 +5363,7 @@ CREATE TABLE tourism_tour_package (
 ```
 
 
-### GET /api/travel_testimonials/all
+### GET /api/tourism_tour_packages/all
 
 - No payment required
 
@@ -5376,44 +5376,77 @@ CREATE TABLE tourism_tour_package (
     "data": [
         {
             "id": 1,
-            "customer_name": "Li Ming",
-            "destination": "Traveled to Zhangjiajie",
-            "avatar_image_url": "https://randomuser.me/api/portraits/men/54.jpg",
-            "rating": "4.8",
-            "review_text": "Zhangjiajie was breathtaking!",
-            "created_at": "2026-10-30T22:34:09.000Z",
-            "updated_at": "2026-10-30T22:34:09.000Z"
+            "package_name": "Yangon-Mandalay 2-Day Tour",
+            "category": "Domestic",
+            "price": "3999.00",
+            "old_price": "4699.00",
+            "rating": "4.5",
+            "discount_tag": "15% OFF",
+            "description": "Experience the vibrant culture of Yangon City.",
+            "image_url": "http://localhost:5000/images/tourism_tour_package/622d5e90-b2d9-45a5-b12b-b037fe6269e2.webp",
+            "created_at": "2026-10-31T03:40:22.000Z",
+            "updated_at": "2026-10-31T03:40:22.000Z"
         },
         {
             "id": 2,
-            "customer_name": "Li Ming 3",
-            "destination": "Traveled to Zhangjiajie 3",
-            "avatar_image_url": "https://randomuser.me/api/portraits/men/54.jpg 3",
-            "rating": "4.4",
-            "review_text": "Zhangjiajie was breathtaking! 3",
-            "created_at": "2026-10-30T22:55:45.000Z",
-            "updated_at": "2026-10-30T23:19:28.000Z"
+            "package_name": "Yangon-Mandalay 2-Day Tour 2",
+            "category": "Domestic",
+            "price": "3992.00",
+            "old_price": "4692.00",
+            "rating": "4.2",
+            "discount_tag": "12% OFF",
+            "description": "Experience the vibrant culture of Yangon City. 2",
+            "image_url": "https://images.unsplash.com/photo-1528181304800-259b08848526?w=600&h=400&fit=crop",
+            "created_at": "2026-10-31T03:40:36.000Z",
+            "updated_at": "2026-10-31T03:42:28.000Z"
         }
     ]
 }
 ```
 
-### POST /api/travel_testimonials
+### POST /api/tourism_tour_packages
 
 - `Only admin` can use this route.
 
 #### Payload
 
-- `All items` are required
+- This endpoint accepts data using `multipart/form-data`.
+- The following fields should be included in the request body as `FormData`:
 
-```json
-{
-  "customerName": "Li Ming",
-  "destination": "Traveled to Zhangjiajie",
-  "avatarImageUrl": "https://randomuser.me/api/portraits/men/54.jpg",
-  "rating": 4.8,
-  "reviewText": "Zhangjiajie was breathtaking!"
-}
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `package_name` | string | YES | package_name |
+| `category` | Enum | YES | must be one of ('Domestic', 'Local', 'Overseas') |
+| `price` | decimal | YES | current price |
+| `old_price` | decimal | No | old price |
+| `rating` | decimal | YES | rating |
+| `discount_tag` | string | YES | discount_tag |
+| `description` | string | YES | description |
+| `image` | file | YES | Image file to upload |
+| `image_url` | string | YES | The image_url |
+
+#### Example
+
+```js
+const formData = new FormData();
+
+formData.append("package_name", "Yangon-Mandalay 2-Day Tour");
+formData.append("category",  "Domestic");
+formData.append("price", 3999);
+formData.append("old_price", 4699);
+formData.append("rating", 4.5);
+formData.append("discount_tag", "15% OFF");
+formData.append("description", "Experience the vibrant culture of Yangon City.");
+
+formData.append("image", imageFile);
+//or
+formData.append("image_url", "https://images.unsplash.com/photo-1528181304800-259b08848526?w=600&h=400&fit=crop");
+
+
+fetch("domain/api/tourism_tour_packages", {
+  method: "POST",
+  body: formData
+});
 ```
 
 #### Success Response
@@ -5424,13 +5457,16 @@ CREATE TABLE tourism_tour_package (
     "message": "Successfully created",
     "data": {
         "id": 1,
-        "customer_name": "Li Ming",
-        "destination": "Traveled to Zhangjiajie",
-        "avatar_image_url": "https://randomuser.me/api/portraits/men/54.jpg",
-        "rating": "4.8",
-        "review_text": "Zhangjiajie was breathtaking!",
-        "created_at": "2026-10-30T22:34:09.000Z",
-        "updated_at": "2026-10-30T22:34:09.000Z"
+        "package_name": "Yangon-Mandalay 2-Day Tour",
+        "category": "Domestic",
+        "price": "3999.00",
+        "old_price": "4699.00",
+        "rating": "4.5",
+        "discount_tag": "15% OFF",
+        "description": "Experience the vibrant culture of Yangon City.",
+        "image_url": "http://localhost:5000/images/tourism_tour_package/622d5e90-b2d9-45a5-b12b-b037fe6269e2.webp",
+        "created_at": "2026-10-31T03:40:22.000Z",
+        "updated_at": "2026-10-31T03:40:22.000Z"
     }
 }
 ```
@@ -5440,28 +5476,61 @@ CREATE TABLE tourism_tour_package (
 ```json
 {
     "status": false,
-    "message": "Customer name, destination, avatar image url, rating and review text are required"
+    "message": "Package_name , category , price , rating and description are required"
+}
+```
+
+```json
+{
+    "status": false,
+    "message": "Category must exactly be one of Domestic, Local, Overseas"
 }
 ```
 
 
-### PUT /api/travel_testimonials
+### PUT /api/tourism_tour_packages
 
 - `Only admin` can use this route.
 
 #### Payload
 
--  `id` and `all items` must exit
+- This endpoint accepts data using `multipart/form-data`.
+- The following fields should be included in the request body as `FormData`:
 
-```json
-{
-  "id" : 2,
-  "customerName": "Li Ming 3",
-  "destination": "Traveled to Zhangjiajie 3",
-  "avatarImageUrl": "https://randomuser.me/api/portraits/men/54.jpg 3",
-  "rating": 4.4,
-  "reviewText": "Zhangjiajie was breathtaking! 3"
-}
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `id` | number | YES | id of row to update |
+| `package_name` | string | YES | package_name |
+| `price` | decimal | YES | current price |
+| `old_price` | decimal | No | old price |
+| `rating` | decimal | YES | rating |
+| `discount_tag` | string | YES | discount_tag |
+| `description` | string | YES | description |
+| `image` | file | YES | Image file to upload |
+| `image_url` | string | YES | The image_url |
+
+#### Example
+
+```js
+const formData = new FormData();
+
+formData.append("id", 2);
+formData.append("package_name", "Yangon-Mandalay 2-Day Tour 2");
+formData.append("price", 3992);
+formData.append("old_price", 4692);
+formData.append("rating", 4.2);
+formData.append("discount_tag", "2% OFF");
+formData.append("description", "Experience the vibrant culture of Yangon City. 2");
+
+formData.append("image", imageFile);
+//or
+formData.append("image_url", "https://images.unsplash.com/photo-1528181304800-259b08848526?w=600&h=400&fit=crop");
+
+
+fetch("domain/api/tourism_tour_packages", {
+  method: "PUT",
+  body: formData
+});
 ```
 
 #### Success Response
@@ -5472,13 +5541,16 @@ CREATE TABLE tourism_tour_package (
     "message": "Successfully updated.",
     "data": {
         "id": 2,
-        "customer_name": "Li Ming 3",
-        "destination": "Traveled to Zhangjiajie 3",
-        "avatar_image_url": "https://randomuser.me/api/portraits/men/54.jpg 3",
-        "rating": "4.4",
-        "review_text": "Zhangjiajie was breathtaking! 3",
-        "created_at": "2026-10-30T22:55:45.000Z",
-        "updated_at": "2026-10-30T23:19:28.000Z"
+        "package_name": "Yangon-Mandalay 2-Day Tour 2",
+        "category": "Domestic",
+        "price": "3992.00",
+        "old_price": "4692.00",
+        "rating": "4.2",
+        "discount_tag": "12% OFF",
+        "description": "Experience the vibrant culture of Yangon City. 2",
+        "image_url": "https://images.unsplash.com/photo-1528181304800-259b08848526?w=600&h=400&fit=crop",
+        "created_at": "2026-10-31T03:40:36.000Z",
+        "updated_at": "2026-10-31T03:42:28.000Z"
     }
 }
 ```
@@ -5495,7 +5567,7 @@ CREATE TABLE tourism_tour_package (
 ```json
 {
     "status": false,
-    "message": "Id, customer name, destination, avatar image url, rating and review text are required"
+    "message": "Id , package_name , price , rating and description are required"
 }
 ```
 
@@ -5529,6 +5601,7 @@ CREATE TABLE tourism_tour_package (
     "status": false,
     "message": "Wrong or invalid id!"
 }
-``` -->
+```
+
 
 
