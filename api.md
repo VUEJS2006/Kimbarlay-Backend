@@ -5603,5 +5603,236 @@ fetch("domain/api/tourism_tour_packages", {
 }
 ```
 
+## 6. SQL code of creating `tourism_tour_booking` in database
 
+```sql
+CREATE TABLE tourism_tour_booking (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    package_id INT NOT NULL,
+    user_id INT NOT NULL,
+    full_name VARCHAR(255) NULL,
+    email_address VARCHAR(255) NOT NULL,
+    phone_number VARCHAR(50) NOT NULL,
+    address TEXT NOT NULL,
+    booking_status ENUM('Pending', 'Confirmed', 'Cancelled') NOT NULL DEFAULT 'Pending',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_tour_package
+        FOREIGN KEY (package_id) 
+        REFERENCES tourism_tour_package(id) 
+        ON DELETE CASCADE 
+        ON UPDATE CASCADE,
+    CONSTRAINT fk_booking_user
+        FOREIGN KEY (user_id) 
+        REFERENCES users(id) 
+        ON DELETE CASCADE 
+        ON UPDATE CASCADE
+);
+```
+
+### GET /api/tourism_tour_booking/all
+
+- Only `admin` can get all bookings
+- No payment required
+
+#### Response
+
+```json
+{
+    "status": true,
+    "message": "All items are here",
+    "data": [
+        {
+            "id": 1,
+            "package_id": 1,
+            "user_id": 2,
+            "full_name": "John Doe",
+            "email_address": "john.doe@example.com",
+            "phone_number": "+959123456789",
+            "address": "123 Main Street, Yankin Township, Yangon",
+            "booking_status": "Cancelled",
+            "created_at": "2026-11-01T11:26:05.000Z",
+            "updated_at": "2026-11-01T11:39:18.000Z"
+        },
+        {
+            "id": 2,
+            "package_id": 1,
+            "user_id": 3,
+            "full_name": "John Doe",
+            "email_address": "john.doe@example.com",
+            "phone_number": "+959123456789",
+            "address": "123 Main Street, Yankin Township, Yangon",
+            "booking_status": "Cancelled",
+            "created_at": "2026-11-01T11:26:05.000Z",
+            "updated_at": "2026-11-01T11:39:18.000Z"
+        }
+    ]
+}
+```
+
+
+### GET /api/tourism_tour_booking/user
+
+- `Authenticated user` can get their bookings
+- No payment required
+
+#### Response
+
+```json
+{
+    "status": true,
+    "message": "User-related bookings are here",
+    "data": [
+        {
+            "id": 1,
+            "package_id": 1,
+            "user_id": 2,
+            "full_name": "John Doe",
+            "email_address": "john.doe@example.com",
+            "phone_number": "+959123456789",
+            "address": "123 Main Street, Yankin Township, Yangon",
+            "booking_status": "Cancelled",
+            "created_at": "2026-11-01T11:26:05.000Z",
+            "updated_at": "2026-11-01T11:39:18.000Z"
+        },
+        {
+            "id": 2,
+            "package_id": 2,
+            "user_id": 2,
+            "full_name": "John Doe",
+            "email_address": "john.doe@example.com",
+            "phone_number": "+959123456789",
+            "address": "123 Main Street, Yankin Township, Yangon",
+            "booking_status": "Pending",
+            "created_at": "2026-11-01T11:59:54.000Z",
+            "updated_at": "2026-11-01T11:59:54.000Z"
+        }
+    ]
+}
+```
+
+### POST /api/tourism_tour_booking
+
+- `Only authenticated user` can use this route.
+
+#### Payload
+
+```json
+{
+  "packageId": 1,
+  "fullName": "John Doe",
+  "emailAddress": "john.doe@example.com",
+  "phoneNumber": "+959123456789",
+  "address": "123 Main Street, Yankin Township, Yangon"
+}
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully created",
+    "data": {
+        "id": 1,
+        "package_id": 1,
+        "user_id": 2,
+        "full_name": "John Doe",
+        "email_address": "john.doe@example.com",
+        "phone_number": "+959123456789",
+        "address": "123 Main Street, Yankin Township, Yangon",
+        "booking_status": "Pending",
+        "created_at": "2026-11-01T11:26:05.000Z",
+        "updated_at": "2026-11-01T11:26:05.000Z"
+    }
+}
+```
+
+#### Error response
+
+```json
+{
+    "status": false,
+    "message": "Package does not exit in database!"
+}
+```
+```json
+{
+    "status": false,
+    "message": "PackageId, fullName, emailAddress, phoneNumber and address are required"
+}
+```
+
+### PATCH /api/travel_group_on_banners
+
+- Both `user` and `admin` can use this route.
+
+#### Payload
+
+-  `id` and `bookingStatus` must exit
+- `bookingStatus` must be one of `'Pending', 'Confirmed', 'Cancelled'`
+
+```json
+{
+    "id" : 1,
+    "bookingStatus" : "Cancelled"
+}
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully Cancelled"
+}
+```
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Wrong  or invalid Id!"
+}
+```
+
+```json
+{
+    "status": false,
+    "message": "Id and bookingStatus are required"
+}
+```
+
+
+### DELETE /api/travel_group_on_banners/:id
+
+- `:id` is the id of item to delete
+- `Only admin` can use this route.
+
+#### Example 
+
+```text
+/api/travel_group_on_banners/1
+
+/api/travel_group_on_banners/2
+```
+
+#### Success response
+
+```json
+{
+    "status": true,
+    "message": "Successfully deleted."
+}
+``` 
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Wrong or invalid id!"
+}
+```
 
