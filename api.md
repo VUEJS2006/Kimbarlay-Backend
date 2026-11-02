@@ -5836,3 +5836,202 @@ CREATE TABLE tourism_tour_booking (
 }
 ```
 
+
+
+## 7. SQL code of creating `travel_banners_unity` in database
+
+```sql
+CREATE TABLE travel_banners_unity (
+    id VARCHAR(50) PRIMARY KEY,
+    background_image_url VARCHAR(500) NULL,
+    tag VARCHAR(100) NULL,
+    title VARCHAR(255) NOT NULL,
+    subtitle TEXT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+```
+
+### GET /api/travel_banner_images/all
+
+- No payload required
+
+#### Response
+
+```json
+{
+    "status": true,
+    "message": "All items are here",
+    "data": [
+        {
+            "id": 1,
+            "travel_banner_image_url": "http://localhost:5000/images/travel_banner/99f0e42c-6f7b-478d-84df-20201642697a.webp",
+            "CreatedAt": "2026-10-30T10:46:56.000Z",
+            "updatedAt": "2026-10-30T10:46:56.000Z"
+        },
+        {
+            "id": 2,
+            "travel_banner_image_url": "http://localhost:5000/images/travel_banner/873f4b3a-7447-4b5e-8d28-6887d8ad11c3.webp",
+            "CreatedAt": "2026-10-30T10:48:18.000Z",
+            "updatedAt": "2026-10-30T10:48:18.000Z"
+        },
+        {
+            "id": 3,
+            "travel_banner_image_url": "https://i.pinimg.com/736x/78/8c/8f/788c8f18e5853a01a1776f00f709b6cb.jpg",
+            "CreatedAt": "2026-10-30T10:53:33.000Z",
+            "updatedAt": "2026-10-30T10:53:33.000Z"
+        }
+    ]
+}
+```
+
+### POST /api/travel_banner_images
+
+- `Only admin` can use this route.
+
+#### Request Body
+
+- This endpoint accepts data using `multipart/form-data`.
+- The following fields should be included in the request body as `FormData`:
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `image` | file | YES | Image file to upload |
+| `image_url` | string | YES | The image_url of the banner |
+
+#### Example
+
+```js
+const formData = new FormData();
+
+formData.append("image", imageFile);
+//or
+formData.append("image_url", "https://i.pinimg.com/736x/78/8c/8f/788c8f18e5853a01a1776f00f709b6cb.jpg");
+
+
+fetch("domain/api/travel_banner_image", {
+  method: "POST",
+  body: formData
+});
+```
+
+#### Success response
+
+```json
+{
+    "status": true,
+    "message": "Successfully created",
+    "data": {
+        "id": 2,
+        "travel_banner_image_url": "http://localhost:5000/images/travel_banner/873f4b3a-7447-4b5e-8d28-6887d8ad11c3.webp",
+        "CreatedAt": "2026-10-30T10:48:18.000Z",
+        "updatedAt": "2026-10-30T10:48:18.000Z"
+    }
+}
+```
+
+### Error response
+
+```json
+{
+    "status": false,
+    "message": "Image file or image_url is required"
+}
+```
+
+
+### PUT /api/travel_banner_images
+
+- `Only admin` can use this route.
+
+#### Request Body
+
+- This endpoint accepts data using `multipart/form-data`.
+- The following fields should be included in the request body as `FormData`:
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `id` | number | YES | id to delete |
+| `image` | file | YES | Image file to upload |
+| `image_url` | string | YES | The image_url of the banner |
+
+#### Example
+
+```js
+const formData = new FormData();
+
+formData.append("id", 2);
+
+formData.append("image", imageFile);
+//or
+formData.append("image_url", "https://i.pinimg.com/736x/78/8c/8f/788c8f18e5853a01a1776f00f709b6cb.jpg");
+
+
+fetch("domain/api/travel_banner_image", {
+  method: "PUT",
+  body: formData
+});
+```
+
+#### Success response
+
+```json
+{
+    "status": true,
+    "message": "Successfully updated.",
+    "data": {
+        "id": 2,
+        "travel_banner_image_url": "https://i.pinimg.com/736x/78/8c/8f/788c8f18e5853a01a1776f00f709b6cb.jpg",
+        "CreatedAt": "2026-10-30T10:48:18.000Z",
+        "updatedAt": "2026-10-30T11:37:31.000Z"
+    }
+}
+```
+
+### Error response
+
+```json
+{
+    "status": false,
+    "message": "Id and one of Image file or image_url are required"
+}
+```
+
+```json
+{
+    "status": false,
+    "message": "Wrong  or invalid Id!"
+}
+```
+
+
+### DELETE /api/travel_banner_images/:id
+
+- `:id` is the id of item to delete
+- `Only admin` can use this route.
+
+#### Example 
+
+```text
+/api/travel_banner_images/1
+
+/api/travel_banner_images/2
+```
+
+#### Success response
+
+```json
+{
+    "status": true,
+    "message": "Successfully deleted."
+}
+```
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Wrong or invalid id!"
+}
+```
