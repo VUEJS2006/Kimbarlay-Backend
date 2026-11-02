@@ -48,6 +48,8 @@ import tourLocalPackageRouter from "./router/TravelRouter/tourLocalPackageRouter
 import tourDomesticBookingRouter from "./router/TravelRouter/tourDomesticBookingRouter.js"
 import tourLocalBookingRouter from "./router/TravelRouter/tourLocalBookingRouter.js"
 import newfeedRouter from "./router/TravelRouter/newfeedRouter.js";
+import internationalRouter from "./router/TravelRouter/internationalDestinationRouter.js";
+import internationalPackageRouter from "./router/TravelRouter/internationalPackageRouter.js";
 
 
 import specialOffersAndDealsRouter from "./router/TravelRouter/specialOffersAndDealsRouter.js";
@@ -117,7 +119,8 @@ app.use("/api", tourLocalPackageRouter)
 app.use("/api", tourDomesticBookingRouter)
 app.use("/api", tourLocalBookingRouter)
 app.use("/api", newfeedRouter)
-
+app.use("/api", internationalRouter)
+app.use("/api", internationalPackageRouter)
 
 
 
