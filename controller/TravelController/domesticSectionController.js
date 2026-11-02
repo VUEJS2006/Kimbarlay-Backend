@@ -1,7 +1,34 @@
 import db from "../../config/db.js";
 import { asyncHandel } from "../../middleware/asyncMiddleware.js";
 
+export const domesticSectionCreate = asyncHandel(async (req, res) => {
+    try {
+        const { title, icon, subtitle, color = null } = req.body;
 
+        if (!title || !icon || !subtitle) {
+            return res.status(400).json({
+                success: false,
+                message: "All fields are required!"
+            });
+        }
+
+        const [data] = await db.query(
+            "INSERT INTO domestic_sections (title, icon, subtitle, color) VALUES (?, ?, ?, ?)",
+            [title, icon, subtitle, color]
+        );
+
+        return res.status(201).json({
+            message: "Domestic Section Create Success",
+            success: true,
+            data
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+});
 
 export const domesticSectionList = asyncHandel(async (req, res) => {
     try {
