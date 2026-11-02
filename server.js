@@ -41,7 +41,8 @@ import tourPackageRouter from "./router/TravelRouter/tourPackageRouter.js"
 import tourBookingRouter from "./router/TravelRouter/tourBookingRouter.js"
 import tourDomesticRouter from "./router/TravelRouter/toueDomesticRouter.js"
 import tourLocalRouter from "./router/TravelRouter/toueLocalRouter.js"
-
+import tourDomesticPackageRouter from "./router/TravelRouter/tourDomesticPackageRouter.js"
+import tourLocalPackageRouter from "./router/TravelRouter/tourLocalPackageRouter.js"
 
 
 import specialOffersAndDealsRouter from "./router/TravelRouter/specialOffersAndDealsRouter.js";
@@ -104,16 +105,18 @@ app.use("/api", tourPackageRouter)
 app.use("/api", tourBookingRouter)
 app.use("/api", tourDomesticRouter)
 app.use("/api", tourLocalRouter)
+app.use("/api", tourDomesticPackageRouter)
+app.use("/api", tourLocalPackageRouter)
 
 
 
 app.use("/api", specialOffersAndDealsRouter)
 app.use("/api", travelGroupOnBannerRouter)
 
-app.use("/api",travelBannerImageRouter)
-app.use("/api",travelTestimonialRouter)
-app.use("/api",tourismTourPackageRouter)
-app.use("/api",tourismTourBookingRouter)
+app.use("/api", travelBannerImageRouter)
+app.use("/api", travelTestimonialRouter)
+app.use("/api", tourismTourPackageRouter)
+app.use("/api", tourismTourBookingRouter)
 
 
 app.get("/", (req, res) => {
