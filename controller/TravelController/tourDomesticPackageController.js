@@ -42,34 +42,28 @@ export const DomesticpackageCreate = asyncHandel(async (req, res) => {
 
 export const DomesticpackageList = asyncHandel(async (req, res) => {
     try {
-
         const [data] = await db.query(
             `
             SELECT 
-            id,
-            title,
-            duration,
-            original_price,
-            price,
-            discount,
-            available_depart,
-            DATE_FORMAT(
-            created_at,
-            '%d-%m-%Y'
-            ) AS created_at
-
-            FROM 
-            domestic_packages
-            ORDER BY id DESC 
+                id,
+                title,
+                duration,
+                CAST(original_price AS UNSIGNED) AS original_price,
+                CAST(price AS UNSIGNED) AS price,
+                CAST(discount AS UNSIGNED) AS discount,
+                available_depart,
+                DATE_FORMAT(created_at, '%d-%m-%Y') AS created_at
+            FROM domestic_packages
+            ORDER BY id DESC
             `
-        )
+        );
+
         return res.status(200).json({
             message: "Domestic Package List Success",
             success: true,
             count: data.length,
-            data: data
+            data
         });
-
 
     } catch (error) {
         return res.status(500).json({
@@ -77,8 +71,7 @@ export const DomesticpackageList = asyncHandel(async (req, res) => {
             message: error.message
         });
     }
-})
-
+});
 export const DomesticpackageUpdate = asyncHandel(async (req, res) => {
     try {
 
@@ -172,35 +165,28 @@ export const DomesticpackageDelete = asyncHandel(async (req, res) => {
 
 export const DomesticpackageMobileList = asyncHandel(async (req, res) => {
     try {
-
         const [data] = await db.query(
             `
             SELECT 
-            id,
-            title,
-            duration,
-            original_price,
-            price,
-            discount,
-            available_depart,
-
-            DATE_FORMAT(
-            created_at,
-            '%d-%m-%Y'
-            ) AS created_at
-
-            FROM 
-            domestic_packages
-            ORDER BY id DESC 
+                id,
+                title,
+                duration,
+                CAST(original_price AS UNSIGNED) AS original_price,
+                CAST(price AS UNSIGNED) AS price,
+                CAST(discount AS UNSIGNED) AS discount,
+                available_depart,
+                DATE_FORMAT(created_at, '%d-%m-%Y') AS created_at
+            FROM domestic_packages
+            ORDER BY id DESC
             `
-        )
+        );
+
         return res.status(200).json({
             message: "Domestic Package List Success",
             success: true,
             count: data.length,
-            data: data
+            data
         });
-
 
     } catch (error) {
         return res.status(500).json({
@@ -208,4 +194,4 @@ export const DomesticpackageMobileList = asyncHandel(async (req, res) => {
             message: error.message
         });
     }
-})
+});
