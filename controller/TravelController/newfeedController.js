@@ -20,7 +20,7 @@ export const newfeedCreate = asyncHandel(async (req, res) => {
 
         const [data] = await db.query(
             `
-            INSERT INTO tour_newfeeds (name, description)
+            INSERT INTO newfeeds (name, description)
             VALUES (?, ?)
             `,
             [name, description]
@@ -47,7 +47,7 @@ export const newfeedList = asyncHandel(async (req, res) => {
         const [data] = await db.query(
             `
             SELECT *
-            FROM tour_newfeeds
+            FROM newfeeds
             ORDER BY id DESC
             `
         );
@@ -88,16 +88,16 @@ export const newfeedUpdate = asyncHandel(async (req, res) => {
             });
         }
 
-        const [tour_newfeeds] = await db.query(
+        const [newfeeds] = await db.query(
             `
             SELECT id
-            FROM tour_newfeeds
+            FROM newfeeds
             WHERE id = ?
             `,
             [id]
         );
 
-        if (tour_newfeeds.length === 0) {
+        if (newfeeds.length === 0) {
             return res.status(404).json({
                 message: "New Feed not found!",
                 success: false
@@ -106,7 +106,7 @@ export const newfeedUpdate = asyncHandel(async (req, res) => {
 
         const [data] = await db.query(
             `
-            UPDATE tour_newfeeds
+            UPDATE newfeeds
             SET name = ?,
                 description = ?
             WHERE id = ?
@@ -141,16 +141,16 @@ export const newfeedDelete = asyncHandel(async (req, res) => {
             });
         }
 
-        const [tour_newfeeds] = await db.query(
+        const [newfeeds] = await db.query(
             `
             SELECT id
-            FROM tour_newfeeds
+            FROM newfeeds
             WHERE id = ?
             `,
             [id]
         );
 
-        if (tour_newfeeds.length === 0) {
+        if (newfeeds.length === 0) {
             return res.status(404).json({
                 message: "New Feed not found!",
                 success: false
@@ -159,7 +159,7 @@ export const newfeedDelete = asyncHandel(async (req, res) => {
 
         await db.query(
             `
-            DELETE FROM tour_newfeeds
+            DELETE FROM newfeeds
             WHERE id = ?
             `,
             [id]
@@ -185,7 +185,7 @@ export const newfeedMobileList = asyncHandel(async (req, res) => {
         const [data] = await db.query(
             `
             SELECT *
-            FROM tour_newfeeds
+            FROM newfeeds
             ORDER BY id DESC
             `
         );

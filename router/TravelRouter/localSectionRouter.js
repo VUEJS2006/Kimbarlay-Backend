@@ -18,3 +18,5 @@ router.put("/admin/tour/local/section/update/:id", authenticated, isAdmin, local
 router.delete("/admin/tour/local/section/delete/:id", authenticated, isAdmin, localSectionDelete);
 
 export default router;
+
+
