@@ -50,7 +50,7 @@ import tourLocalBookingRouter from "./router/TravelRouter/tourLocalBookingRouter
 import newfeedRouter from "./router/TravelRouter/newfeedRouter.js";
 import internationalRouter from "./router/TravelRouter/internationalDestinationRouter.js";
 import internationalPackageRouter from "./router/TravelRouter/internationalPackageRouter.js";
-
+import internationalBookingRouter from "./router/TravelRouter/interBookingRouter.js";
 
 import specialOffersAndDealsRouter from "./router/TravelRouter/specialOffersAndDealsRouter.js";
 import travelGroupOnBannerRouter from "./router/TravelRouter/travelGroupOnBannerRouter.js";
@@ -121,7 +121,7 @@ app.use("/api", tourLocalBookingRouter)
 app.use("/api", newfeedRouter)
 app.use("/api", internationalRouter)
 app.use("/api", internationalPackageRouter)
-
+app.use("/api", internationalBookingRouter)
 
 
 app.use("/api", specialOffersAndDealsRouter)
