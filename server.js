@@ -109,14 +109,12 @@ app.use("/api", tourLocalRouter)
 
 app.use("/api", specialOffersAndDealsRouter)
 app.use("/api", travelGroupOnBannerRouter)
-<<<<<<< HEAD
-app.use("/api", travelBannerImageRouter)
-=======
+
 app.use("/api",travelBannerImageRouter)
 app.use("/api",travelTestimonialRouter)
 app.use("/api",tourismTourPackageRouter)
 app.use("/api",tourismTourBookingRouter)
->>>>>>> e9b286a36bb75605ffd2fcdb13e253794cc5f700
+
 
 app.get("/", (req, res) => {
     res.send("Welcome from Express. Nice to meet you");
