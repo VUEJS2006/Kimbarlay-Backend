@@ -5836,3 +5836,275 @@ CREATE TABLE tourism_tour_booking (
 }
 ```
 
+
+
+## 7. SQL code of creating `travel_banners_unity` in database
+
+```sql
+CREATE TABLE travel_banners_unity (
+    id VARCHAR(50) PRIMARY KEY,
+    background_image_url VARCHAR(500) NULL,
+    tag VARCHAR(100) NULL,
+    title VARCHAR(255) NOT NULL,
+    subtitle TEXT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+```
+
+## 7.1 For local tours banner
+
+### GET /api/local_tours_bunner
+
+- No payment required
+
+#### Response
+
+```json
+{
+    "status": true,
+    "message": "local_tours_bunner is here.",
+    "data": {
+        "background_image_url": "http://localhost:5000/images/local_tours_bunner/b5d37442-633b-4c04-88dd-a4ba139453c6.webp",
+        "title": "Discover Hidden Gems Around Shanghai",
+        "subtitle": "Explore the most beautiful scenery around Shanghai, experience different travels",
+        "created_at": "2026-11-02T10:48:03.000Z",
+        "updated_at": "2026-11-02T11:25:51.000Z"
+    }
+}
+```
+
+### PUT /api/local_tours_bunner
+
+- `Only admin` can use this route.
+
+#### Payload
+
+- This endpoint accepts data using `multipart/form-data`.
+- The following fields should be included in the request body as `FormData`:
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `title` | string | YES | title |
+| `subtitle` | string | YES | subtitle |
+| `image` | file | YES | Image file to upload |
+| `background_image_url` | string | YES | The background_image_url of the banner |
+
+#### Example
+
+```js
+const formData = new FormData();
+
+formData.append("title", "Discover Hidden Gems Around Shanghai");
+formData.append("subtitle",  "Explore the most beautiful scenery around Shanghai, experience different travels");
+
+formData.append("image", imageFile);
+//or
+formData.append("background_image_url", "https://images.unsplash.com/photo-1503386435952-d7918b99e4e3?w=1350&q=80");
+
+
+fetch("domain/api/local_tours_bunner", {
+  method: "PUT",
+  body: formData
+});
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully edited.",
+    "data": {
+        "background_image_url": "http://localhost:5000/images/local_tours_bunner/b5d37442-633b-4c04-88dd-a4ba139453c6.webp",
+        "title": "Discover Hidden Gems Around Shanghai",
+        "subtitle": "Explore the most beautiful scenery around Shanghai, experience different travels",
+        "created_at": "2026-11-02T10:48:03.000Z",
+        "updated_at": "2026-11-02T11:25:51.000Z"
+    }
+}
+```
+
+##### Error Response 
+
+```json
+{
+    "status": false,
+    "message": "Title and subtitle are required"
+}
+```
+
+
+## 7.2 For private customize travel banner
+
+### GET /api/private_customize_travel_banner
+
+- No payment required
+
+#### Response
+
+```json
+{
+    "status": true,
+    "message": "private_customize_travel_banner is here.",
+    "data": {
+        "background_image_url": "http://localhost:5000/images/private_customize_travel_banner/4fb2ae8b-05a9-4050-9fa1-5f1de5678c4b.webp",
+        "title": "Customize Your Dream Trip",
+        "subtitle": "Tell us where you want to go and our experts will design the perfect itinerary just for you.",
+        "created_at": "2026-11-02T11:19:55.000Z",
+        "updated_at": "2026-11-02T11:21:16.000Z",
+        "badge": "Premium Travel Service"
+    }
+}
+```
+
+### PUT /api/private_customize_travel_banner
+
+- `Only admin` can use this route.
+
+#### Payload
+
+- This endpoint accepts data using `multipart/form-data`.
+- The following fields should be included in the request body as `FormData`:
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `badge` | string | NO | title |
+| `title` | string | YES | title |
+| `subtitle` | string | YES | subtitle |
+| `image` | file | YES | Image file to upload |
+| `background_image_url` | string | YES | The background_image_url of the banner |
+
+#### Example
+
+```js
+const formData = new FormData();
+
+formData.append("badge", "Premium Travel Service");
+formData.append("title", "Customize Your Dream Trip");
+formData.append("subtitle",  "Tell us where you want to go and our experts will design the perfect itinerary just for you.");
+
+formData.append("image", imageFile);
+//or
+formData.append("background_image_url", "https://images.unsplash.com/photo-1503386435952-d7918b99e4e3?w=1350&q=80");
+
+
+fetch("domain/api/private_customize_travel_banner", {
+  method: "PUT",
+  body: formData
+});
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully edited.",
+    "data": {
+        "background_image_url": "http://localhost:5000/images/private_customize_travel_banner/4fb2ae8b-05a9-4050-9fa1-5f1de5678c4b.webp",
+        "title": "Customize Your Dream Trip",
+        "subtitle": "Tell us where you want to go and our experts will design the perfect itinerary just for you.",
+        "created_at": "2026-11-02T11:19:55.000Z",
+        "updated_at": "2026-11-02T11:21:16.000Z",
+        "badge": "Premium Travel Service"
+    }
+}
+```
+
+##### Error Response 
+
+```json
+{
+    "status": false,
+    "message": "Title and subtitle are required"
+}
+```
+
+## 7.3 For insurance banner
+
+### GET /api/insurance_banner
+
+- No payment required
+
+#### Response
+
+```json
+{
+    "status": true,
+    "message": "insurance_banner is here.",
+    "data": {
+        "background_image_url": "http://localhost:5000/images/insurance_banner/05ca1608-8fec-4811-8f09-6ef1651390a6.webp",
+        "title": "Global Travel Insurance",
+        "subtitle": "Comprehensive protection for your journeys worldwide. Travel with peace of mind knowing you're covered.",
+        "created_at": "2026-11-02T11:29:55.000Z",
+        "updated_at": "2026-11-02T11:29:55.000Z",
+        "tag": "Kimberley Insurance Agents"
+    }
+}
+```
+
+### PUT /api/insurance_banner
+
+- `Only admin` can use this route.
+
+#### Payload
+
+- This endpoint accepts data using `multipart/form-data`.
+- The following fields should be included in the request body as `FormData`:
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `tag` | string | NO | title |
+| `title` | string | YES | title |
+| `subtitle` | string | YES | subtitle |
+| `image` | file | YES | Image file to upload |
+| `background_image_url` | string | YES | The background_image_url of the banner |
+
+#### Example
+
+```js
+const formData = new FormData();
+
+formData.append("tag", "Kimberley Insurance Agents");
+formData.append("title", "Global Travel Insurance");
+formData.append("subtitle",  "Comprehensive protection for your journeys worldwide. Travel with peace of mind knowing you're covered.");
+
+formData.append("image", imageFile);
+//or
+formData.append("background_image_url", "https://images.unsplash.com/photo-1503386435952-d7918b99e4e3?w=1350&q=80");
+
+
+fetch("domain/api/insurance_banner", {
+  method: "PUT",
+  body: formData
+});
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully edited.",
+    "data": {
+        "background_image_url": "http://localhost:5000/images/insurance_banner/48d6a0d3-eb93-4085-a9c0-816636a92ed6.webp",
+        "title": "Global Travel Insurance",
+        "subtitle": "Comprehensive protection for your journeys worldwide. Travel with peace of mind knowing you're covered.",
+        "created_at": "2026-11-02T11:29:55.000Z",
+        "updated_at": "2026-11-02T11:31:03.000Z",
+        "tag": "Kimberley Insurance Agents"
+    }
+}
+```
+
+##### Error Response 
+
+```json
+{
+    "status": false,
+    "message": "Title and subtitle are required"
+}
+```
+
+
