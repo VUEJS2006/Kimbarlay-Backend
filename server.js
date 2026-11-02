@@ -58,6 +58,7 @@ import travelBannerImageRouter from "./router/TravelRouter/travelBannerImageRout
 import travelTestimonialRouter from "./router/TravelRouter/travelTestimonialRouter.js";
 import tourismTourPackageRouter from "./router/TravelRouter/tourismTourPackageRouter.js";
 import tourismTourBookingRouter from "./router/TravelRouter/tourismTourBookingRouter.js";
+import travelBannersUnityRouter from "./router/TravelRouter/travelBannersUnityRouter.js";
 
 
 
@@ -131,6 +132,7 @@ app.use("/api", travelBannerImageRouter)
 app.use("/api", travelTestimonialRouter)
 app.use("/api", tourismTourPackageRouter)
 app.use("/api", tourismTourBookingRouter)
+app.use("/api", travelBannersUnityRouter)
 
 
 app.get("/", (req, res) => {

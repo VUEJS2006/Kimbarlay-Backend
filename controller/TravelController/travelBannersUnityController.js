@@ -3,16 +3,23 @@ import { changeToImageFullUrl, deleteStoredImage, storeImageToDynamicFolder } fr
 import fs from "fs";
 import path from "path";
 
-export const getAllTavelBannerImage = async (req , res) => {
+export const getTravelBannersUnity = async (req , res) => {
     try {
-        const [rows] = await db.execute("SELECT * FROM travel_banner_images ORDER BY id ASC");
+        const id = req.id;
 
-        const data = rows.map(item => (item.travel_banner_image_url && item.travel_banner_image_url.startsWith("images") ? {...item , travel_banner_image_url : changeToImageFullUrl(item.travel_banner_image_url)} : item ))
+        const [ rows ] = await db.query(`SELECT * FROM travel_banners_unity WHERE id = ?` , [id]);
 
-        res.status(200).json({
+        let data ={ background_image_url : rows[0].background_image_url , title : rows[0].title , subtitle : rows[0].subtitle , created_at :  rows[0].created_at , updated_at : rows[0].updated_at }
+        if(id === "insurance_banner") {
+            data.tag = rows[0].tag;
+        } else if(id === "private_customize_travel_banner") {
+            data.badge = rows[0].tag;
+        }
+
+        return res.status(200).json({
             status : true,
-            message : "All items are here",
-            data
+            message : id + " is here.",
+            data : data.background_image_url && data.background_image_url.startsWith("images") ? {...data , background_image_url : changeToImageFullUrl(data.background_image_url)} : data
         })
 
     } catch(err) {
@@ -30,7 +37,7 @@ export const updateTravelBannersUnity = async (req , res) => {
         const { background_image_url , title , subtitle , tag , badge } = req.body;
         const image = req.file;
         const id = req.id;
-        const finalTag = tag && badge;
+        const finalTag = tag || badge;
 
         if(!image && !background_image_url) {
             return res.status(400).json({
@@ -74,50 +81,20 @@ export const updateTravelBannersUnity = async (req , res) => {
 
         await db.query(query , [ id , url , finalTag , title , subtitle ]);
 
-        const [ rows ] = await db.query(`SELECT * FROM travel_banner_images WHERE id = ?` , [id]);
+        const [ rows ] = await db.query(`SELECT * FROM travel_banners_unity WHERE id = ?` , [id]);
+
+        let data ={ background_image_url : rows[0].background_image_url , title : rows[0].title , subtitle : rows[0].subtitle , created_at :  rows[0].created_at , updated_at : rows[0].updated_at }
+        if(id === "insurance_banner") {
+            data.tag = rows[0].tag;
+        } else if(id === "private_customize_travel_banner") {
+            data.badge = rows[0].tag;
+        }
+
 
         return res.status(200).json({
             status : true,
             message : "Successfully edited.",
-            data : rows[0].background_image_url && rows[0].background_image_url.startsWith("images") ? {...rows[0] , background_image_url : changeToImageFullUrl(rows[0].background_image_url)} : rows[0]
-        })
-
-    } catch(err) {
-        console.error(err);
-        return res.status(500).json({ 
-            success: false,
-            message: err.message 
-        });
-    }
-}
-
-export const deleteTavelBannerImage = async (req , res) => {
-    try {
-        const { id } = req.params;
-
-        if(!id) {
-            return res.status(400).json({
-                status : false,
-                message : "Id is required"
-            })
-        }
-
-        const [ rows ] = await db.query(`SELECT * FROM travel_banner_images WHERE id = ?` , [id]);
-
-        const [ result ] = await db.query(`DELETE FROM travel_banner_images WHERE id = ?` , [ id ]);
-
-        if(result.affectedRows === 0) {
-            return res.status(400).json({
-                status : false,
-                message : "Wrong or invalid id!"
-            })
-        }
-
-        await deleteStoredImage(rows[0].travel_banner_image_url)
-
-        res.status(200).json({
-            status : true,
-            message : "Successfully deleted."
+            data : data.background_image_url && data.background_image_url.startsWith("images") ? {...data , background_image_url : changeToImageFullUrl(data.background_image_url)} : data
         })
 
     } catch(err) {
