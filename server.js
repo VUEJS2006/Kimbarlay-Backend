@@ -38,6 +38,11 @@ import tourSectionRouter from "./router/TravelRouter/tourSectionRouter.js"
 import tourDestinationRouter from "./router/TravelRouter/toueDestinationRouter.js"
 import tourdepartRouter from "./router/TravelRouter/tourdepartRouter.js"
 import tourPackageRouter from "./router/TravelRouter/tourPackageRouter.js"
+import tourBookingRouter from "./router/TravelRouter/tourBookingRouter.js"
+import tourDomesticRouter from "./router/TravelRouter/toueDomesticRouter.js"
+import tourLocalRouter from "./router/TravelRouter/toueLocalRouter.js"
+
+
 
 import specialOffersAndDealsRouter from "./router/TravelRouter/specialOffersAndDealsRouter.js";
 import travelGroupOnBannerRouter from "./router/TravelRouter/travelGroupOnBannerRouter.js";
@@ -93,10 +98,15 @@ app.use("/api", tourSectionRouter)
 app.use("/api", tourDestinationRouter)
 app.use("/api", tourdepartRouter)
 app.use("/api", tourPackageRouter)
+app.use("/api", tourBookingRouter)
+app.use("/api", tourDomesticRouter)
+app.use("/api", tourLocalRouter)
+
+
 
 app.use("/api", specialOffersAndDealsRouter)
 app.use("/api", travelGroupOnBannerRouter)
-app.use("/api",travelBannerImageRouter)
+app.use("/api", travelBannerImageRouter)
 
 app.get("/", (req, res) => {
     res.send("Welcome from Express. Nice to meet you");

@@ -14,3 +14,4 @@ router.get('/admin/tour/destination/list', authenticated, isAdmin, destinationLi
 router.put('/admin/tour/destination/update/:id', upload.single("image"), authenticated, isAdmin, destinationUpdate)
 router.delete('/admin/tour/destination/delete/:id', authenticated, isAdmin, destinationDelete);
 export default router;
+
