@@ -35,6 +35,8 @@ import overseaBookingRouter from "./router/overseaBookingRouter.js";
 import allReviewRouter from "./router/allReviewRouter.js"
 import tourBannerRouter from "./router/TravelRouter/tourBannerRouter.js"
 import tourSectionRouter from "./router/TravelRouter/tourSectionRouter.js"
+import domesticSectionRouter from "./router/TravelRouter/domesticSectionRouter.js"
+import localSectionRouter from "./router/TravelRouter/localSectionRouter.js"
 import tourDestinationRouter from "./router/TravelRouter/toueDestinationRouter.js"
 import tourdepartRouter from "./router/TravelRouter/tourdepartRouter.js"
 import tourPackageRouter from "./router/TravelRouter/tourPackageRouter.js"
@@ -102,6 +104,8 @@ app.use("/api", rescheduleRequestRouter)
 app.use("/api", refundRequestRouter)
 app.use("/api", tourBannerRouter)
 app.use("/api", tourSectionRouter)
+app.use("/api", domesticSectionRouter)
+app.use("/api", localSectionRouter)
 app.use("/api", tourDestinationRouter)
 app.use("/api", tourdepartRouter)
 app.use("/api", tourPackageRouter)
@@ -113,6 +117,9 @@ app.use("/api", tourLocalPackageRouter)
 app.use("/api", tourDomesticBookingRouter)
 app.use("/api", tourLocalBookingRouter)
 app.use("/api", newfeedRouter)
+
+
+
 
 app.use("/api", specialOffersAndDealsRouter)
 app.use("/api", travelGroupOnBannerRouter)
@@ -139,4 +146,3 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, "0.0.0.0", () => {
     console.log(`Server is Running on ${PORT}`)
 })
-
