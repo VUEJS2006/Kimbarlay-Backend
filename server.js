@@ -43,7 +43,8 @@ import tourDomesticRouter from "./router/TravelRouter/toueDomesticRouter.js"
 import tourLocalRouter from "./router/TravelRouter/toueLocalRouter.js"
 import tourDomesticPackageRouter from "./router/TravelRouter/tourDomesticPackageRouter.js"
 import tourLocalPackageRouter from "./router/TravelRouter/tourLocalPackageRouter.js"
-
+import tourDomesticBookingRouter from "./router/TravelRouter/tourDomesticBookingRouter.js"
+import tourLocalBookingRouter from "./router/TravelRouter/tourLocalBookingRouter.js"
 
 import specialOffersAndDealsRouter from "./router/TravelRouter/specialOffersAndDealsRouter.js";
 import travelGroupOnBannerRouter from "./router/TravelRouter/travelGroupOnBannerRouter.js";
@@ -107,7 +108,8 @@ app.use("/api", tourDomesticRouter)
 app.use("/api", tourLocalRouter)
 app.use("/api", tourDomesticPackageRouter)
 app.use("/api", tourLocalPackageRouter)
-
+app.use("/api", tourDomesticBookingRouter)
+app.use("/api", tourLocalBookingRouter)
 
 
 app.use("/api", specialOffersAndDealsRouter)
