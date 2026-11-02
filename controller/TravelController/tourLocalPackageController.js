@@ -42,34 +42,28 @@ export const LocalpackageCreate = asyncHandel(async (req, res) => {
 
 export const LocalpackageList = asyncHandel(async (req, res) => {
     try {
-
         const [data] = await db.query(
             `
             SELECT 
-            id,
-            title,
-            duration,
-            original_price,
-            price,
-            discount,
-            available_depart,
-            DATE_FORMAT(
-            created_at,
-            '%d-%m-%Y'
-            ) AS created_at
-
-            FROM 
-            local_packages
-            ORDER BY id DESC 
+                id,
+                title,
+                duration,
+                CAST(original_price AS UNSIGNED) AS original_price,
+                CAST(price AS UNSIGNED) AS price,
+                CAST(discount AS UNSIGNED) AS discount,
+                available_depart,
+                DATE_FORMAT(created_at, '%d-%m-%Y') AS created_at
+            FROM local_packages
+            ORDER BY id DESC
             `
-        )
+        );
+
         return res.status(200).json({
             message: "Local Package List Success",
             success: true,
             count: data.length,
-            data: data
+            data
         });
-
 
     } catch (error) {
         return res.status(500).json({
@@ -77,7 +71,8 @@ export const LocalpackageList = asyncHandel(async (req, res) => {
             message: error.message
         });
     }
-})
+});
+
 
 export const LocalpackageUpdate = asyncHandel(async (req, res) => {
     try {
@@ -172,35 +167,28 @@ export const LocalpackageDelete = asyncHandel(async (req, res) => {
 
 export const LocalpackageMobileList = asyncHandel(async (req, res) => {
     try {
-
         const [data] = await db.query(
             `
             SELECT 
-            id,
-            title,
-            duration,
-            original_price,
-            price,
-            discount,
-            available_depart,
-
-            DATE_FORMAT(
-            created_at,
-            '%d-%m-%Y'
-            ) AS created_at
-
-            FROM 
-            local_packages
-            ORDER BY id DESC 
+                id,
+                title,
+                duration,
+                CAST(original_price AS UNSIGNED) AS original_price,
+                CAST(price AS UNSIGNED) AS price,
+                CAST(discount AS UNSIGNED) AS discount,
+                available_depart,
+                DATE_FORMAT(created_at, '%d-%m-%Y') AS created_at
+            FROM local_packages
+            ORDER BY id DESC
             `
-        )
+        );
+
         return res.status(200).json({
             message: "Local Package List Success",
             success: true,
             count: data.length,
-            data: data
+            data
         });
-
 
     } catch (error) {
         return res.status(500).json({
@@ -208,4 +196,4 @@ export const LocalpackageMobileList = asyncHandel(async (req, res) => {
             message: error.message
         });
     }
-})
+});
