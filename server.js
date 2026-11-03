@@ -67,6 +67,7 @@ import localGroupToursRouter from "./router/TravelRouter/localGroupToursRouter.j
 import travelLocalGroupToursBookingRouter from "./router/TravelRouter/travelLocalGroupToursBookingRouter.js";
 import privateSeasonalHotDestinationsRouter from "./router/TravelRouter/privateSeasonalHotDestinationsRouter.js";
 import privateSeasonalHotDestinationsBookingRouter from "./router/TravelRouter/privateSeasonalHotDestinationsBookingRouter.js";
+import travelDesignersRouter from "./router/TravelRouter/travelDesignersRouter.js";
 
 
 
@@ -149,6 +150,7 @@ app.use('/api' , localGroupToursRouter)
 app.use('/api' , travelLocalGroupToursBookingRouter)
 app.use('/api' , privateSeasonalHotDestinationsRouter)
 app.use('/api' , privateSeasonalHotDestinationsBookingRouter)
+app.use('/api' , travelDesignersRouter)
 
 
 app.get("/", (req, res) => {
