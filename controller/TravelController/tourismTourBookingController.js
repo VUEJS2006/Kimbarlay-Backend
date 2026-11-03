@@ -70,7 +70,7 @@ export const createTourismTourBooking = async (req , res) => {
             })
         }
 
-        const [ exitusers ] = await db.query(`SELECT * FROM users WHERE id = ?` , [ packageId ]);
+        const [ exitusers ] = await db.query(`SELECT * FROM users WHERE id = ?` , [ userId ]);
 
         if(!exitusers || !exitusers.length) {
             return res.status(400).json({

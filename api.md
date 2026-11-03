@@ -6558,6 +6558,492 @@ fetch("domain/api/local_popular_destination", {
 ---
 
 
+## 9. SQL code of creating `travel_local_explore_attractions` in database
+
+```sql
+CREATE TABLE travel_local_explore_attractions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT NULL,
+    price DECIMAL(10,2) NOT NULL,
+    rating DECIMAL(2,1) CHECK (rating >= 1.0 AND rating <= 5.0),
+    image_url VARCHAR(500) NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+```
+
+
+### GET /api/local_explore_attractions/all
+
+- No payment required
+
+#### Response
+
+```json
+{
+    "status": true,
+    "message": "All items are here",
+    "data": [
+        {
+            "id": 1,
+            "title": "The Bund",
+            "description": "City walk | Night view",
+            "price": "0.00",
+            "rating": "4.6",
+            "image_url": "http://localhost:5000/images/local_explore_attractions/4b97a4cc-0589-407b-bb02-c70a49b276cd.webp",
+            "created_at": "2026-11-03T05:49:29.000Z",
+            "updated_at": "2026-11-03T05:49:29.000Z"
+        },
+        {
+            "id": 2,
+            "title": "The Bund 2",
+            "description": "City walk | Night view 2",
+            "price": "366.00",
+            "rating": "5.0",
+            "image_url": "http://localhost:5000/images/local_explore_attractions/596bbf2c-0ce8-43b8-9325-488e1fb185af.webp",
+            "created_at": "2026-11-03T05:50:30.000Z",
+            "updated_at": "2026-11-03T05:51:17.000Z"
+        }
+    ]
+}
+```
+
+
+### POST /api/local_explore_attractions
+
+- `Only admin` can use this route.
+
+#### Payload
+
+- This endpoint accepts data using `multipart/form-data`.
+- The following fields should be included in the request body as `FormData`:
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `title` | string | YES | title |
+| `description` | string | NO | description |
+| `price` | decimal | No | current price  |
+| `rating` | decimal | YES | rating ( 1 to 5 ) |
+| `image` | file | YES | Image file to upload |
+| `image_url` | string | YES | The background_image_url of the banner |
+
+#### Example
+
+```js
+const formData = new FormData();
+
+formData.append("title", "The Bund");
+formData.append("description", "City walk | Night view");
+formData.append("price", 0);
+formData.append("rating", 4.6);
+
+formData.append("image", imageFile);
+//or
+formData.append("image_url", "https://images.unsplash.com/photo-1518638150340-f706e86654de?w=500&q=60");
+
+
+fetch("domain/api/local_explore_attractions", {
+  method: "POST",
+  body: formData
+});
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully created",
+    "data": {
+        "id": 1,
+        "title": "The Bund",
+        "description": "City walk | Night view",
+        "price": "0.00",
+        "rating": "4.6",
+        "image_url": "http://localhost:5000/images/local_explore_attractions/4b97a4cc-0589-407b-bb02-c70a49b276cd.webp",
+        "created_at": "2026-11-03T05:49:29.000Z",
+        "updated_at": "2026-11-03T05:49:29.000Z"
+    }
+}
+```
+
+##### Error Response 
+
+```json
+{
+    "status": false,
+    "message": "Image file or image_url is required"
+}
+```
+```json
+{
+    "status": false,
+    "message": "Title and rating is required"
+}
+```
+
+### PUT /api/local_explore_attractions
+
+- `Only admin` can use this route.
+
+#### Payload
+
+- This endpoint accepts data using `multipart/form-data`.
+- The following fields should be included in the request body as `FormData`:
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `id` | number | YES | id of the row to update |
+| `title` | string | YES | title |
+| `description` | string | NO | description |
+| `price` | decimal | No | current price  |
+| `rating` | decimal | YES | rating ( 1 to 5 ) |
+| `image` | file | YES | Image file to upload |
+| `image_url` | string | YES | The background_image_url of the banner |
+
+#### Example
+
+```js
+const formData = new FormData();
+
+formData.append("id", 2);
+formData.append("title", "The Bund 2");
+formData.append("description", "City walk | Night view 2");
+formData.append("price", 366);
+formData.append("rating", 5);
+
+formData.append("image", imageFile);
+//or
+formData.append("image_url", "https://images.unsplash.com/photo-1542718610-a1d656d1884c?w=500&q=60");
+
+
+fetch("domain/api/local_popular_destination", {
+  method: "PUT",
+  body: formData
+});
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully updated.",
+    "data": {
+        "id": 2,
+        "title": "The Bund 2",
+        "description": "City walk | Night view 2",
+        "price": "366.00",
+        "rating": "5.0",
+        "image_url": "http://localhost:5000/images/local_explore_attractions/596bbf2c-0ce8-43b8-9325-488e1fb185af.webp",
+        "created_at": "2026-11-03T05:50:30.000Z",
+        "updated_at": "2026-11-03T05:51:17.000Z"
+    }
+}
+```
+
+##### Error Response 
+
+```json
+{
+    "status": false,
+    "message": "Image file or image_url is required"
+}
+```
+```json
+{
+    "status": false,
+    "message": "Id, title and rating are required"
+}
+```
+```json
+{
+    "status": false,
+    "message": "Wrong  or invalid Id!"
+}
+```
+
+
+### DELETE /api/local_explore_attractions/:id
+
+- `:id` is the id of item to delete
+- `Only admin` can use this route.
+
+#### Example 
+
+```text
+/api/local_explore_attractions/1
+
+/api/local_explore_attractions/2
+```
+
+#### Success response
+
+```json
+{
+    "status": true,
+    "message": "Successfully deleted."
+}
+``` 
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Wrong or invalid id!"
+}
+```
+
+---
+
+## 10. SQL code of creating `travel_local_explore_attractions_bookings` in database
+
+```sql
+CREATE TABLE travel_local_explore_attractions_bookings (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    attraction_id INT NOT NULL,
+    user_id INT NOT NULL,
+    full_name VARCHAR(255) NOT NULL,
+    email_address VARCHAR(255) NOT NULL,
+    phone_number VARCHAR(50) NOT NULL,
+    address TEXT NOT NULL,
+    booking_status ENUM('Pending', 'Confirmed', 'Cancelled') NOT NULL DEFAULT 'Pending',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_local_explore_attractions
+        FOREIGN KEY (attraction_id) 
+        REFERENCES travel_local_explore_attractions(id) 
+        ON DELETE CASCADE 
+        ON UPDATE CASCADE,
+    CONSTRAINT fk_attraction_booking_user
+        FOREIGN KEY (user_id) 
+        REFERENCES users(id) 
+        ON DELETE CASCADE 
+        ON UPDATE CASCADE
+);
+```
+
+
+### GET /api/local_explore_attractions_booking/all
+
+- Only `admin` can get all bookings
+- No payment required
+
+#### Response
+
+```json
+{
+    "status": true,
+    "message": "All items are here",
+    "data": [
+        {
+            "id": 1,
+            "attraction_id": 1,
+            "user_id": 2,
+            "full_name": "John Doe",
+            "email_address": "john.doe@example.com",
+            "phone_number": "+959123456789",
+            "address": "123 Main Street, Yankin Township, Yangon",
+            "booking_status": "Confirmed",
+            "created_at": "2026-11-03T06:14:49.000Z",
+            "updated_at": "2026-11-03T06:16:41.000Z"
+        },
+        {
+            "id": 2,
+            "attraction_id": 1,
+            "user_id": 2,
+            "full_name": "John Doe 2",
+            "email_address": "john.doe@example.com 2",
+            "phone_number": "+959123456789 2",
+            "address": "123 Main Street, Yankin Township, Yangon 2",
+            "booking_status": "Pending",
+            "created_at": "2026-11-03T06:16:07.000Z",
+            "updated_at": "2026-11-03T06:16:07.000Z"
+        },
+        {
+            "id": 3,
+            "attraction_id": 1,
+            "user_id": 1,
+            "full_name": "John Doe 2",
+            "email_address": "john.doe@example.com 2",
+            "phone_number": "+959123456789 2",
+            "address": "123 Main Street, Yankin Township, Yangon 2",
+            "booking_status": "Pending",
+            "created_at": "2026-11-03T06:16:07.000Z",
+            "updated_at": "2026-11-03T06:16:07.000Z"
+        }
+    ]
+}
+```
+
+
+### GET /api/local_explore_attractions_booking/user
+
+- `Authenticated user` can get their bookings
+- No payment required
+
+#### Response
+
+```json
+{
+    "status": true,
+    "message": "User-related bookings are here",
+    "data": [
+        {
+            "id": 1,
+            "attraction_id": 1,
+            "user_id": 2,
+            "full_name": "John Doe",
+            "email_address": "john.doe@example.com",
+            "phone_number": "+959123456789",
+            "address": "123 Main Street, Yankin Township, Yangon",
+            "booking_status": "Confirmed",
+            "created_at": "2026-11-03T06:14:49.000Z",
+            "updated_at": "2026-11-03T06:16:41.000Z"
+        },
+        {
+            "id": 2,
+            "attraction_id": 1,
+            "user_id": 2,
+            "full_name": "John Doe 2",
+            "email_address": "john.doe@example.com 2",
+            "phone_number": "+959123456789 2",
+            "address": "123 Main Street, Yankin Township, Yangon 2",
+            "booking_status": "Pending",
+            "created_at": "2026-11-03T06:16:07.000Z",
+            "updated_at": "2026-11-03T06:16:07.000Z"
+        }
+    ]
+}
+```
+
+### POST /api/local_explore_attractions_booking
+
+- `Only authenticated user` can use this route.
+
+#### Payload
+
+```json
+{
+  "attractionId": 1,
+  "fullName": "John Doe",
+  "emailAddress": "john.doe@example.com",
+  "phoneNumber": "+959123456789",
+  "address": "123 Main Street, Yankin Township, Yangon"
+}
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully created",
+    "data": {
+        "id": 1,
+        "attraction_id": 1,
+        "user_id": 2,
+        "full_name": "John Doe",
+        "email_address": "john.doe@example.com",
+        "phone_number": "+959123456789",
+        "address": "123 Main Street, Yankin Township, Yangon",
+        "booking_status": "Pending",
+        "created_at": "2026-11-03T06:14:49.000Z",
+        "updated_at": "2026-11-03T06:14:49.000Z"
+    }
+}
+```
+
+#### Error response
+
+```json
+{
+    "status": false,
+    "message": "Attraction does not exit in database!"
+}
+```
+```json
+{
+    "status": false,
+    "message": "AttractionId, fullName, emailAddress, phoneNumber and address are required"
+}
+```
+
+### PATCH /api/local_explore_attractions_booking
+
+- Both `user` and `admin` can use this route.
+
+#### Payload
+
+-  `id` and `bookingStatus` must exit
+- `bookingStatus` must be one of `'Pending', 'Confirmed', 'Cancelled'`
+
+```json
+{
+    "id" : 1,
+    "bookingStatus" : "Confirmed"
+}
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully Confirmed"
+}
+```
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Wrong  or invalid Id!"
+}
+```
+
+```json
+{
+    "status": false,
+    "message": "Id and bookingStatus are required"
+}
+```
+
+
+### DELETE /api/local_explore_attractions_booking/:id
+
+- `:id` is the id of item to delete
+- `Only admin` can use this route.
+
+#### Example 
+
+```text
+/api/local_explore_attractions_booking/1
+
+/api/local_explore_attractions_booking/2
+```
+
+#### Success response
+
+```json
+{
+    "status": true,
+    "message": "Successfully deleted."
+}
+``` 
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Wrong or invalid id!"
+}
+```
+
 
 
 
