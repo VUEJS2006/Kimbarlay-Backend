@@ -6682,6 +6682,12 @@ fetch("domain/api/local_explore_attractions", {
     "message": "Title and rating is required"
 }
 ```
+```json
+{
+    "status": false,
+    "message": "Rating must be between 1 and 5!"
+}
+```
 
 ### PUT /api/local_explore_attractions
 
@@ -6761,6 +6767,12 @@ fetch("domain/api/local_popular_destination", {
 {
     "status": false,
     "message": "Wrong  or invalid Id!"
+}
+```
+```json
+{
+    "status": false,
+    "message": "Rating must be between 1 and 5!"
 }
 ```
 
@@ -7044,6 +7056,492 @@ CREATE TABLE travel_local_explore_attractions_bookings (
 }
 ```
 
+---
+
+## 11. SQL code of creating `travel_local_group_tours` in database
+
+```sql
+CREATE TABLE travel_local_group_tours (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    badge  VARCHAR(100) NULL,
+    description TEXT NULL,
+    price DECIMAL(10,2) NOT NULL,
+    rating DECIMAL(2,1) CHECK (rating >= 1.0 AND rating <= 5.0),
+    image_url VARCHAR(500) NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+```
+
+
+### GET /api/travel_local_group_tours/all
+
+- No payment required
+
+#### Response
+
+```json
+{
+    "status": true,
+    "message": "All items are here",
+    "data": [
+        {
+            "id": 1,
+            "title": "Zhejiang Putuoshan 2D1N Group Tour",
+            "badge": "Hot Selling",
+            "description": "",
+            "price": "398.00",
+            "rating": "4.7",
+            "image_url": "http://localhost:5000/images/travel_local_group_tours/61c25d61-1b48-405c-b2b3-e82040067863.webp",
+            "created_at": "2026-11-03T07:04:58.000Z",
+            "updated_at": "2026-11-03T07:04:58.000Z"
+        },
+        {
+            "id": 2,
+            "title": "Zhejiang Putuoshan 2D1N Group Tour 2",
+            "badge": "Hot Selling 2",
+            "description": "bla bla bla 2",
+            "price": "3982.00",
+            "rating": "4.2",
+            "image_url": "http://localhost:5000/images/travel_local_group_tours/1f1a4ac2-117d-4c73-bf77-268cf7abd948.webp",
+            "created_at": "2026-11-03T07:05:34.000Z",
+            "updated_at": "2026-11-03T07:08:55.000Z"
+        }
+    ]
+}
+```
+
+
+### POST /api/travel_local_group_tours
+
+- `Only admin` can use this route.
+
+#### Payload
+
+- This endpoint accepts data using `multipart/form-data`.
+- The following fields should be included in the request body as `FormData`:
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `title` | string | YES | title |
+| `badge` | string | NO | badge |
+| `description` | string | NO | description |
+| `price` | decimal | No | current price  |
+| `rating` | decimal | YES | rating ( 1 to 5 ) |
+| `image` | file | YES | Image file to upload |
+| `image_url` | string | YES | The background_image_url of the banner |
+
+#### Example
+
+```js
+const formData = new FormData();
+
+formData.append("title", "Zhejiang Putuoshan 2D1N Group Tour");
+formData.append("badge", "Hot Selling");
+formData.append("description", "");
+formData.append("price", 398);
+formData.append("rating", 4.7);
+
+formData.append("image", imageFile);
+//or
+formData.append("image_url", "https://images.unsplash.com/photo-1598974353350-4586bb9c5e5f?w=500&q=80");
+
+
+fetch("domain/api/travel_local_group_tours", {
+  method: "POST",
+  body: formData
+});
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully created",
+    "data": {
+        "id": 1,
+        "title": "Zhejiang Putuoshan 2D1N Group Tour",
+        "badge": "Hot Selling",
+        "description": "",
+        "price": "398.00",
+        "rating": "4.7",
+        "image_url": "http://localhost:5000/images/travel_local_group_tours/61c25d61-1b48-405c-b2b3-e82040067863.webp",
+        "created_at": "2026-11-03T07:04:58.000Z",
+        "updated_at": "2026-11-03T07:04:58.000Z"
+    }
+}
+```
+
+##### Error Response 
+
+```json
+{
+    "status": false,
+    "message": "Image file or image_url is required"
+}
+```
+```json
+{
+    "status": false,
+    "message": "Title and rating is required"
+}
+```
+```json
+{
+    "status": false,
+    "message": "Rating must be between 1 and 5!"
+}
+```
+
+### PUT /api/travel_local_group_tours
+
+- `Only admin` can use this route.
+
+#### Payload
+
+- This endpoint accepts data using `multipart/form-data`.
+- The following fields should be included in the request body as `FormData`:
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `id` | number | YES | id of the row to update |
+| `title` | string | YES | title |
+| `badge` | string | NO | badge |
+| `description` | string | NO | description |
+| `price` | decimal | No | current price  |
+| `rating` | decimal | YES | rating ( 1 to 5 ) |
+| `image` | file | YES | Image file to upload |
+| `image_url` | string | YES | The background_image_url of the banner |
+
+#### Example
+
+```js
+const formData = new FormData();
+
+formData.append("id", 2);
+formData.append("title", "Zhejiang Putuoshan 2D1N Group Tour 2");
+formData.append("badge", "Hot Selling 2");
+formData.append("description", "bla bla bla 2");
+formData.append("price", 3982);
+formData.append("rating", 4.2);
+
+formData.append("image", imageFile);
+//or
+formData.append("image_url", "https://images.unsplash.com/photo-1542718610-a1d656d1884c?w=500&q=60");
+
+
+fetch("domain/api/travel_local_group_tours", {
+  method: "PUT",
+  body: formData
+});
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully updated.",
+    "data": {
+        "id": 2,
+        "title": "Zhejiang Putuoshan 2D1N Group Tour 2",
+        "badge": "Hot Selling 2",
+        "description": "bla bla bla 2",
+        "price": "3982.00",
+        "rating": "4.2",
+        "image_url": "http://localhost:5000/images/travel_local_group_tours/1f1a4ac2-117d-4c73-bf77-268cf7abd948.webp",
+        "created_at": "2026-11-03T07:05:34.000Z",
+        "updated_at": "2026-11-03T07:08:55.000Z"
+    }
+}
+```
+
+##### Error Response 
+
+```json
+{
+    "status": false,
+    "message": "Image file or image_url is required"
+}
+```
+```json
+{
+    "status": false,
+    "message": "Id, title and rating are required"
+}
+```
+```json
+{
+    "status": false,
+    "message": "Wrong  or invalid Id!"
+}
+```
+```json
+{
+    "status": false,
+    "message": "Rating must be between 1 and 5!"
+}
+```
+
+
+### DELETE /api/travel_local_group_tours/:id
+
+- `:id` is the id of item to delete
+- `Only admin` can use this route.
+
+#### Example 
+
+```text
+/api/local_explore_attractions/1
+
+/api/local_explore_attractions/2
+```
+
+#### Success response
+
+```json
+{
+    "status": true,
+    "message": "Successfully deleted."
+}
+``` 
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Wrong or invalid id!"
+}
+```
+
+---
+
+## 12. SQL code of creating `travel_local_group_tours_bookings` in database
+
+```sql
+CREATE TABLE travel_local_group_tours_bookings (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    local_group_tour_id INT NOT NULL,
+    user_id INT NOT NULL,
+    full_name VARCHAR(255) NOT NULL,
+    email_address VARCHAR(255) NOT NULL,
+    phone_number VARCHAR(50) NOT NULL,
+    address TEXT NOT NULL,
+    booking_status ENUM('Pending', 'Confirmed', 'Cancelled') NOT NULL DEFAULT 'Pending',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_travel_local_group_tours
+        FOREIGN KEY (local_group_tour_id) 
+        REFERENCES travel_local_group_tours(id) 
+        ON DELETE CASCADE 
+        ON UPDATE CASCADE,
+    CONSTRAINT fk_local_group_tour_booking_user
+        FOREIGN KEY (user_id) 
+        REFERENCES users(id) 
+        ON DELETE CASCADE 
+        ON UPDATE CASCADE
+);
+```
+
+
+### GET /api/travel_local_group_tours_bookings/all
+
+- Only `admin` can get all bookings
+- No payment required
+
+#### Response
+
+```json
+{
+    "status": true,
+    "message": "All items are here",
+    "data": [
+        {
+            "id": 1,
+            "local_group_tour_id": 4,
+            "user_id": 2,
+            "full_name": "John Doe",
+            "email_address": "john.doe@example.com",
+            "phone_number": "+959123456789",
+            "address": "123 Main Street, Yankin Township, Yangon",
+            "booking_status": "Pending",
+            "created_at": "2026-11-03T07:31:53.000Z",
+            "updated_at": "2026-11-03T07:31:53.000Z"
+        },
+        {
+            "id": 2,
+            "local_group_tour_id": 4,
+            "user_id": 1,
+            "full_name": "John Doe",
+            "email_address": "john.doe@example.com",
+            "phone_number": "+959123456789",
+            "address": "123 Main Street, Yankin Township, Yangon",
+            "booking_status": "Confirmed",
+            "created_at": "2026-11-03T07:32:12.000Z",
+            "updated_at": "2026-11-03T07:35:26.000Z"
+        }
+    ]
+}
+```
+
+
+### GET /api/travel_local_group_tours_bookings/user
+
+- `Authenticated user` can get their bookings
+- No payment required
+
+#### Response
+
+```json
+{
+    "status": true,
+    "message": "User-related bookings are here",
+    "data": [
+        {
+            "id": 1,
+            "local_group_tour_id": 4,
+            "user_id": 2,
+            "full_name": "John Doe",
+            "email_address": "john.doe@example.com",
+            "phone_number": "+959123456789",
+            "address": "123 Main Street, Yankin Township, Yangon",
+            "booking_status": "Pending",
+            "created_at": "2026-11-03T07:31:53.000Z",
+            "updated_at": "2026-11-03T07:31:53.000Z"
+        }
+    ]
+}
+```
+
+### POST /api/travel_local_group_tours_bookings
+
+- `Only authenticated user` can use this route.
+
+#### Payload
+
+```json
+{
+  "localGroupTourId": 4,
+  "fullName": "John Doe",
+  "emailAddress": "john.doe@example.com",
+  "phoneNumber": "+959123456789",
+  "address": "123 Main Street, Yankin Township, Yangon"
+}
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully created",
+    "data": {
+        "id": 1,
+        "local_group_tour_id": 4,
+        "user_id": 2,
+        "full_name": "John Doe",
+        "email_address": "john.doe@example.com",
+        "phone_number": "+959123456789",
+        "address": "123 Main Street, Yankin Township, Yangon",
+        "booking_status": "Pending",
+        "created_at": "2026-11-03T07:31:53.000Z",
+        "updated_at": "2026-11-03T07:31:53.000Z"
+    }
+}
+```
+
+#### Error response
+
+```json
+{
+    "status": false,
+    "message": "Local Group Tour does not exit in database!"
+}
+```
+```json
+{
+    "status": false,
+    "message": "localGroupTourId, fullName, emailAddress, phoneNumber and address are required"
+}
+```
+
+### PATCH /api/travel_local_group_tours_bookings
+
+- Both `user` and `admin` can use this route.
+
+#### Payload
+
+-  `id` and `bookingStatus` must exit
+- `bookingStatus` must be one of `'Pending', 'Confirmed', 'Cancelled'`
+
+```json
+{
+    "id" : 1,
+    "bookingStatus" : "Confirmed"
+}
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully Confirmed"
+}
+```
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Wrong  or invalid Id!"
+}
+```
+
+```json
+{
+    "status": false,
+    "message": "Id and bookingStatus are required"
+}
+```
+
+
+### DELETE /api/travel_local_group_tours_bookings/:id
+
+- `:id` is the id of item to delete
+- `Only admin` can use this route.
+
+#### Example 
+
+```text
+/api/local_explore_attractions_booking/1
+
+/api/local_explore_attractions_booking/2
+```
+
+#### Success response
+
+```json
+{
+    "status": true,
+    "message": "Successfully deleted."
+}
+``` 
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Wrong or invalid id!"
+}
+```
+
+---
 
 
 
