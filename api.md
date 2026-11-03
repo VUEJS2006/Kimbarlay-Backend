@@ -4753,6 +4753,7 @@ CREATE TABLE special_offers_and_deals (
 }
 ```
 
+---
 
 ## 2. SQL code of creating `travel_group_on_banners` in database
 
@@ -4917,6 +4918,7 @@ CREATE TABLE travel_group_on_banners (
 }
 ```
 
+---
 
 ## 3. SQL code of creating `travel_banner_images` in database
 
@@ -5113,6 +5115,7 @@ fetch("domain/api/travel_banner_image", {
 }
 ```
 
+---
 
 ## 4. SQL code of creating `testimonials` in database
 
@@ -5341,8 +5344,7 @@ fetch("domain/api/travel_testimonials", {
 }
 ```
 
-
-
+---
 
 ## 5. SQL code of creating `tourism_tour_package` in database
 
@@ -5603,6 +5605,8 @@ fetch("domain/api/tourism_tour_packages", {
 }
 ```
 
+---
+
 ## 6. SQL code of creating `tourism_tour_booking` in database
 
 ```sql
@@ -5836,7 +5840,7 @@ CREATE TABLE tourism_tour_booking (
 }
 ```
 
-
+---
 
 ## 7. SQL code of creating `travel_banners_unity` in database
 
@@ -6106,5 +6110,228 @@ fetch("domain/api/insurance_banner", {
     "message": "Title and subtitle are required"
 }
 ```
+
+---
+
+## 8. SQL code of creating `travel_styles` in database
+
+```sql
+CREATE TABLE travel_styles (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    icon VARCHAR(50) NULL,
+    image_url VARCHAR(500) NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+```
+
+
+### GET /api/travel_style/all
+
+- No payment required
+
+#### Response
+
+```json
+{
+    "status": true,
+    "message": "All items are here",
+    "data": [
+        {
+            "id": 1,
+            "title": "Day Trips",
+            "icon": "fa-calendar-day",
+            "image_url": "http://localhost:5000/images/travel_styles/9ce40184-cf72-4d39-a423-47c6f4b0b819.webp",
+            "created_at": "2026-11-03T01:03:08.000Z",
+            "updated_at": "2026-11-03T01:03:08.000Z"
+        },
+        {
+            "id": 2,
+            "title": "Day Trips 2",
+            "icon": "fa-calendar-day 2",
+            "image_url": "http://localhost:5000/images/travel_styles/430375ee-cc77-4f96-a8e6-4195c880b2c2.webp",
+            "created_at": "2026-11-03T01:09:44.000Z",
+            "updated_at": "2026-11-03T01:17:31.000Z"
+        }
+    ]
+}
+```
+
+
+### POST /api/travel_style
+
+- `Only admin` can use this route.
+
+#### Payload
+
+- This endpoint accepts data using `multipart/form-data`.
+- The following fields should be included in the request body as `FormData`:
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `title` | string | YES | title |
+| `icon` | string | NO | icon |
+| `image` | file | YES | Image file to upload |
+| `image_url` | string | YES | The background_image_url of the banner |
+
+#### Example
+
+```js
+const formData = new FormData();
+
+formData.append("title", "Day Trips");
+formData.append("tag", "fa-calendar-day");
+
+formData.append("image", imageFile);
+//or
+formData.append("image_url", "https://images.unsplash.com/photo-1542718610-a1d656d1884c?w=500&q=60");
+
+
+fetch("domain/api/travel_style", {
+  method: "POST",
+  body: formData
+});
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully created",
+    "data": {
+        "id": 1,
+        "title": "Day Trips",
+        "icon": "fa-calendar-day",
+        "image_url": "http://localhost:5000/images/travel_styles/9ce40184-cf72-4d39-a423-47c6f4b0b819.webp",
+        "created_at": "2026-11-03T01:03:08.000Z",
+        "updated_at": "2026-11-03T01:03:08.000Z"
+    }
+}
+```
+
+##### Error Response 
+
+```json
+{
+    "status": false,
+    "message": "Image file or image_url is required"
+}
+```
+```json
+{
+    "status": false,
+    "message": "Title is required"
+}
+```
+
+### PUT /api/travel_style
+
+- `Only admin` can use this route.
+
+#### Payload
+
+- This endpoint accepts data using `multipart/form-data`.
+- The following fields should be included in the request body as `FormData`:
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `id` | number | YES | id of the row to update |
+| `title` | string | YES | title |
+| `icon` | string | NO | icon |
+| `image` | file | YES | Image file to upload |
+| `image_url` | string | YES | The background_image_url of the banner |
+
+#### Example
+
+```js
+const formData = new FormData();
+
+formData.append("id", 2);
+formData.append("title", "Day Trips 2");
+formData.append("tag", "fa-calendar-day 2");
+
+formData.append("image", imageFile);
+//or
+formData.append("image_url", "https://images.unsplash.com/photo-1542718610-a1d656d1884c?w=500&q=60");
+
+
+fetch("domain/api/travel_style", {
+  method: "PUT",
+  body: formData
+});
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully updated.",
+    "data": {
+        "id": 2,
+        "title": "Day Trips 2",
+        "icon": "fa-calendar-day 2",
+        "image_url": "http://localhost:5000/images/travel_styles/430375ee-cc77-4f96-a8e6-4195c880b2c2.webp",
+        "created_at": "2026-11-03T01:09:44.000Z",
+        "updated_at": "2026-11-03T01:17:31.000Z"
+    }
+}
+```
+
+##### Error Response 
+
+```json
+{
+    "status": false,
+    "message": "Image file or image_url is required"
+}
+```
+```json
+{
+    "status": false,
+    "message": "Id and title are required"
+}
+```
+```json
+{
+    "status": false,
+    "message": "Wrong  or invalid Id!"
+}
+```
+
+
+### DELETE /api/travel_style/:id
+
+- `:id` is the id of item to delete
+- `Only admin` can use this route.
+
+#### Example 
+
+```text
+/api/travel_style/1
+
+/api/travel_style/2
+```
+
+#### Success response
+
+```json
+{
+    "status": true,
+    "message": "Successfully deleted."
+}
+``` 
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Wrong or invalid id!"
+}
+```
+
 
 
