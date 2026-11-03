@@ -7544,5 +7544,478 @@ CREATE TABLE travel_local_group_tours_bookings (
 ---
 
 
+## 13. SQL code of creating `private_seasonal_hot_destinations` in database
+
+```sql
+CREATE TABLE private_seasonal_hot_destinations (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    duration  VARCHAR(100) NULL,
+    price DECIMAL(10,2) NOT NULL,
+    description TEXT NULL,
+    image_url VARCHAR(500) NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+```
+
+
+### GET /api/private_seasonal_hot_destinations/all
+
+- No payment required
+
+#### Response
+
+```json
+{
+    "status": true,
+    "message": "All items are here",
+    "data": [
+        {
+            "id": 1,
+            "title": "Guangzhou Taste Tour",
+            "duration": "4 Days",
+            "price": "4999.00",
+            "description": "Food & Culture",
+            "image_url": "http://localhost:5000/images/private_seasonal_hot_destinations/ec07d963-a9fe-4163-adbe-41a10888b37f.webp",
+            "created_at": "2026-11-03T08:47:29.000Z",
+            "updated_at": "2026-11-03T08:47:29.000Z"
+        },
+        {
+            "id": 2,
+            "title": "Guangzhou Taste Tour 2",
+            "duration": "2 Days",
+            "price": "49992.00",
+            "description": "Food & Culture 2",
+            "image_url": "https://images.unsplash.com/photo-1596436889106-be35e843f974?w=500&q=80",
+            "created_at": "2026-11-03T08:47:40.000Z",
+            "updated_at": "2026-11-03T08:50:51.000Z"
+        }
+    ]
+}
+```
+
+
+### POST /api/private_seasonal_hot_destinations
+
+- `Only admin` can use this route.
+
+#### Payload
+
+- This endpoint accepts data using `multipart/form-data`.
+- The following fields should be included in the request body as `FormData`:
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `title` | string | YES | title |
+| `duration` | string | NO | badge |
+| `price` | decimal | No | current price  |
+| `description` | string | NO | description |
+| `image` | file | YES | Image file to upload |
+| `image_url` | string | YES | The background_image_url of the banner |
+
+#### Example
+
+```js
+const formData = new FormData();
+
+formData.append("title", "Guangzhou Taste Tour");
+formData.append("duration", "4 Days");
+formData.append("price", 4999);
+formData.append("description", "Food & Culture");
+
+formData.append("image", imageFile);
+//or
+formData.append("image_url", "https://images.unsplash.com/photo-1596436889106-be35e843f974?w=500&q=80");
+
+
+fetch("domain/api/private_seasonal_hot_destinations", {
+  method: "POST",
+  body: formData
+});
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully created",
+    "data": {
+        "id": 1,
+        "title": "Guangzhou Taste Tour",
+        "duration": "4 Days",
+        "price": "4999.00",
+        "description": "Food & Culture",
+        "image_url": "http://localhost:5000/images/private_seasonal_hot_destinations/ec07d963-a9fe-4163-adbe-41a10888b37f.webp",
+        "created_at": "2026-11-03T08:47:29.000Z",
+        "updated_at": "2026-11-03T08:47:29.000Z"
+    }
+}
+```
+
+##### Error Response 
+
+```json
+{
+    "status": false,
+    "message": "Image file or image_url is required"
+}
+```
+```json
+{
+    "status": false,
+    "message": "Title is required"
+}
+```
+
+### PUT /api/private_seasonal_hot_destinations
+
+- `Only admin` can use this route.
+
+#### Payload
+
+- This endpoint accepts data using `multipart/form-data`.
+- The following fields should be included in the request body as `FormData`:
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `id` | number | YES | id of the row to update |
+| `title` | string | YES | title |
+| `duration` | string | NO | badge |
+| `price` | decimal | No | current price  |
+| `description` | string | NO | description |
+| `image` | file | YES | Image file to upload |
+| `image_url` | string | YES | The background_image_url of the banner |
+
+#### Example
+
+```js
+const formData = new FormData();
+
+formData.append("id", 2);
+formData.append("title", "Guangzhou Taste Tour 2");
+formData.append("duration", "2 Days");
+formData.append("price", 49992);
+formData.append("description", "Food & Culture 2");
+
+formData.append("image", imageFile);
+//or
+formData.append("image_url", "https://images.unsplash.com/photo-1596436889106-be35e843f974?w=500&q=80");
+
+
+fetch("domain/api/private_seasonal_hot_destinations", {
+  method: "PUT",
+  body: formData
+});
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully updated.",
+    "data": {
+        "id": 2,
+        "title": "Guangzhou Taste Tour 2",
+        "duration": "2 Days",
+        "price": "49992.00",
+        "description": "Food & Culture 2",
+        "image_url": "http://localhost:5000/images/private_seasonal_hot_destinations/bb305e5d-908e-46b2-8db3-a5fc730cf61f.webp",
+        "created_at": "2026-11-03T08:47:40.000Z",
+        "updated_at": "2026-11-03T08:49:49.000Z"
+    }
+}
+```
+
+##### Error Response 
+
+```json
+{
+    "status": false,
+    "message": "Image file or image_url is required"
+}
+```
+```json
+{
+    "status": false,
+    "message": "Id, title and rating are required"
+}
+```
+```json
+{
+    "status": false,
+    "message": "Wrong  or invalid Id!"
+}
+```
+```json
+{
+    "status": false,
+    "message": "Rating must be between 1 and 5!"
+}
+```
+
+
+### DELETE /api/private_seasonal_hot_destinations/:id
+
+- `:id` is the id of item to delete
+- `Only admin` can use this route.
+
+#### Example 
+
+```text
+/api/local_explore_attractions/1
+
+/api/local_explore_attractions/2
+```
+
+#### Success response
+
+```json
+{
+    "status": true,
+    "message": "Successfully deleted."
+}
+``` 
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Wrong or invalid id!"
+}
+```
+
+---
+
+
+## 14. SQL code of creating `private_seasonal_hot_destinations_bookings` in database
+
+```sql
+CREATE TABLE private_seasonal_hot_destinations_bookings (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    seasonal_hot_destination_id INT NOT NULL,
+    user_id INT NOT NULL,
+    full_name VARCHAR(255) NOT NULL,
+    email_address VARCHAR(255) NOT NULL,
+    phone_number VARCHAR(50) NOT NULL,
+    special_requests TEXT NULL,
+    booking_status ENUM('Pending', 'Confirmed', 'Cancelled') NOT NULL DEFAULT 'Pending',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_seasonal_hot_destination
+        FOREIGN KEY (seasonal_hot_destination_id) 
+        REFERENCES private_seasonal_hot_destinations(id) 
+        ON DELETE CASCADE 
+        ON UPDATE CASCADE,
+    CONSTRAINT fk_seasonal_hot_destination_booking_user
+        FOREIGN KEY (user_id) 
+        REFERENCES users(id) 
+        ON DELETE CASCADE 
+        ON UPDATE CASCADE
+);
+```
+
+
+### GET /api/private_seasonal_hot_destinations_bookings/all
+
+- Only `admin` can get all bookings
+- No payment required
+
+#### Response
+
+```json
+{
+    "status": true,
+    "message": "All items are here",
+    "data": [
+        {
+            "id": 1,
+            "seasonal_hot_destination_id": 2,
+            "user_id": 2,
+            "full_name": "John Doe",
+            "email_address": "john.doe@example.com",
+            "phone_number": "+959123456789",
+            "special_requests": "Vagetarial foods and fruit juice, please",
+            "booking_status": "Cancelled",
+            "created_at": "2026-11-03T09:24:01.000Z",
+            "updated_at": "2026-11-03T09:25:22.000Z"
+        },
+        {
+            "id": 2,
+            "seasonal_hot_destination_id": 2,
+            "user_id": 1,
+            "full_name": "John Doe",
+            "email_address": "john.doe@example.com",
+            "phone_number": "+959123456789",
+            "special_requests": "Vagetarial foods and fruit juice, please",
+            "booking_status": "Pending",
+            "created_at": "2026-11-03T09:24:27.000Z",
+            "updated_at": "2026-11-03T09:24:42.000Z"
+        }
+    ]
+}
+```
+
+
+### GET /api/private_seasonal_hot_destinations_bookings/user
+
+- `Authenticated user` can get their bookings
+- No payment required
+
+#### Response
+
+```json
+{
+    "status": true,
+    "message": "User-related bookings are here",
+    "data": [
+        {
+            "id": 1,
+            "seasonal_hot_destination_id": 2,
+            "user_id": 2,
+            "full_name": "John Doe",
+            "email_address": "john.doe@example.com",
+            "phone_number": "+959123456789",
+            "special_requests": "Vagetarial foods and fruit juice, please",
+            "booking_status": "Cancelled",
+            "created_at": "2026-11-03T09:24:01.000Z",
+            "updated_at": "2026-11-03T09:25:22.000Z"
+        }
+    ]
+}
+```
+
+### POST /api/private_seasonal_hot_destinations_bookings
+
+- `Only authenticated user` can use this route.
+
+#### Payload
+
+```json
+{
+  "seasonalHotDestinationId": 2,
+  "fullName": "John Doe",
+  "emailAddress": "john.doe@example.com",
+  "phoneNumber": "+959123456789",
+  "specialRequests": "Vagetarial foods and fruit juice, please"
+}
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully created",
+    "data": {
+        "id": 1,
+        "seasonal_hot_destination_id": 2,
+        "user_id": 2,
+        "full_name": "John Doe",
+        "email_address": "john.doe@example.com",
+        "phone_number": "+959123456789",
+        "special_requests": "Vagetarial foods and fruit juice, please",
+        "booking_status": "Pending",
+        "created_at": "2026-11-03T09:24:01.000Z",
+        "updated_at": "2026-11-03T09:24:01.000Z"
+    }
+}
+```
+
+#### Error response
+
+```json
+{
+    "status": false,
+    "message": "Local Group Tour does not exit in database!"
+}
+```
+```json
+{
+    "status": false,
+    "message": "localGroupTourId, fullName, emailAddress, phoneNumber and address are required"
+}
+```
+
+### PATCH /api/private_seasonal_hot_destinations_bookings
+
+- Both `user` and `admin` can use this route.
+
+#### Payload
+
+-  `id` and `bookingStatus` must exit
+- `bookingStatus` must be one of `'Pending', 'Confirmed', 'Cancelled'`
+
+```json
+{
+    "id" : 1,
+    "bookingStatus" : "Cancelled"
+}
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully Cancelled"
+}
+```
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Wrong  or invalid Id!"
+}
+```
+
+```json
+{
+    "status": false,
+    "message": "Id and bookingStatus are required"
+}
+```
+
+
+### DELETE /api/private_seasonal_hot_destinations_bookings/:id
+
+- `:id` is the id of item to delete
+- `Only admin` can use this route.
+
+#### Example 
+
+```text
+/api/local_explore_attractions_booking/1
+
+/api/local_explore_attractions_booking/2
+```
+
+#### Success response
+
+```json
+{
+    "status": true,
+    "message": "Successfully deleted."
+}
+``` 
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Wrong or invalid id!"
+}
+```
+
+---
+
+
+
 
 
