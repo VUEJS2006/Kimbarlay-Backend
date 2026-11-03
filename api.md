@@ -7058,6 +7058,7 @@ CREATE TABLE travel_local_explore_attractions_bookings (
 
 ---
 
+
 ## 11. SQL code of creating `travel_local_group_tours` in database
 
 ```sql
@@ -8016,6 +8017,241 @@ CREATE TABLE private_seasonal_hot_destinations_bookings (
 ---
 
 
+
+## 15. SQL code of creating `travel_designers` in database
+
+```sql
+CREATE TABLE travel_designers (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    specialty  VARCHAR(100) NULL,
+    description TEXT NULL,
+    image_url VARCHAR(500) NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+```
+
+
+### GET /api/travel_designers/all
+
+- No payment required
+
+#### Response
+
+```json
+{
+    "status": true,
+    "message": "All items are here",
+    "data": [
+        {
+            "id": 1,
+            "name": "Yang Jie",
+            "specialty": "Sichuan Expert",
+            "description": "Specializing in unique cultural and culinary experiences across Sichuan.",
+            "image_url": "http://localhost:5000/images/travel_designers/f01065c3-73a8-47d3-aacd-de5778604524.webp",
+            "created_at": "2026-11-03T09:52:49.000Z",
+            "updated_at": "2026-11-03T09:52:49.000Z"
+        },
+        {
+            "id": 2,
+            "name": "Yang Jie 2",
+            "specialty": "Sichuan Expert 2",
+            "description": "Specializing in unique cultural and culinary experiences across Sichuan. 2",
+            "image_url": "https://images.unsplash.com/photo-1596436889106-be35e843f974?w=500&q=80",
+            "created_at": "2026-11-03T09:53:27.000Z",
+            "updated_at": "2026-11-03T09:55:33.000Z"
+        }
+    ]
+}
+```
+
+
+### POST /api/travel_designers
+
+- `Only admin` can use this route.
+
+#### Payload
+
+- This endpoint accepts data using `multipart/form-data`.
+- The following fields should be included in the request body as `FormData`:
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `name` | string | YES | name |
+| `specialty` | string | NO | specialty |
+| `description` | string | NO | description |
+| `image` | file | YES | Image file to upload |
+| `image_url` | string | YES | The background_image_url of the banner |
+
+#### Example
+
+```js
+const formData = new FormData();
+
+formData.append("name", "Yang Jie");
+formData.append("specialty", "Sichuan Expert");
+formData.append("description", "Specializing in unique cultural and culinary experiences across Sichuan.");
+
+formData.append("image", imageFile);
+//or
+formData.append("image_url", "https://randomuser.me/api/portraits/women/32.jpg");
+
+
+fetch("domain/api/travel_designers", {
+  method: "POST",
+  body: formData
+});
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully created",
+    "data": {
+        "id": 1,
+        "name": "Yang Jie",
+        "specialty": "Sichuan Expert",
+        "description": "Specializing in unique cultural and culinary experiences across Sichuan.",
+        "image_url": "http://localhost:5000/images/travel_designers/f01065c3-73a8-47d3-aacd-de5778604524.webp",
+        "created_at": "2026-11-03T09:52:49.000Z",
+        "updated_at": "2026-11-03T09:52:49.000Z"
+    }
+}
+```
+
+##### Error Response 
+
+```json
+{
+    "status": false,
+    "message": "Image file or image_url is required"
+}
+```
+```json
+{
+    "status": false,
+    "message": "name is required"
+}
+```
+
+### PUT /api/travel_designers
+
+- `Only admin` can use this route.
+
+#### Payload
+
+- This endpoint accepts data using `multipart/form-data`.
+- The following fields should be included in the request body as `FormData`:
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `id` | number | YES | id of the row to update |
+| `name` | string | YES | name |
+| `specialty` | string | NO | specialty |
+| `description` | string | NO | description |
+| `image` | file | YES | Image file to upload |
+| `image_url` | string | YES | The background_image_url of the banner |
+
+#### Example
+
+```js
+const formData = new FormData();
+
+formData.append("id", 2);
+formData.append("name", "Yang Jie 2");
+formData.append("specialty", "Sichuan Expert 2");
+formData.append("description", "Specializing in unique cultural and culinary experiences across Sichuan. 2");
+
+formData.append("image", imageFile);
+//or
+formData.append("image_url", "https://images.unsplash.com/photo-1542718610-a1d656d1884c?w=500&q=60");
+
+
+fetch("domain/api/travel_designers", {
+  method: "PUT",
+  body: formData
+});
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully updated.",
+    "data": {
+        "id": 2,
+        "name": "Yang Jie 2",
+        "specialty": "Sichuan Expert 2",
+        "description": "Specializing in unique cultural and culinary experiences across Sichuan. 2",
+        "image_url": "https://images.unsplash.com/photo-1596436889106-be35e843f974?w=500&q=80",
+        "created_at": "2026-11-03T09:53:27.000Z",
+        "updated_at": "2026-11-03T09:55:33.000Z"
+    }
+}
+```
+
+##### Error Response 
+
+```json
+{
+    "status": false,
+    "message": "Image file or image_url is required"
+}
+```
+```json
+{
+    "status": false,
+    "message": "Id, title and rating are required"
+}
+```
+```json
+{
+    "status": false,
+    "message": "Wrong  or invalid Id!"
+}
+```
+```json
+{
+    "status": false,
+    "message": "Rating must be between 1 and 5!"
+}
+```
+
+
+### DELETE /api/travel_designers/:id
+
+- `:id` is the id of item to delete
+- `Only admin` can use this route.
+
+#### Example 
+
+```text
+/api/local_explore_attractions/1
+
+/api/local_explore_attractions/2
+```
+
+#### Success response
+
+```json
+{
+    "status": true,
+    "message": "Successfully deleted."
+}
+``` 
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Wrong or invalid id!"
+}
+```
 
 
 
