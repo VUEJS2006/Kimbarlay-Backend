@@ -6333,5 +6333,232 @@ fetch("domain/api/travel_style", {
 }
 ```
 
+---
+
+## 9. SQL code of creating `travel_local_popular_destinations` in database
+
+```sql
+CREATE TABLE travel_local_popular_destinations (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT NULL,
+    image_url VARCHAR(500) NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+```
+
+
+### GET /api/travel_style/all
+
+- No payment required
+
+#### Response
+
+```json
+{
+    "status": true,
+    "message": "All items are here",
+    "data": [
+        {
+            "id": 1,
+            "title": "Hangzhou",
+            "description": "West Lake scenery, paradise on earth",
+            "image_url": "http://localhost:5000/images/local_popular_destinations/2393ecf5-3e28-41b4-83c4-556d945bf09d.webp",
+            "created_at": "2026-11-03T02:33:45.000Z",
+            "updated_at": "2026-11-03T02:33:45.000Z"
+        },
+        {
+            "id": 2,
+            "title": "Hangzhou 2",
+            "description": "West Lake scenery, paradise on earth 2",
+            "image_url": "https://images.unsplash.com/photo-1549451371-64aa98a6f660?w=500&q=60",
+            "created_at": "2026-11-03T02:34:11.000Z",
+            "updated_at": "2026-11-03T02:39:50.000Z"
+        }
+    ]
+}
+```
+
+
+### POST /api/local_popular_destination
+
+- `Only admin` can use this route.
+
+#### Payload
+
+- This endpoint accepts data using `multipart/form-data`.
+- The following fields should be included in the request body as `FormData`:
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `title` | string | YES | title |
+| `description` | string | NO | description |
+| `image` | file | YES | Image file to upload |
+| `image_url` | string | YES | The background_image_url of the banner |
+
+#### Example
+
+```js
+const formData = new FormData();
+
+formData.append("title", "Hangzhou");
+formData.append("description", "West Lake scenery, paradise on earth");
+
+formData.append("image", imageFile);
+//or
+formData.append("image_url", "https://images.unsplash.com/photo-1549451371-64aa98a6f660?w=500&q=60");
+
+
+fetch("domain/api/local_popular_destination", {
+  method: "POST",
+  body: formData
+});
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully created",
+    "data": {
+        "id": 2,
+        "title": "Hangzhou",
+        "description": "West Lake scenery, paradise on earth",
+        "image_url": "http://localhost:5000/images/local_popular_destinations/1647bab2-6e93-4345-bc0b-0e7e651cacc5.webp",
+        "created_at": "2026-11-03T02:34:11.000Z",
+        "updated_at": "2026-11-03T02:34:11.000Z"
+    }
+}
+```
+
+##### Error Response 
+
+```json
+{
+    "status": false,
+    "message": "Image file or image_url is required"
+}
+```
+```json
+{
+    "status": false,
+    "message": "Title is required"
+}
+```
+
+### PUT /api/local_popular_destination
+
+- `Only admin` can use this route.
+
+#### Payload
+
+- This endpoint accepts data using `multipart/form-data`.
+- The following fields should be included in the request body as `FormData`:
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `id` | number | YES | id of the row to update |
+| `title` | string | YES | title |
+| `description` | string | NO | description |
+| `image` | file | YES | Image file to upload |
+| `image_url` | string | YES | The background_image_url of the banner |
+
+#### Example
+
+```js
+const formData = new FormData();
+
+formData.append("id", 2);
+formData.append("title", "Hangzhou 2");
+formData.append("description", "West Lake scenery, paradise on earth 2");
+
+formData.append("image", imageFile);
+//or
+formData.append("image_url", "https://images.unsplash.com/photo-1542718610-a1d656d1884c?w=500&q=60");
+
+
+fetch("domain/api/local_popular_destination", {
+  method: "PUT",
+  body: formData
+});
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully updated.",
+    "data": {
+        "id": 2,
+        "title": "Hangzhou 2",
+        "description": "West Lake scenery, paradise on earth 2",
+        "image_url": "https://images.unsplash.com/photo-1549451371-64aa98a6f660?w=500&q=60",
+        "created_at": "2026-11-03T02:34:11.000Z",
+        "updated_at": "2026-11-03T02:39:50.000Z"
+    }
+}
+```
+
+##### Error Response 
+
+```json
+{
+    "status": false,
+    "message": "Image file or image_url is required"
+}
+```
+```json
+{
+    "status": false,
+    "message": "Id and title are required"
+}
+```
+```json
+{
+    "status": false,
+    "message": "Wrong  or invalid Id!"
+}
+```
+
+
+### DELETE /api/local_popular_destination/:id
+
+- `:id` is the id of item to delete
+- `Only admin` can use this route.
+
+#### Example 
+
+```text
+/api/local_popular_destination/1
+
+/api/local_popular_destination/2
+```
+
+#### Success response
+
+```json
+{
+    "status": true,
+    "message": "Successfully deleted."
+}
+``` 
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Wrong or invalid id!"
+}
+```
+
+---
+
+
+
+
 
 
