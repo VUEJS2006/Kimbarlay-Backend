@@ -59,6 +59,7 @@ import travelTestimonialRouter from "./router/TravelRouter/travelTestimonialRout
 import tourismTourPackageRouter from "./router/TravelRouter/tourismTourPackageRouter.js";
 import tourismTourBookingRouter from "./router/TravelRouter/tourismTourBookingRouter.js";
 import travelBannersUnityRouter from "./router/TravelRouter/travelBannersUnityRouter.js";
+import travelStyleRouter from "./router/TravelRouter/travelStyleRouter.js";
 
 
 
@@ -133,6 +134,7 @@ app.use("/api", travelTestimonialRouter)
 app.use("/api", tourismTourPackageRouter)
 app.use("/api", tourismTourBookingRouter)
 app.use("/api", travelBannersUnityRouter)
+app.use("/api", travelStyleRouter)
 
 
 app.get("/", (req, res) => {
