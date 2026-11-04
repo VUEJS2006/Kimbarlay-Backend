@@ -53,6 +53,9 @@ import internationalPackageRouter from "./router/TravelRouter/internationalPacka
 import internationalBookingRouter from "./router/TravelRouter/interBookingRouter.js";
 import internationalBannerRouter from "./router/TravelRouter/internationalBannerRouter.js";
 import datTripDestinationRouter from "./router/TravelRouter/daytripDestinationRouter.js";
+import dayTripPackageRouter from "./router/TravelRouter/daytripPackageRouter.js";
+import dayTripBookingRouter from "./router/TravelRouter/daytripBookingRouter.js";
+import dayTripBannerRouter from "./router/TravelRouter/daytripBannerRouter.js";
 
 import specialOffersAndDealsRouter from "./router/TravelRouter/specialOffersAndDealsRouter.js";
 import travelGroupOnBannerRouter from "./router/TravelRouter/travelGroupOnBannerRouter.js";
@@ -136,6 +139,9 @@ app.use("/api", internationalPackageRouter)
 app.use("/api", internationalBookingRouter)
 app.use("/api", internationalBannerRouter)
 app.use("/api", datTripDestinationRouter)
+app.use("/api", dayTripPackageRouter)
+app.use("/api", dayTripBookingRouter)
+app.use("/api", dayTripBannerRouter)
 
 
 

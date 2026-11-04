@@ -30,6 +30,42 @@ CREATE TABLE IF NOT EXISTS oversea_hotels (
 - `DELETE /api/admin/oversea/hotel/delete/:id`
 - `GET /api/mobile/oversea/hotel/list`
 
+## Local packages and tour locals
+
+Run this SQL once to add the relationship to the existing `local_packages`
+table. Existing packages keep a `NULL` `local_id`; create requests must provide
+a valid `local_id`. Deleting a tour local sets its packages' `local_id` to
+`NULL` rather than deleting the packages.
+
+```sql
+ALTER TABLE local_packages
+    ADD COLUMN local_id INT NULL,
+    ADD CONSTRAINT fk_local_packages_tourlocals
+        FOREIGN KEY (local_id) REFERENCES tourlocals(id)
+        ON DELETE SET NULL;
+```
+
+Local package list responses include `local_id`, plus the related tour local's
+`name` and `image`.
+
+## Domestic packages and tour domestics
+
+Run this SQL once to add the relationship to the existing `domestic_packages`
+table. Existing packages keep a `NULL` `domestic_id`; create requests must
+provide a valid `domestic_id`. Deleting a tour domestic sets its packages'
+`domestic_id` to `NULL` rather than deleting the packages.
+
+```sql
+ALTER TABLE domestic_packages
+    ADD COLUMN domestic_id INT NULL,
+    ADD CONSTRAINT fk_domestic_packages_tourdomestics
+        FOREIGN KEY (domestic_id) REFERENCES tourdomestics(id)
+        ON DELETE SET NULL;
+```
+
+Domestic package list responses include `domestic_id`, plus the related tour
+domestic's `name` and `image`.
+
 ## API URL
 
 - This is the domain of express server.
@@ -8252,6 +8288,4 @@ fetch("domain/api/travel_designers", {
     "message": "Wrong or invalid id!"
 }
 ```
-
-
 

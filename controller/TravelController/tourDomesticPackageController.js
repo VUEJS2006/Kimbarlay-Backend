@@ -8,22 +8,33 @@ import { asyncHandel } from "../../middleware/asyncMiddleware.js";
 export const DomesticpackageCreate = asyncHandel(async (req, res) => {
     try {
 
-        const { title, duration, original_price, price, discount, available_depart } = req.body;
+        const { title, duration, original_price, price, discount, available_depart, domestic_id } = req.body;
 
-        if (!title || !duration || !available_depart || !original_price) {
+        if (!title || !duration || !available_depart || !original_price || !domestic_id) {
             return res.status(400).json({
                 success: false,
                 message: "All fields are required!"
             });
         }
 
+        const [domestics] = await db.query(
+            "SELECT id FROM tourdomestics WHERE id = ?",
+            [domestic_id]
+        );
+
+        if (domestics.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: "Tour Domestic not found!"
+            });
+        }
 
         const [data] = await db.query(
             `
-            INSERT INTO domestic_packages (title,duration,original_price,price,discount,available_depart) VALUES (?,?,?,?,?,?)
+            INSERT INTO domestic_packages (title,duration,original_price,price,discount,available_depart,domestic_id) VALUES (?,?,?,?,?,?,?)
             `,
             [
-                title, duration, original_price, price, discount, available_depart
+                title, duration, original_price, price, discount, available_depart, domestic_id
             ]
         )
         return res.status(201).json({
@@ -45,16 +56,20 @@ export const DomesticpackageList = asyncHandel(async (req, res) => {
         const [data] = await db.query(
             `
             SELECT 
-                id,
-                title,
-                duration,
-                CAST(original_price AS UNSIGNED) AS original_price,
-                CAST(price AS UNSIGNED) AS price,
-                CAST(discount AS UNSIGNED) AS discount,
-                available_depart,
-                DATE_FORMAT(created_at, '%d-%m-%Y') AS created_at
+                domestic_packages.id,
+                domestic_packages.title,
+                domestic_packages.duration,
+                CAST(domestic_packages.original_price AS UNSIGNED) AS original_price,
+                CAST(domestic_packages.price AS UNSIGNED) AS price,
+                CAST(domestic_packages.discount AS UNSIGNED) AS discount,
+                domestic_packages.available_depart,
+                domestic_packages.domestic_id,
+                tourdomestics.name AS name,
+                tourdomestics.image AS image,
+                DATE_FORMAT(domestic_packages.created_at, '%d-%m-%Y') AS created_at
             FROM domestic_packages
-            ORDER BY id DESC
+            LEFT JOIN tourdomestics ON domestic_packages.domestic_id = tourdomestics.id
+            ORDER BY domestic_packages.id DESC
             `
         );
 
@@ -76,7 +91,7 @@ export const DomesticpackageUpdate = asyncHandel(async (req, res) => {
     try {
 
         const { id } = req.params;
-        const { title, duration, original_price, price, discount, available_depart } = req.body;
+        const { title, duration, original_price, price, discount, available_depart, domestic_id } = req.body;
 
         const [packages] = await db.query("SELECT * FROM domestic_packages WHERE id = ?", [id]);
 
@@ -87,6 +102,21 @@ export const DomesticpackageUpdate = asyncHandel(async (req, res) => {
             });
         }
 
+        const updatedDomesticId = domestic_id ?? packages[0].domestic_id;
+        if (domestic_id != null) {
+            const [domestics] = await db.query(
+                "SELECT id FROM tourdomestics WHERE id = ?",
+                [domestic_id]
+            );
+
+            if (domestics.length === 0) {
+                return res.status(404).json({
+                    success: false,
+                    message: "Tour Domestic not found!"
+                });
+            }
+        }
+
         const [data] = await db.query(
             `
             UPDATE domestic_packages SET 
@@ -95,7 +125,8 @@ export const DomesticpackageUpdate = asyncHandel(async (req, res) => {
             original_price = ?,
             price = ?,
             discount = ?,
-            available_depart = ?
+            available_depart = ?,
+            domestic_id = ?
 
             WHERE id = ?
             `,
@@ -106,6 +137,7 @@ export const DomesticpackageUpdate = asyncHandel(async (req, res) => {
                 price,
                 discount,
                 available_depart,
+                updatedDomesticId,
                 id
             ]
         );
@@ -168,16 +200,20 @@ export const DomesticpackageMobileList = asyncHandel(async (req, res) => {
         const [data] = await db.query(
             `
             SELECT 
-                id,
-                title,
-                duration,
-                CAST(original_price AS UNSIGNED) AS original_price,
-                CAST(price AS UNSIGNED) AS price,
-                CAST(discount AS UNSIGNED) AS discount,
-                available_depart,
-                DATE_FORMAT(created_at, '%d-%m-%Y') AS created_at
+                domestic_packages.id,
+                domestic_packages.title,
+                domestic_packages.duration,
+                CAST(domestic_packages.original_price AS UNSIGNED) AS original_price,
+                CAST(domestic_packages.price AS UNSIGNED) AS price,
+                CAST(domestic_packages.discount AS UNSIGNED) AS discount,
+                domestic_packages.available_depart,
+                domestic_packages.domestic_id,
+                tourdomestics.name AS name,
+                tourdomestics.image AS image,
+                DATE_FORMAT(domestic_packages.created_at, '%d-%m-%Y') AS created_at
             FROM domestic_packages
-            ORDER BY id DESC
+            LEFT JOIN tourdomestics ON domestic_packages.domestic_id = tourdomestics.id
+            ORDER BY domestic_packages.id DESC
             `
         );
 
