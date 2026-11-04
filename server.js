@@ -74,6 +74,10 @@ import travelLocalGroupToursBookingRouter from "./router/TravelRouter/travelLoca
 import privateSeasonalHotDestinationsRouter from "./router/TravelRouter/privateSeasonalHotDestinationsRouter.js";
 import privateSeasonalHotDestinationsBookingRouter from "./router/TravelRouter/privateSeasonalHotDestinationsBookingRouter.js";
 import travelDesignersRouter from "./router/TravelRouter/travelDesignersRouter.js";
+import insuranceCoverageOptionsRouter from "./router/TravelRouter/insuranceCoverageOptionsRouter.js";
+import insuranceCoverageFeaturesRouter from "./router/TravelRouter/insuranceCoverageFeaturesRouter.js";
+import insuranceFAQsRouter from "./router/TravelRouter/insuranceFAQsRouter.js";
+import insurancePartnersRouter from "./router/TravelRouter/insurancePartnersRouter.js";
 
 
 
@@ -165,6 +169,10 @@ app.use('/api', travelLocalGroupToursBookingRouter)
 app.use('/api', privateSeasonalHotDestinationsRouter)
 app.use('/api', privateSeasonalHotDestinationsBookingRouter)
 app.use('/api', travelDesignersRouter)
+app.use('/api', insuranceCoverageOptionsRouter)
+app.use('/api', insuranceCoverageFeaturesRouter)
+app.use('/api', insuranceFAQsRouter)
+app.use('/api', insurancePartnersRouter)
 
 
 app.get("/", (req, res) => {

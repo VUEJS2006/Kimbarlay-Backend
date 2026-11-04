@@ -8289,3 +8289,729 @@ fetch("domain/api/travel_designers", {
 }
 ```
 
+---
+
+## 16. SQL code of creating `insurance_coverage_options` in database
+
+```sql
+CREATE TABLE insurance_coverage_options (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT NULL,
+    icon VARCHAR(50) NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+```
+
+
+### GET /api/insurance_coverage_options/all
+
+- No payment required
+
+#### Response
+
+```json
+{
+    "status": true,
+    "message": "All items are here",
+    "data": [
+        {
+            "id": 1,
+            "title": "Overseas Travel 2",
+            "description": "Comprehensive coverage for international trips 2",
+            "icon": "fa-passport 2",
+            "created_at": "2026-11-04T10:38:42.000Z",
+            "updated_at": "2026-11-04T10:40:22.000Z"
+        },
+        {
+            "id": 2,
+            "title": "Overseas Travel",
+            "description": "Comprehensive coverage for international trips",
+            "icon": "fa-passport",
+            "created_at": "2026-11-04T10:39:39.000Z",
+            "updated_at": "2026-11-04T10:39:39.000Z"
+        }
+    ]
+}
+```
+
+### POST /api/insurance_coverage_options
+
+- `Only admin` can use this route.
+
+#### Payload
+
+- `title` must exit
+
+```json
+{
+    "title" : "Domestic Travel",
+    "description" : "Insurance for travels within your country",
+    "icon" : "fa-plane"
+}
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully created",
+    "data": {
+        "id": 1,
+        "title": "Domestic Travel",
+        "description": "Insurance for travels within your country",
+        "icon": "fa-plane",
+        "created_at": "2026-11-04T10:38:42.000Z",
+        "updated_at": "2026-11-04T10:38:42.000Z"
+    }
+}
+```
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Title is required"
+}
+```
+
+
+### PUT /api/insurance_coverage_options
+
+- `Only admin` can use this route.
+
+#### Payload
+
+-  `id` and `title` must exit
+
+```json
+{
+    "id" : 1,
+    "title" : "Overseas Travel 2",
+    "description" : "Comprehensive coverage for international trips 2",
+    "icon" : "fa-passport 2"
+}
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully updated.",
+    "data": {
+        "id": 1,
+        "title": "Overseas Travel 2",
+        "description": "Comprehensive coverage for international trips 2",
+        "icon": "fa-passport 2",
+        "created_at": "2026-11-04T10:38:42.000Z",
+        "updated_at": "2026-11-04T10:40:22.000Z"
+    }
+}
+```
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Wrong  or invalid Id!"
+}
+```
+
+```json
+{
+    "status": false,
+    "message": "Id and title are required"
+}
+```
+
+### DELETE /api/insurance_coverage_options/:id
+
+- `:id` is the id of item to delete
+- `Only admin` can use this route.
+
+#### Example 
+
+```text
+/api/insurance_coverage_options/1
+
+/api/insurance_coverage_options/2
+```
+
+#### Success response
+
+```json
+{
+    "status": true,
+    "message": "Successfully deleted."
+}
+```
+
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Wrong or invalid id!"
+}
+```
+
+---
+
+## 17. SQL code of creating `insurance_coverage_features` in database
+
+```sql
+CREATE TABLE insurance_coverage_features (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT NULL,
+    icon VARCHAR(50) NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+```
+
+
+### GET /api/insurance_coverage_features/all
+
+- No payment required
+
+#### Response
+
+```json
+{
+    "status": true,
+    "message": "All items are here",
+    "data": [
+        {
+            "id": 1,
+            "title": "Travel Delay Coverage",
+            "description": "Compensation for flight delays and cancellations",
+            "icon": "fa-plane-departure",
+            "created_at": "2026-11-04T11:00:13.000Z",
+            "updated_at": "2026-11-04T11:00:13.000Z"
+        },
+        {
+            "id": 2,
+            "title": "Travel Delay Coverage 2",
+            "description": "Compensation for flight delays and cancellations 2",
+            "icon": "fa-plane-departure 2",
+            "created_at": "2026-11-04T11:00:35.000Z",
+            "updated_at": "2026-11-04T11:00:53.000Z"
+        }
+    ]
+}
+```
+
+### POST /api/insurance_coverage_features
+
+- `Only admin` can use this route.
+
+#### Payload
+
+- `title` must exit
+
+```json
+{
+    "title" : "Travel Delay Coverage",
+    "description" : "Compensation for flight delays and cancellations",
+    "icon" : "fa-plane-departure"
+}
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully created",
+    "data": {
+        "id": 1,
+        "title": "Travel Delay Coverage",
+        "description": "Compensation for flight delays and cancellations",
+        "icon": "fa-plane-departure",
+        "created_at": "2026-11-04T11:00:13.000Z",
+        "updated_at": "2026-11-04T11:00:13.000Z"
+    }
+}
+```
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Title is required"
+}
+```
+
+
+### PUT /api/insurance_coverage_features
+
+- `Only admin` can use this route.
+
+#### Payload
+
+-  `id` and `title` must exit
+
+```json
+{
+    "id" : 2,
+    "title" : "Travel Delay Coverage 2",
+    "description" : "Compensation for flight delays and cancellations 2",
+    "icon" : "fa-plane-departure 2"
+}
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully updated.",
+    "data": {
+        "id": 2,
+        "title": "Travel Delay Coverage 2",
+        "description": "Compensation for flight delays and cancellations 2",
+        "icon": "fa-plane-departure 2",
+        "created_at": "2026-11-04T11:00:35.000Z",
+        "updated_at": "2026-11-04T11:00:53.000Z"
+    }
+}
+```
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Wrong  or invalid Id!"
+}
+```
+
+```json
+{
+    "status": false,
+    "message": "Id and title are required"
+}
+```
+
+### DELETE /api/insurance_coverage_features/:id
+
+- `:id` is the id of item to delete
+- `Only admin` can use this route.
+
+#### Example 
+
+```text
+/api/insurance_coverage_features/1
+
+/api/insurance_coverage_features/2
+```
+
+#### Success response
+
+```json
+{
+    "status": true,
+    "message": "Successfully deleted."
+}
+```
+
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Wrong or invalid id!"
+}
+```
+
+---
+
+
+## 18. SQL code of creating `insurance_partners` in database
+
+```sql
+CREATE TABLE insurance_partners (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    image_url VARCHAR(500) NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+```
+
+
+### GET /api/insurance_partners/all
+
+- No payment required
+
+#### Response
+
+```json
+{
+    "status": true,
+    "message": "All items are here",
+    "data": [
+        {
+            "id": 1,
+            "name": "AXA 2",
+            "image_url": "http://localhost:5000/images/insurance_partners/c44ef415-bc67-487a-9769-4f21f9f0d0e0.webp",
+            "created_at": "2026-11-04T11:38:35.000Z",
+            "updated_at": "2026-11-04T11:43:25.000Z"
+        },
+        {
+            "id": 2,
+            "name": "AXA",
+            "image_url": "http://localhost:5000/images/insurance_partners/05bbdcbc-7a39-4770-8302-4ee9d2c9babc.webp",
+            "created_at": "2026-11-04T11:38:51.000Z",
+            "updated_at": "2026-11-04T11:38:51.000Z"
+        }
+    ]
+}
+```
+
+
+### POST /api/insurance_partners
+
+- `Only admin` can use this route.
+
+#### Payload
+
+- This endpoint accepts data using `multipart/form-data`.
+- The following fields should be included in the request body as `FormData`:
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `name` | string | YES | name |
+| `image` | file | YES | Image file to upload |
+| `image_url` | string | YES | The background_image_url of the banner |
+
+#### Example
+
+```js
+const formData = new FormData();
+
+formData.append("name", "AIG");
+
+formData.append("image", imageFile);
+//or
+formData.append("image_url", "https://randomuser.me/api/portraits/women/32.jpg");
+
+
+fetch("domain/api/insurance_partners", {
+  method: "POST",
+  body: formData
+});
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully created",
+    "data": {
+        "id": 2,
+        "name": "AXA",
+        "image_url": "http://localhost:5000/images/insurance_partners/05bbdcbc-7a39-4770-8302-4ee9d2c9babc.webp",
+        "created_at": "2026-11-04T11:38:51.000Z",
+        "updated_at": "2026-11-04T11:38:51.000Z"
+    }
+}
+```
+
+##### Error Response 
+
+```json
+{
+    "status": false,
+    "message": "Image file or image_url is required"
+}
+```
+```json
+{
+    "status": false,
+    "message": "name is required"
+}
+```
+
+### PUT /api/insurance_partners
+
+- `Only admin` can use this route.
+
+#### Payload
+
+- This endpoint accepts data using `multipart/form-data`.
+- The following fields should be included in the request body as `FormData`:
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `id` | number | YES | id of the row to update |
+| `name` | string | YES | name |
+| `image` | file | YES | Image file to upload |
+| `image_url` | string | YES | The background_image_url of the banner |
+
+#### Example
+
+```js
+const formData = new FormData();
+
+formData.append("id", 1);
+formData.append("name", "AXA 2");
+
+formData.append("image", imageFile);
+//or
+formData.append("image_url", "https://images.unsplash.com/photo-1542718610-a1d656d1884c?w=500&q=60");
+
+
+fetch("domain/api/insurance_partners", {
+  method: "PUT",
+  body: formData
+});
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully updated.",
+    "data": {
+        "id": 1,
+        "name": "AXA 2",
+        "image_url": "http://localhost:5000/images/insurance_partners/66dedb4a-d348-43a7-819f-4d56987146fb.webp",
+        "created_at": "2026-11-04T11:38:35.000Z",
+        "updated_at": "2026-11-04T11:41:26.000Z"
+    }
+}
+```
+
+##### Error Response 
+
+```json
+{
+    "status": false,
+    "message": "Image file or image_url is required"
+}
+```
+```json
+{
+    "status": false,
+    "message": "name is required"
+}
+```
+```json
+{
+    "status": false,
+    "message": "Wrong  or invalid Id!"
+}
+```
+
+
+### DELETE /api/insurance_partners/:id
+
+- `:id` is the id of item to delete
+- `Only admin` can use this route.
+
+#### Example 
+
+```text
+/api/insurance_partners/1
+
+/api/insurance_partners/2
+```
+
+#### Success response
+
+```json
+{
+    "status": true,
+    "message": "Successfully deleted."
+}
+``` 
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Wrong or invalid id!"
+}
+```
+
+
+---
+
+## 19. SQL code of creating `insurance_faqs` in database
+
+```sql
+CREATE TABLE insurance_faqs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    question VARCHAR(255) NOT NULL,
+    answer TEXT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+```
+
+
+### GET /api/insurance_faqs/all
+
+- No payment required
+
+#### Response
+
+```json
+{
+    "status": true,
+    "message": "All items are here",
+    "data": [
+        {
+            "id": 1,
+            "question": "How to request an insurance invoice?",
+            "answer": "You can request an insurance invoice through your account dashboard. Invoices are typically available within 1-2 business days.",
+            "created_at": "2026-11-04T11:16:12.000Z",
+            "updated_at": "2026-11-04T11:16:12.000Z"
+        },
+        {
+            "id": 2,
+            "question": "How to request an insurance invoice? 2",
+            "answer": "You can request an insurance invoice through your account dashboard. Invoices are typically available within 1-2 business days 2222.",
+            "created_at": "2026-11-04T11:16:52.000Z",
+            "updated_at": "2026-11-04T11:17:16.000Z"
+        }
+    ]
+}
+```
+
+### POST /api/insurance_faqs
+
+- `Only admin` can use this route.
+
+#### Payload
+
+- `title` must exit
+
+```json
+{
+    "question" : "How to request an insurance invoice?",
+    "answer" : "You can request an insurance invoice through your account dashboard. Invoices are typically available within 1-2 business days."
+}
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully created",
+    "data": {
+        "id": 1,
+        "question": "How to request an insurance invoice?",
+        "answer": "You can request an insurance invoice through your account dashboard. Invoices are typically available within 1-2 business days.",
+        "created_at": "2026-11-04T11:16:12.000Z",
+        "updated_at": "2026-11-04T11:16:12.000Z"
+    }
+}
+```
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Question is required"
+}
+```
+
+
+### PUT /api/insurance_faqs
+
+- `Only admin` can use this route.
+
+#### Payload
+
+-  `id` and `title` must exit
+
+```json
+{
+    "id" : 2,
+    "question" : "How to request an insurance invoice? 2",
+    "answer" : "You can request an insurance invoice through your account dashboard. Invoices are typically available within 1-2 business days 2222."
+}
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully updated.",
+    "data": {
+        "id": 2,
+        "question": "How to request an insurance invoice? 2",
+        "answer": "You can request an insurance invoice through your account dashboard. Invoices are typically available within 1-2 business days 2222.",
+        "created_at": "2026-11-04T11:16:52.000Z",
+        "updated_at": "2026-11-04T11:17:16.000Z"
+    }
+}
+```
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Wrong  or invalid Id!"
+}
+```
+
+```json
+{
+    "status": false,
+    "message": "Id and question are required"
+}
+```
+
+### DELETE /api/insurance_faqs/:id
+
+- `:id` is the id of item to delete
+- `Only admin` can use this route.
+
+#### Example 
+
+```text
+/api/insurance_coverage_features/1
+
+/api/insurance_coverage_features/2
+```
+
+#### Success response
+
+```json
+{
+    "status": true,
+    "message": "Successfully deleted."
+}
+```
+
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Wrong or invalid id!"
+}
+```
+
+---
+
