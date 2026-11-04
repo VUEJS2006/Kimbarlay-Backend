@@ -51,6 +51,8 @@ import newfeedRouter from "./router/TravelRouter/newfeedRouter.js";
 import internationalRouter from "./router/TravelRouter/internationalDestinationRouter.js";
 import internationalPackageRouter from "./router/TravelRouter/internationalPackageRouter.js";
 import internationalBookingRouter from "./router/TravelRouter/interBookingRouter.js";
+import internationalBannerRouter from "./router/TravelRouter/internationalBannerRouter.js";
+
 
 import specialOffersAndDealsRouter from "./router/TravelRouter/specialOffersAndDealsRouter.js";
 import travelGroupOnBannerRouter from "./router/TravelRouter/travelGroupOnBannerRouter.js";
@@ -132,7 +134,7 @@ app.use("/api", newfeedRouter)
 app.use("/api", internationalRouter)
 app.use("/api", internationalPackageRouter)
 app.use("/api", internationalBookingRouter)
-
+app.use("/api", internationalBannerRouter)
 
 app.use("/api", specialOffersAndDealsRouter)
 app.use("/api", travelGroupOnBannerRouter)
@@ -143,14 +145,14 @@ app.use("/api", tourismTourPackageRouter)
 app.use("/api", tourismTourBookingRouter)
 app.use("/api", travelBannersUnityRouter)
 app.use("/api", travelStyleRouter)
-app.use('/api' , travelLocalPopularDestinationRouter)
-app.use('/api' , localTourExploreAttractionRouter)
-app.use('/api' , localExploreAttractionsBookingRouter)
-app.use('/api' , localGroupToursRouter)
-app.use('/api' , travelLocalGroupToursBookingRouter)
-app.use('/api' , privateSeasonalHotDestinationsRouter)
-app.use('/api' , privateSeasonalHotDestinationsBookingRouter)
-app.use('/api' , travelDesignersRouter)
+app.use('/api', travelLocalPopularDestinationRouter)
+app.use('/api', localTourExploreAttractionRouter)
+app.use('/api', localExploreAttractionsBookingRouter)
+app.use('/api', localGroupToursRouter)
+app.use('/api', travelLocalGroupToursBookingRouter)
+app.use('/api', privateSeasonalHotDestinationsRouter)
+app.use('/api', privateSeasonalHotDestinationsBookingRouter)
+app.use('/api', travelDesignersRouter)
 
 
 app.get("/", (req, res) => {
