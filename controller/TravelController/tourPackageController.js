@@ -8,22 +8,33 @@ import { asyncHandel } from "../../middleware/asyncMiddleware.js";
 export const packageCreate = asyncHandel(async (req, res) => {
     try {
 
-        const { title, duration, original_price, price, discount, available_depart } = req.body;
+        const { title, duration, original_price, price, discount, available_depart, destination_id } = req.body;
 
-        if (!title || !duration || !available_depart || !original_price) {
+        if (!title || !duration || !available_depart || !original_price || !destination_id) {
             return res.status(400).json({
                 success: false,
                 message: "All fields are required!"
             });
         }
 
+        const [destinations] = await db.query(
+            "SELECT id FROM tourdestinations WHERE id = ?",
+            [destination_id]
+        );
+
+        if (destinations.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: "Tour Destination not found!"
+            });
+        }
 
         const [data] = await db.query(
             `
-            INSERT INTO tourpackages (title,duration,original_price,price,discount,available_depart) VALUES (?,?,?,?,?,?)
+            INSERT INTO tourpackages (title,duration,original_price,price,discount,available_depart,destination_id) VALUES (?,?,?,?,?,?,?)
             `,
             [
-                title, duration, original_price, price, discount, available_depart
+                title, duration, original_price, price, discount, available_depart, destination_id
             ]
         )
         return res.status(201).json({
@@ -46,21 +57,25 @@ export const packageList = asyncHandel(async (req, res) => {
         const [data] = await db.query(
             `
             SELECT 
-            id,
-            title,
-            duration,
-            original_price,
-            price,
-            discount,
-            available_depart,
+            tourpackages.id,
+            tourpackages.title,
+            tourpackages.duration,
+            tourpackages.original_price,
+            tourpackages.price,
+            tourpackages.discount,
+            tourpackages.available_depart,
+            tourpackages.destination_id,
+            tourdestinations.name AS name,
+            tourdestinations.image AS image,
             DATE_FORMAT(
-            created_at,
+            tourpackages.created_at,
             '%d-%m-%Y'
             ) AS created_at
 
             FROM 
             tourpackages
-            ORDER BY id DESC 
+            LEFT JOIN tourdestinations ON tourpackages.destination_id = tourdestinations.id
+            ORDER BY tourpackages.id DESC
             `
         )
         return res.status(200).json({
@@ -83,7 +98,7 @@ export const packageUpdate = asyncHandel(async (req, res) => {
     try {
 
         const { id } = req.params;
-        const { title, duration, original_price, price, discount, available_depart } = req.body;
+        const { title, duration, original_price, price, discount, available_depart, destination_id } = req.body;
 
         const [packages] = await db.query("SELECT * FROM tourpackages WHERE id = ?", [id]);
 
@@ -94,6 +109,21 @@ export const packageUpdate = asyncHandel(async (req, res) => {
             });
         }
 
+        const updatedDestinationId = destination_id ?? packages[0].destination_id;
+        if (destination_id != null) {
+            const [destinations] = await db.query(
+                "SELECT id FROM tourdestinations WHERE id = ?",
+                [destination_id]
+            );
+
+            if (destinations.length === 0) {
+                return res.status(404).json({
+                    success: false,
+                    message: "Tour Destination not found!"
+                });
+            }
+        }
+
         const [data] = await db.query(
             `
             UPDATE tourpackages SET 
@@ -102,7 +132,8 @@ export const packageUpdate = asyncHandel(async (req, res) => {
             original_price = ?,
             price = ?,
             discount = ?,
-            available_depart = ?
+            available_depart = ?,
+            destination_id = ?
 
             WHERE id = ?
             `,
@@ -113,6 +144,7 @@ export const packageUpdate = asyncHandel(async (req, res) => {
                 price,
                 discount,
                 available_depart,
+                updatedDestinationId,
                 id
             ]
         );
@@ -176,22 +208,26 @@ export const packageMobileList = asyncHandel(async (req, res) => {
         const [data] = await db.query(
             `
             SELECT 
-            id,
-            title,
-            duration,
-            original_price,
-            price,
-            discount,
-            available_depart,
+            tourpackages.id,
+            tourpackages.title,
+            tourpackages.duration,
+            tourpackages.original_price,
+            tourpackages.price,
+            tourpackages.discount,
+            tourpackages.available_depart,
+            tourpackages.destination_id,
+            tourdestinations.name AS name,
+            tourdestinations.image AS image,
 
             DATE_FORMAT(
-            created_at,
+            tourpackages.created_at,
             '%d-%m-%Y'
             ) AS created_at
 
             FROM 
             tourpackages
-            ORDER BY id DESC 
+            LEFT JOIN tourdestinations ON tourpackages.destination_id = tourdestinations.id
+            ORDER BY tourpackages.id DESC
             `
         )
         return res.status(200).json({

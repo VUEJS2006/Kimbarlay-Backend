@@ -21,3 +21,4 @@ router.put('/admin/international/package/update/:id', upload.single("image"), au
 router.delete('/admin/international/package/delete/:id', authenticated, isAdmin, interPackageDelete);
 
 export default router;
+
