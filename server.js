@@ -52,7 +52,7 @@ import internationalRouter from "./router/TravelRouter/internationalDestinationR
 import internationalPackageRouter from "./router/TravelRouter/internationalPackageRouter.js";
 import internationalBookingRouter from "./router/TravelRouter/interBookingRouter.js";
 import internationalBannerRouter from "./router/TravelRouter/internationalBannerRouter.js";
-
+import datTripDestinationRouter from "./router/TravelRouter/daytripDestinationRouter.js";
 
 import specialOffersAndDealsRouter from "./router/TravelRouter/specialOffersAndDealsRouter.js";
 import travelGroupOnBannerRouter from "./router/TravelRouter/travelGroupOnBannerRouter.js";
@@ -135,6 +135,10 @@ app.use("/api", internationalRouter)
 app.use("/api", internationalPackageRouter)
 app.use("/api", internationalBookingRouter)
 app.use("/api", internationalBannerRouter)
+app.use("/api", datTripDestinationRouter)
+
+
+
 
 app.use("/api", specialOffersAndDealsRouter)
 app.use("/api", travelGroupOnBannerRouter)
