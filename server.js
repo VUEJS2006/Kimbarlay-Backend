@@ -56,6 +56,7 @@ import datTripDestinationRouter from "./router/TravelRouter/daytripDestinationRo
 import dayTripPackageRouter from "./router/TravelRouter/daytripPackageRouter.js";
 import dayTripBookingRouter from "./router/TravelRouter/daytripBookingRouter.js";
 import dayTripBannerRouter from "./router/TravelRouter/daytripBannerRouter.js";
+import studyBannerRouter from "./router/TravelRouter/studyBannerRouter.js";
 
 import specialOffersAndDealsRouter from "./router/TravelRouter/specialOffersAndDealsRouter.js";
 import travelGroupOnBannerRouter from "./router/TravelRouter/travelGroupOnBannerRouter.js";
@@ -142,6 +143,7 @@ app.use("/api", datTripDestinationRouter)
 app.use("/api", dayTripPackageRouter)
 app.use("/api", dayTripBookingRouter)
 app.use("/api", dayTripBannerRouter)
+app.use("/api", studyBannerRouter)
 
 
 
