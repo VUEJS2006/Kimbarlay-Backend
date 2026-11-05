@@ -6594,7 +6594,7 @@ fetch("domain/api/local_popular_destination", {
 ---
 
 
-## 9. SQL code of creating `travel_local_explore_attractions` in database
+## 10. SQL code of creating `travel_local_explore_attractions` in database
 
 ```sql
 CREATE TABLE travel_local_explore_attractions (
@@ -6846,7 +6846,7 @@ fetch("domain/api/local_popular_destination", {
 
 ---
 
-## 10. SQL code of creating `travel_local_explore_attractions_bookings` in database
+## 11. SQL code of creating `travel_local_explore_attractions_bookings` in database
 
 ```sql
 CREATE TABLE travel_local_explore_attractions_bookings (
@@ -7095,7 +7095,7 @@ CREATE TABLE travel_local_explore_attractions_bookings (
 ---
 
 
-## 11. SQL code of creating `travel_local_group_tours` in database
+## 12. SQL code of creating `travel_local_group_tours` in database
 
 ```sql
 CREATE TABLE travel_local_group_tours (
@@ -7356,7 +7356,7 @@ fetch("domain/api/travel_local_group_tours", {
 
 ---
 
-## 12. SQL code of creating `travel_local_group_tours_bookings` in database
+## 13. SQL code of creating `travel_local_group_tours_bookings` in database
 
 ```sql
 CREATE TABLE travel_local_group_tours_bookings (
@@ -7581,7 +7581,7 @@ CREATE TABLE travel_local_group_tours_bookings (
 ---
 
 
-## 13. SQL code of creating `private_seasonal_hot_destinations` in database
+## 14. SQL code of creating `private_seasonal_hot_destinations` in database
 
 ```sql
 CREATE TABLE private_seasonal_hot_destinations (
@@ -7828,7 +7828,7 @@ fetch("domain/api/private_seasonal_hot_destinations", {
 ---
 
 
-## 14. SQL code of creating `private_seasonal_hot_destinations_bookings` in database
+## 15. SQL code of creating `private_seasonal_hot_destinations_bookings` in database
 
 ```sql
 CREATE TABLE private_seasonal_hot_destinations_bookings (
@@ -8054,7 +8054,7 @@ CREATE TABLE private_seasonal_hot_destinations_bookings (
 
 
 
-## 15. SQL code of creating `travel_designers` in database
+## 16. SQL code of creating `travel_designers` in database
 
 ```sql
 CREATE TABLE travel_designers (
@@ -8291,7 +8291,7 @@ fetch("domain/api/travel_designers", {
 
 ---
 
-## 16. SQL code of creating `insurance_coverage_options` in database
+## 17. SQL code of creating `insurance_coverage_options` in database
 
 ```sql
 CREATE TABLE insurance_coverage_options (
@@ -8463,7 +8463,7 @@ CREATE TABLE insurance_coverage_options (
 
 ---
 
-## 17. SQL code of creating `insurance_coverage_features` in database
+## 18. SQL code of creating `insurance_coverage_features` in database
 
 ```sql
 CREATE TABLE insurance_coverage_features (
@@ -8636,7 +8636,7 @@ CREATE TABLE insurance_coverage_features (
 ---
 
 
-## 18. SQL code of creating `insurance_partners` in database
+## 19. SQL code of creating `insurance_partners` in database
 
 ```sql
 CREATE TABLE insurance_partners (
@@ -8850,7 +8850,7 @@ fetch("domain/api/insurance_partners", {
 
 ---
 
-## 19. SQL code of creating `insurance_faqs` in database
+## 20. SQL code of creating `insurance_faqs` in database
 
 ```sql
 CREATE TABLE insurance_faqs (
