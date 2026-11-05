@@ -1,7 +1,7 @@
 import db from "../../config/db.js";
 import { asyncHandel } from "../../middleware/asyncMiddleware.js";
 
-const bookingTable = "daytip_bookings";
+const bookingTable = "daytrip_bookings";
 
 export const dayBookingCreate = asyncHandel(async (req, res) => {
     try {
