@@ -56,20 +56,20 @@ export const DomesticpackageList = asyncHandel(async (req, res) => {
         const [data] = await db.query(
             `
             SELECT 
-                domestic_packages.id,
-                domestic_packages.title,
-                domestic_packages.duration,
-                CAST(domestic_packages.original_price AS UNSIGNED) AS original_price,
-                CAST(domestic_packages.price AS UNSIGNED) AS price,
-                CAST(domestic_packages.discount AS UNSIGNED) AS discount,
-                domestic_packages.available_depart,
-                domestic_packages.domestic_id,
-                tourdomestics.name AS name,
-                tourdomestics.image AS image,
-                DATE_FORMAT(domestic_packages.created_at, '%d-%m-%Y') AS created_at
-            FROM domestic_packages
-            LEFT JOIN tourdomestics ON domestic_packages.domestic_id = tourdomestics.id
-            ORDER BY domestic_packages.id DESC
+                dp.id,
+                dp.title,
+                dp.duration,
+                CAST(dp.original_price AS UNSIGNED) AS original_price,
+                CAST(dp.price AS UNSIGNED) AS price,
+                CAST(dp.discount AS UNSIGNED) AS discount,
+                dp.available_depart,
+                dp.domestic_id,
+                td.name AS name,
+                td.image AS image,
+                DATE_FORMAT(dp.created_at, '%d-%m-%Y') AS created_at
+            FROM domestic_packages AS dp
+            LEFT JOIN tourdomestics AS td ON dp.domestic_id = td.id
+            ORDER BY dp.id DESC
             `
         );
 
@@ -200,20 +200,20 @@ export const DomesticpackageMobileList = asyncHandel(async (req, res) => {
         const [data] = await db.query(
             `
             SELECT 
-                domestic_packages.id,
-                domestic_packages.title,
-                domestic_packages.duration,
-                CAST(domestic_packages.original_price AS UNSIGNED) AS original_price,
-                CAST(domestic_packages.price AS UNSIGNED) AS price,
-                CAST(domestic_packages.discount AS UNSIGNED) AS discount,
-                domestic_packages.available_depart,
-                domestic_packages.domestic_id,
-                tourdomestics.name AS name,
-                tourdomestics.image AS image,
-                DATE_FORMAT(domestic_packages.created_at, '%d-%m-%Y') AS created_at
-            FROM domestic_packages
-            LEFT JOIN tourdomestics ON domestic_packages.domestic_id = tourdomestics.id
-            ORDER BY domestic_packages.id DESC
+                dp.id,
+                dp.title,
+                dp.duration,
+                CAST(dp.original_price AS UNSIGNED) AS original_price,
+                CAST(dp.price AS UNSIGNED) AS price,
+                CAST(dp.discount AS UNSIGNED) AS discount,
+                dp.available_depart,
+                dp.domestic_id,
+                td.name AS name,
+                td.image AS image,
+                DATE_FORMAT(dp.created_at, '%d-%m-%Y') AS created_at
+            FROM domestic_packages AS dp
+            LEFT JOIN tourdomestics AS td ON dp.domestic_id = td.id
+            ORDER BY dp.id DESC
             `
         );
 
