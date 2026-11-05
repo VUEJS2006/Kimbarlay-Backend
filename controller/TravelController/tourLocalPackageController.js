@@ -56,20 +56,20 @@ export const LocalpackageList = asyncHandel(async (req, res) => {
         const [data] = await db.query(
             `
             SELECT 
-                id,
-                title,
-                duration,
-                CAST(original_price AS UNSIGNED) AS original_price,
-                CAST(price AS UNSIGNED) AS price,
-                CAST(discount AS UNSIGNED) AS discount,
-                available_depart,
-                local_packages.local_id,
-                tourlocals.name AS name,
-                tourlocals.image AS image,
-                DATE_FORMAT(local_packages.created_at, '%d-%m-%Y') AS created_at
-            FROM local_packages
-            LEFT JOIN tourlocals ON local_packages.local_id = tourlocals.id
-            ORDER BY local_packages.id DESC
+                lp.id,
+                lp.title,
+                lp.duration,
+                CAST(lp.original_price AS UNSIGNED) AS original_price,
+                CAST(lp.price AS UNSIGNED) AS price,
+                CAST(lp.discount AS UNSIGNED) AS discount,
+                lp.available_depart,
+                lp.local_id,
+                tl.name AS name,
+                tl.image AS image,
+                DATE_FORMAT(lp.created_at, '%d-%m-%Y') AS created_at
+            FROM local_packages AS lp
+            LEFT JOIN tourlocals AS tl ON lp.local_id = tl.id
+            ORDER BY lp.id DESC
             `
         );
 
@@ -202,20 +202,20 @@ export const LocalpackageMobileList = asyncHandel(async (req, res) => {
         const [data] = await db.query(
             `
             SELECT 
-                id,
-                title,
-                duration,
-                CAST(original_price AS UNSIGNED) AS original_price,
-                CAST(price AS UNSIGNED) AS price,
-                CAST(discount AS UNSIGNED) AS discount,
-                available_depart,
-                local_packages.local_id,
-                tourlocals.name AS name,
-                tourlocals.image AS image,
-                DATE_FORMAT(local_packages.created_at, '%d-%m-%Y') AS created_at
-            FROM local_packages
-            LEFT JOIN tourlocals ON local_packages.local_id = tourlocals.id
-            ORDER BY local_packages.id DESC
+                lp.id,
+                lp.title,
+                lp.duration,
+                CAST(lp.original_price AS UNSIGNED) AS original_price,
+                CAST(lp.price AS UNSIGNED) AS price,
+                CAST(lp.discount AS UNSIGNED) AS discount,
+                lp.available_depart,
+                lp.local_id,
+                tl.name AS name,
+                tl.image AS image,
+                DATE_FORMAT(lp.created_at, '%d-%m-%Y') AS created_at
+            FROM local_packages AS lp
+            LEFT JOIN tourlocals AS tl ON lp.local_id = tl.id
+            ORDER BY lp.id DESC
             `
         );
 
