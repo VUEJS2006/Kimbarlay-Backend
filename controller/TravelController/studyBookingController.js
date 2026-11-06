@@ -252,3 +252,10 @@ export const interBookingMobileList = asyncHandel(async (req, res) => {
         });
     }
 });
+
+export {
+    interBookingList as studyBookingList,
+    interBookingApproved as studyBookingApproved,
+    interBookingCancelled as studyBookingCancelled,
+    interBookingMobileList as studyBookingMobileList
+};
