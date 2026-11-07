@@ -62,6 +62,7 @@ import studyBookingRouter from "./router/TravelRouter/studyBookingRouter.js";
 import studyThemeRouter from "./router/TravelRouter/studyThemeRouter.js";
 import studyThemeBookingRouter from "./router/TravelRouter/studyThemeBookingRouter.js";
 import studyFeatureRouter from "./router/TravelRouter/studyFeatureRouter.js";
+import internationalFeatureRouter from "./router/TravelRouter/internationalFeatureRouter.js";
 
 import specialOffersAndDealsRouter from "./router/TravelRouter/specialOffersAndDealsRouter.js";
 import travelGroupOnBannerRouter from "./router/TravelRouter/travelGroupOnBannerRouter.js";
@@ -158,7 +159,7 @@ app.use("/api", studyBookingRouter)
 app.use("/api", studyThemeRouter)
 app.use("/api", studyThemeBookingRouter)
 app.use("/api", studyFeatureRouter)
-
+app.use("/api", internationalFeatureRouter)
 
 
 

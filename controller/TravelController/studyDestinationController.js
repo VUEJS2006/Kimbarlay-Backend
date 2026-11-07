@@ -218,3 +218,6 @@ export const studydestinationMobileList = asyncHandel(async (req, res) => {
         });
     }
 });
+
+
+

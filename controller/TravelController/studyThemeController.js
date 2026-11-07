@@ -218,3 +218,4 @@ export const themeMobileList = asyncHandel(async (req, res) => {
         });
     }
 });
+
