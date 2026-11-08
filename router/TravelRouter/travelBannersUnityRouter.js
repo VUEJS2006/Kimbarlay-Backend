@@ -23,4 +23,9 @@ travelBannersUnityRouter.get("/insurance_banner" , setIdForChoosingBanner({ id :
 travelBannersUnityRouter.put("/insurance_banner" , upload.single("image") , authenticated , isAdmin , setIdForChoosingBanner({ id : "insurance_banner" }) , updateTravelBannersUnity )
 
 
+// for Visa banner 
+travelBannersUnityRouter.get("/visa_banner" , setIdForChoosingBanner({ id : "visa_banner" }) , getTravelBannersUnity )
+
+travelBannersUnityRouter.put("/visa_banner" , upload.single("image") , authenticated , isAdmin , setIdForChoosingBanner({ id : "visa_banner" }) , updateTravelBannersUnity )
+
 export default travelBannersUnityRouter;

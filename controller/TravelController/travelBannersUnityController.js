@@ -14,6 +14,8 @@ export const getTravelBannersUnity = async (req , res) => {
             data.tag = rows[0].tag;
         } else if(id === "private_customize_travel_banner") {
             data.badge = rows[0].tag;
+        } else if(id === "visa_banner") {
+            data.highlighted_text = rows[0].tag;
         }
 
         return res.status(200).json({
@@ -34,10 +36,17 @@ export const getTravelBannersUnity = async (req , res) => {
 
 export const updateTravelBannersUnity = async (req , res) => {
     try {
-        const { background_image_url , title , subtitle , tag , badge } = req.body;
+        const { background_image_url , title , subtitle , tag , badge , highlighted_text } = req.body;
         const image = req.file;
         const id = req.id;
-        const finalTag = tag || badge;
+        const finalTag = tag || badge || highlighted_text;
+
+        if(id === "visa_banner" && !highlighted_text) {
+            return res.status(400).json({
+                status : false,
+                message : "Highlighted text is required"
+            })
+        }
 
         if(!image && !background_image_url) {
             return res.status(400).json({
@@ -88,6 +97,8 @@ export const updateTravelBannersUnity = async (req , res) => {
             data.tag = rows[0].tag;
         } else if(id === "private_customize_travel_banner") {
             data.badge = rows[0].tag;
+        } else if(id === "visa_banner") {
+            data.highlighted_text = rows[0].tag;
         }
 
 

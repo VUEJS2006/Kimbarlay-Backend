@@ -9014,4 +9014,493 @@ CREATE TABLE insurance_faqs (
 ```
 
 ---
+---
+
+# Visa
+
+## 1. For Visa banner
+
+### GET /api/visa_banner
+
+- No payment required
+
+#### Response
+
+```json
+{
+    "status": true,
+    "message": "visa_banner is here.",
+    "data": {
+        "background_image_url": "http://localhost:5000/images/visa_banner/f39af52b-0b8a-4c6d-a720-d93a54b2b52e.webp",
+        "title": "Visa Services",
+        "subtitle": "Let our experts take care of your visa application — fast, reliable, stress-free",
+        "created_at": "2026-11-08T08:24:32.000Z",
+        "updated_at": "2026-11-08T08:25:33.000Z",
+        "highlighted_text": "We Handle It All"
+    }
+}
+```
+
+### PUT /api/visa_banner
+
+- `Only admin` can use this route.
+
+#### Payload
+
+- This endpoint accepts data using `multipart/form-data`.
+- The following fields should be included in the request body as `FormData`:
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `title` | string | YES | title |
+| `highlighted_text` | string | YES | Highlighted text |
+| `subtitle` | string | YES | subtitle |
+| `image` | file | YES | Image file to upload |
+| `background_image_url` | string | YES | The background_image_url of the banner |
+
+#### Example
+
+```js
+const formData = new FormData();
+
+formData.append("title", "Visa Services");
+formData.append("highlighted_text", "We Handle It All");
+formData.append("subtitle",  "Let our experts take care of your visa application — fast, reliable, stress-free");
+
+formData.append("image", imageFile);
+//or
+formData.append("background_image_url", "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1600&q=80");
+
+
+fetch("domain/api/visa_banner", {
+  method: "PUT",
+  body: formData
+});
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully edited.",
+    "data": {
+        "background_image_url": "http://localhost:5000/images/visa_banner/703be23b-7725-4892-a920-8aa2daa8e6c9.webp",
+        "title": "Visa Services",
+        "subtitle": "Let our experts take care of your visa application — fast, reliable, stress-free",
+        "created_at": "2026-11-08T08:24:32.000Z",
+        "updated_at": "2026-11-08T08:24:32.000Z",
+        "highlighted_text": "We Handle It All"
+    }
+}
+```
+
+##### Error Response 
+
+```json
+{
+    "status": false,
+    "message": "Title and subtitle are required"
+}
+```
+```json
+{
+    "status": false,
+    "message": "Highlighted text is required"
+}
+```
+
+---
+
+## 2. SQL for creating `visa_unity`
+
+- This table is for the union of `intro`, `CTA` and `contact` sections
+
+```sql
+CREATE TABLE visa_unity (
+    id VARCHAR(50) PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT NULL,
+    phone VARCHAR(255) NULL,
+    email VARCHAR(255) NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+```
+
+## 2.1 For the `intro` section
+
+
+### GET /api/visa_intro
+
+- No payment required
+
+#### Response
+
+```json
+{
+    "success": true,
+    "message": "visa_intro is here.",
+    "data": {
+        "title": "We Take Care of Everything",
+        "description": "Skip the paperwork stress. Our team handles your entire visa application — from document collection to submission and follow-up — so you can focus on packing.",
+        "created_at": "2026-11-08T09:06:17.000Z",
+        "updated_at": "2026-11-08T09:06:17.000Z"
+    }
+}
+```
+
+### PUT /api/visa_intro
+
+- `Only admin` can use this route.
+
+#### Payload
+
+```json
+{
+    "title" : "We Take Care of Everything",
+    "description" : "Skip the paperwork stress. Our team handles your entire visa application — from document collection to submission and follow-up — so you can focus on packing."
+}
+```
+
+#### Success Response
+
+```json
+{
+    "success": true,
+    "message": "Successfully updated.",
+    "data": {
+        "title": "We Take Care of Everything",
+        "description": "Skip the paperwork stress. Our team handles your entire visa application — from document collection to submission and follow-up — so you can focus on packing.",
+        "created_at": "2026-11-08T09:06:17.000Z",
+        "updated_at": "2026-11-08T09:06:17.000Z"
+    }
+}
+```
+
+##### Error Response 
+
+```json
+{
+    "success": false,
+    "message": "Title is required"
+}
+```
+
+---
+
+## 2.2 For the `CTA` section
+
+
+### GET /api/visa_cta
+
+- No payment required
+
+#### Response
+
+```json
+{
+    "success": true,
+    "message": "visa_cta is here.",
+    "data": {
+        "title": "Ready to Start Your Application?",
+        "description": "Contact our visa team today — we'll guide you through every step.",
+        "created_at": "2026-11-08T09:42:51.000Z",
+        "updated_at": "2026-11-08T09:42:51.000Z",
+        "call_button_label": "Call Now",
+        "email_button_label": "Email Us"
+    }
+}
+```
+
+### PUT /api/visa_cta
+
+- `Only admin` can use this route.
+
+#### Payload
+
+```json
+{
+    "title" : "Ready to Start Your Application?",
+    "description" : "Contact our visa team today — we'll guide you through every step.",
+    "call_button_label" : "Call Now",
+    "email_button_label" : "Email Us"
+}
+```
+
+#### Success Response
+
+```json
+{
+    "success": true,
+    "message": "Successfully updated.",
+    "data": {
+        "title": "Ready to Start Your Application?",
+        "description": "Contact our visa team today — we'll guide you through every step.",
+        "created_at": "2026-11-08T09:42:51.000Z",
+        "updated_at": "2026-11-08T09:42:51.000Z",
+        "call_button_label": "Call Now",
+        "email_button_label": "Email Us"
+    }
+}
+```
+
+##### Error Response 
+
+```json
+{
+    "success": false,
+    "message": "Title is required"
+}
+```
+
+---
+
+## 2.3 For the `Edit contact` section
+
+
+### GET /api/visa_contact
+
+- No payment required
+
+#### Response
+
+```json
+{
+    "success": true,
+    "message": "visa_contact is here.",
+    "data": {
+        "phone": "+95 9 123 456 789",
+        "email": "visa@kimberley.com",
+        "created_at": "2026-11-08T10:08:45.000Z",
+        "updated_at": "2026-11-08T10:08:45.000Z",
+        "office_hours": "Mon – Sat, 9:00 AM – 6:00 PM",
+        "address": "Yangon, Myanmar"
+    }
+}
+```
+
+### PUT /api/visa_contact
+
+- `Only admin` can use this route.
+
+#### Payload
+
+```json
+{
+    "phone" : "+95 9 123 456 789",
+    "email" : "visa@kimberley.com",
+    "office_hours" : "Mon – Sat, 9:00 AM – 6:00 PM",
+    "address" : "Yangon, Myanmar"
+}
+```
+
+#### Success Response
+
+```json
+{
+    "success": true,
+    "message": "Successfully updated.",
+    "data": {
+        "phone": "+95 9 123 456 789",
+        "email": "visa@kimberley.com",
+        "created_at": "2026-11-08T10:08:45.000Z",
+        "updated_at": "2026-11-08T10:08:45.000Z",
+        "office_hours": "Mon – Sat, 9:00 AM – 6:00 PM",
+        "address": "Yangon, Myanmar"
+    }
+}
+```
+
+##### Error Response 
+
+```json
+{
+    "success": false,
+    "message": "Title is required"
+}
+```
+
+---
+
+
+## 3. SQL for creating `visa_services`
+
+```sql
+CREATE TABLE visa_services (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT NULL,
+    icon VARCHAR(50) NOT NULL,
+    color VARCHAR(100) NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+```
+
+
+
+### GET /api/visa_services/all
+
+- No payment required
+
+#### Response
+
+```json
+{
+    "status": true,
+    "message": "All items are here",
+    "data": [
+        {
+            "id": 1,
+            "title": "Tourist Visa",
+            "description": "Hassle-free tourist visa applications for all popular destinations worldwide.",
+            "icon": "fa-passport",
+            "color": "#22bcb0",
+            "created_at": "2026-11-08T10:32:23.000Z",
+            "updated_at": "2026-11-08T10:32:23.000Z"
+        },
+        {
+            "id": 2,
+            "title": "Tourist Visa 2",
+            "description": "Hassle-free tourist visa applications for all popular destinations worldwide. 2",
+            "icon": "fa-passport 2",
+            "color": "#22bcb0 22",
+            "created_at": "2026-11-08T10:33:11.000Z",
+            "updated_at": "2026-11-08T10:33:33.000Z"
+        }
+    ]
+}
+```
+
+### POST /api/visa_services
+
+- `Only admin` can use this route.
+
+#### Payload
+
+- `title` must exit
+
+```json
+{
+    "title" : "Tourist Visa",
+    "description" : "Hassle-free tourist visa applications for all popular destinations worldwide.",
+    "icon" : "fa-passport",
+    "color" : "#22bcb0"
+}
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully created",
+    "data": {
+        "id": 1,
+        "title": "Tourist Visa",
+        "description": "Hassle-free tourist visa applications for all popular destinations worldwide.",
+        "icon": "fa-passport",
+        "color": "#22bcb0",
+        "created_at": "2026-11-08T10:32:23.000Z",
+        "updated_at": "2026-11-08T10:32:23.000Z"
+    }
+}
+```
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Title, icon and color are required"
+}
+```
+
+
+### PUT /api/visa_services
+
+- `Only admin` can use this route.
+
+#### Payload
+
+-  `id` and `title` must exit
+
+```json
+{
+    "id" : 2,
+    "title" : "Tourist Visa 2",
+    "description" : "Hassle-free tourist visa applications for all popular destinations worldwide. 2",
+    "icon" : "fa-passport 2",
+    "color" : "#22bcb0 22"
+}
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully updated.",
+    "data": {
+        "id": 2,
+        "title": "Tourist Visa 2",
+        "description": "Hassle-free tourist visa applications for all popular destinations worldwide. 2",
+        "icon": "fa-passport 2",
+        "color": "#22bcb0 22",
+        "created_at": "2026-11-08T10:33:11.000Z",
+        "updated_at": "2026-11-08T10:33:33.000Z"
+    }
+}
+```
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Wrong  or invalid Id!"
+}
+```
+
+```json
+{
+    "status": false,
+    "message": "Id and title are required"
+}
+```
+
+### DELETE /api/visa_services/:id
+
+- `:id` is the id of item to delete
+- `Only admin` can use this route.
+
+#### Example 
+
+```text
+/api/visa_services/1
+
+/api/visa_services/2
+```
+
+#### Success response
+
+```json
+{
+    "status": true,
+    "message": "Successfully deleted."
+}
+```
+
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Wrong or invalid id!"
+}
+```
+
+---
 

@@ -84,6 +84,8 @@ import insuranceCoverageOptionsRouter from "./router/TravelRouter/insuranceCover
 import insuranceCoverageFeaturesRouter from "./router/TravelRouter/insuranceCoverageFeaturesRouter.js";
 import insuranceFAQsRouter from "./router/TravelRouter/insuranceFAQsRouter.js";
 import insurancePartnersRouter from "./router/TravelRouter/insurancePartnersRouter.js";
+import visaUnityRouter from "./router/TravelRouter/visaUnityRouter.js";
+import visaServicesRouter from "./router/TravelRouter/visaServicesRouter.js";
 
 
 
@@ -184,6 +186,8 @@ app.use('/api', insuranceCoverageOptionsRouter)
 app.use('/api', insuranceCoverageFeaturesRouter)
 app.use('/api', insuranceFAQsRouter)
 app.use('/api', insurancePartnersRouter)
+app.use('/api', visaUnityRouter )
+app.use('/api', visaServicesRouter )
 
 
 app.get("/", (req, res) => {
