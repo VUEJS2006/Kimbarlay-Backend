@@ -9504,3 +9504,178 @@ CREATE TABLE visa_services (
 
 ---
 
+
+## 4. SQL for creating `visa_popular_destinations`
+
+
+```sql
+CREATE TABLE visa_popular_destinations (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    subtitle VARCHAR(255) NOT NULL,
+    duration VARCHAR(255) NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+```
+
+
+
+### GET /api/visa_popular_destinations/all
+
+- No payment required
+
+#### Response
+
+```json
+{
+    "status": true,
+    "message": "All items are here",
+    "data": [
+        {
+            "id": 1,
+            "title": "JP",
+            "subtitle": "Japan",
+            "duration": "5-7 days",
+            "created_at": "2026-11-08T23:56:42.000Z",
+            "updated_at": "2026-11-08T23:56:42.000Z"
+        },
+        {
+            "id": 2,
+            "title": "JP 2",
+            "subtitle": "Japan 2",
+            "duration": "5-7 days 2",
+            "created_at": "2026-11-08T23:56:55.000Z",
+            "updated_at": "2026-11-08T23:58:33.000Z"
+        }
+    ]
+}
+```
+
+### POST /api/visa_popular_destinations
+
+- `Only admin` can use this route.
+
+#### Payload
+
+- `title` must exit
+
+```json
+{
+    "title" : "JP",
+    "subtitle" : "Japan",
+    "duration" : "5-7 days"
+}
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully created",
+    "data": {
+        "id": 1,
+        "title": "JP",
+        "subtitle": "Japan",
+        "duration": "5-7 days",
+        "created_at": "2026-11-08T23:56:42.000Z",
+        "updated_at": "2026-11-08T23:56:42.000Z"
+    }
+}
+```
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Title and subtitle are required"
+}
+```
+
+
+### PUT /api/visa_popular_destinations
+
+- `Only admin` can use this route.
+
+#### Payload
+
+-  `id` and `title` must exit
+
+```json
+{
+    "id" : 2,
+    "title" : "JP 2",
+    "subtitle" : "Japan 2",
+    "duration" : "5-7 days 2"
+}
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully updated.",
+    "data": {
+        "id": 2,
+        "title": "JP 2",
+        "subtitle": "Japan 2",
+        "duration": "5-7 days 2",
+        "created_at": "2026-11-08T23:56:55.000Z",
+        "updated_at": "2026-11-08T23:58:33.000Z"
+    }
+}
+```
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Wrong  or invalid Id!"
+}
+```
+
+```json
+{
+    "status": false,
+    "message": "Id, title and subtitle are required"
+}
+```
+
+### DELETE /api/visa_popular_destinations/:id
+
+- `:id` is the id of item to delete
+- `Only admin` can use this route.
+
+#### Example 
+
+```text
+/api/visa_popular_destinations/1
+
+/api/visa_popular_destinations/2
+```
+
+#### Success response
+
+```json
+{
+    "status": true,
+    "message": "Successfully deleted."
+}
+```
+
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Wrong or invalid id!"
+}
+```
+
+---
+
