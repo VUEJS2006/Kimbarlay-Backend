@@ -9,14 +9,17 @@ export const getTravelBannersUnity = async (req , res) => {
 
         const [ rows ] = await db.query(`SELECT * FROM travel_banners_unity WHERE id = ?` , [id]);
 
-        let data ={ background_image_url : rows[0].background_image_url , title : rows[0].title , subtitle : rows[0].subtitle , created_at :  rows[0].created_at , updated_at : rows[0].updated_at }
-        if(id === "insurance_banner") {
-            data.tag = rows[0].tag;
-        } else if(id === "private_customize_travel_banner") {
-            data.badge = rows[0].tag;
-        } else if(id === "visa_banner") {
-            data.badge = rows[0].tag;
-            data.highlighted_text = rows[0].highlighted_text;
+        let data = {};
+        if(rows[0]) {
+            data ={ background_image_url : rows[0].background_image_url , title : rows[0].title , subtitle : rows[0].subtitle , created_at :  rows[0].created_at , updated_at : rows[0].updated_at }
+            if(id === "insurance_banner") {
+                data.tag = rows[0].tag;
+            } else if(id === "private_customize_travel_banner") {
+                data.badge = rows[0].tag;
+            } else if(id === "visa_banner") {
+                data.badge = rows[0].tag;
+                data.highlighted_text = rows[0].highlighted_text;
+            }
         }
 
         return res.status(200).json({
