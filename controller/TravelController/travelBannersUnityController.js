@@ -15,7 +15,8 @@ export const getTravelBannersUnity = async (req , res) => {
         } else if(id === "private_customize_travel_banner") {
             data.badge = rows[0].tag;
         } else if(id === "visa_banner") {
-            data.highlighted_text = rows[0].tag;
+            data.badge = rows[0].tag;
+            data.highlighted_text = rows[0].highlighted_text;
         }
 
         return res.status(200).json({
@@ -39,12 +40,12 @@ export const updateTravelBannersUnity = async (req , res) => {
         const { background_image_url , title , subtitle , tag , badge , highlighted_text } = req.body;
         const image = req.file;
         const id = req.id;
-        const finalTag = tag || badge || highlighted_text;
+        const finalTag = tag || badge;
 
-        if(id === "visa_banner" && !highlighted_text) {
+        if(id === "visa_banner" && (!highlighted_text || !badge) ) {
             return res.status(400).json({
                 status : false,
-                message : "Highlighted text is required"
+                message : "Highlighted text and badge are required"
             })
         }
 
@@ -79,16 +80,17 @@ export const updateTravelBannersUnity = async (req , res) => {
         }
 
         const query = `
-        INSERT INTO travel_banners_unity (id, background_image_url, tag, title, subtitle)
-        VALUES ( ?, ? , ? , ? , ? )
+        INSERT INTO travel_banners_unity (id, background_image_url, tag, title, subtitle , highlighted_text)
+        VALUES ( ?, ? , ? , ? , ? , ?)
         ON DUPLICATE KEY UPDATE 
             background_image_url = VALUES(background_image_url),
             tag = VALUES(tag),
             title = VALUES(title),
-            subtitle = VALUES(subtitle);
+            subtitle = VALUES(subtitle),
+            highlighted_text = VALUES(highlighted_text);
         `;
 
-        await db.query(query , [ id , url , finalTag , title , subtitle ]);
+        await db.query(query , [ id , url , finalTag , title , subtitle , highlighted_text ]);
 
         const [ rows ] = await db.query(`SELECT * FROM travel_banners_unity WHERE id = ?` , [id]);
 
@@ -98,7 +100,8 @@ export const updateTravelBannersUnity = async (req , res) => {
         } else if(id === "private_customize_travel_banner") {
             data.badge = rows[0].tag;
         } else if(id === "visa_banner") {
-            data.highlighted_text = rows[0].tag;
+            data.badge = rows[0].tag;
+            data.highlighted_text = rows[0].highlighted_text;
         }
 
 

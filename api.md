@@ -9182,11 +9182,12 @@ CREATE TABLE travel_private_steps (
     "status": true,
     "message": "visa_banner is here.",
     "data": {
-        "background_image_url": "http://localhost:5000/images/visa_banner/f39af52b-0b8a-4c6d-a720-d93a54b2b52e.webp",
+        "background_image_url": "http://localhost:5000/images/visa_banner/1e5eeb62-6ae1-46fd-bc5b-1ab32a5de07c.webp",
         "title": "Visa Services",
         "subtitle": "Let our experts take care of your visa application — fast, reliable, stress-free",
         "created_at": "2026-11-08T08:24:32.000Z",
-        "updated_at": "2026-11-08T08:25:33.000Z",
+        "updated_at": "2026-11-12T12:03:20.000Z",
+        "badge": "Trusted Visa Experts",
         "highlighted_text": "We Handle It All"
     }
 }
@@ -9203,6 +9204,7 @@ CREATE TABLE travel_private_steps (
 
 | Field | Type | Required | Description |
 |---|---|---|---|
+| `badge` | string | YES | badge text |
 | `title` | string | YES | title |
 | `highlighted_text` | string | YES | Highlighted text |
 | `subtitle` | string | YES | subtitle |
@@ -9214,6 +9216,7 @@ CREATE TABLE travel_private_steps (
 ```js
 const formData = new FormData();
 
+formData.append("badge", "Trusted Visa Experts");
 formData.append("title", "Visa Services");
 formData.append("highlighted_text", "We Handle It All");
 formData.append("subtitle",  "Let our experts take care of your visa application — fast, reliable, stress-free");
@@ -9236,11 +9239,12 @@ fetch("domain/api/visa_banner", {
     "status": true,
     "message": "Successfully edited.",
     "data": {
-        "background_image_url": "http://localhost:5000/images/visa_banner/703be23b-7725-4892-a920-8aa2daa8e6c9.webp",
+        "background_image_url": "http://localhost:5000/images/visa_banner/1e5eeb62-6ae1-46fd-bc5b-1ab32a5de07c.webp",
         "title": "Visa Services",
         "subtitle": "Let our experts take care of your visa application — fast, reliable, stress-free",
         "created_at": "2026-11-08T08:24:32.000Z",
-        "updated_at": "2026-11-08T08:24:32.000Z",
+        "updated_at": "2026-11-12T12:03:20.000Z",
+        "badge": "Trusted Visa Experts",
         "highlighted_text": "We Handle It All"
     }
 }
@@ -9257,7 +9261,7 @@ fetch("domain/api/visa_banner", {
 ```json
 {
     "status": false,
-    "message": "Highlighted text is required"
+    "message": "Highlighted text and badge are required"
 }
 ```
 
