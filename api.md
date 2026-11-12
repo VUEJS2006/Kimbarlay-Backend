@@ -9013,6 +9013,157 @@ CREATE TABLE insurance_faqs (
 }
 ```
 
+## 21. SQL code of creating `travel_private_steps` in database
+
+```sql
+CREATE TABLE travel_private_steps (
+    id VARCHAR(50) PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT NULL,
+    icon VARCHAR(50) NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+```
+
+
+### GET /api/travel_private_steps
+
+- No payload required
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "All steps are here",
+    "data": [
+        {
+            "id": "step_1",
+            "title": "Choose Destination",
+            "description": "Borwse our seasonal collection",
+            "icon": "fa-plane-departure",
+            "created_at": "2026-11-12T01:08:06.000Z",
+            "updated_at": "2026-11-12T01:08:13.000Z"
+        },
+        {
+            "id": "step_2",
+            "title": "Tell Us Your Dream",
+            "description": "Fill a quick request form",
+            "icon": "fa-plane-departure",
+            "created_at": "2026-11-12T01:08:06.000Z",
+            "updated_at": "2026-11-12T01:08:13.000Z"
+        },
+        {
+            "id": "step_3",
+            "title": "We Handle the Rest",
+            "description": "Expert-designed itinerary",
+            "icon": "fa-plane-departure",
+            "created_at": "2026-11-12T01:08:06.000Z",
+            "updated_at": "2026-11-12T01:08:13.000Z"
+        }
+    ]
+}
+```
+
+### PUT /api/travel_private_steps/update/all
+
+- Id must be only `step_1`, `step_2` or `step_3`.
+- Order by Id like `step_1` is always the first one.
+
+#### Payload
+
+```json
+[
+   {
+    "id": "step_2",
+    "title": "Tell Us Your Dream",
+    "description": "Fill a quick request form",
+    "icon": "fa-plane-departure"
+  },
+  {
+    "id": "step_1",
+    "title": "Choose Destination",
+    "description": "Borwse our seasonal collection",
+    "icon": "fa-plane-departure"
+  },
+  {
+    "id": "step_3",
+    "title": "We Handle the Rest",
+    "description": "Expert-designed itinerary",
+    "icon": "fa-plane-departure"
+  }
+]
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "After updated, all steps are here",
+    "data": [
+        {
+            "id": "step_1",
+            "title": "Choose Destination",
+            "description": "Borwse our seasonal collection",
+            "icon": "fa-plane-departure",
+            "created_at": "2026-11-12T01:08:06.000Z",
+            "updated_at": "2026-11-12T01:08:13.000Z"
+        },
+        {
+            "id": "step_2",
+            "title": "Tell Us Your Dream",
+            "description": "Fill a quick request form",
+            "icon": "fa-plane-departure",
+            "created_at": "2026-11-12T01:08:06.000Z",
+            "updated_at": "2026-11-12T01:08:13.000Z"
+        },
+        {
+            "id": "step_3",
+            "title": "We Handle the Rest",
+            "description": "Expert-designed itinerary",
+            "icon": "fa-plane-departure",
+            "created_at": "2026-11-12T01:08:06.000Z",
+            "updated_at": "2026-11-12T01:08:13.000Z"
+        }
+    ]
+}
+```
+
+#### Error Response
+
+- Status : `400`
+
+```json
+{
+    "success": false,
+    "message": "Request body must be an array containing exactly 3 steps."
+}
+```
+
+```json
+{
+    "success": false,
+    "message": "Invalid Step ID: 'step_2w'. ID must be one of step_1 , step_2 , step_3."
+}
+```
+
+```json
+{
+    "success": false,
+    "message": "Title, description, and icon are required for step 'step_2'."
+}
+```
+
+```json
+{
+    "success": false,
+    "message": "You must provide all step_1 , step_2 , step_3."
+}
+```
+
+
 ---
 ---
 
@@ -9679,3 +9830,4 @@ CREATE TABLE visa_popular_destinations (
 
 ---
 
+## 5. SQL for creting 
