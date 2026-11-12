@@ -87,6 +87,7 @@ import insurancePartnersRouter from "./router/TravelRouter/insurancePartnersRout
 import visaUnityRouter from "./router/TravelRouter/visaUnityRouter.js";
 import visaServicesRouter from "./router/TravelRouter/visaServicesRouter.js";
 import visaPopularDestinationsRouter from "./router/TravelRouter/visaPopularDestinationsRouter.js";
+import privateStepsRouter from "./router/TravelRouter/privateStepsRouter.js";
 
 
 
@@ -190,6 +191,7 @@ app.use('/api', insurancePartnersRouter)
 app.use('/api', visaUnityRouter )
 app.use('/api', visaServicesRouter )
 app.use('/api', visaPopularDestinationsRouter )
+app.use('/api', privateStepsRouter )
 
 
 app.get("/", (req, res) => {
