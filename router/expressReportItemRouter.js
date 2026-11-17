@@ -2,15 +2,16 @@ import express from "express"
 import { upload } from "../middleware/upload.js";
 import { createExpressReportItem, deleteExpressReportItem, getAllExpressReportItem, updateExpressReportItem } from "../controller/expressReportItemController.js";
 import { authenticated, isAdmin } from "../middleware/authenticatedMiddleware.js";
+import { imageErrorHandlingMiddleware } from "../middleware/imageErrorHandleMiddleware.js";
 
 const expressReportItemsRouter = express.Router();
 
 expressReportItemsRouter.get("/promo/category/items", getAllExpressReportItem)
 
 
-expressReportItemsRouter.post("/promo/category/item/create" , upload.single("image") , authenticated , isAdmin , createExpressReportItem )
+expressReportItemsRouter.post("/promo/category/item/create" , upload.single("image"), imageErrorHandlingMiddleware , authenticated , isAdmin , createExpressReportItem )
 
-expressReportItemsRouter.put("/promo/category/item/update" , upload.single("image") , authenticated , isAdmin , updateExpressReportItem)
+expressReportItemsRouter.put("/promo/category/item/update" , upload.single("image"), imageErrorHandlingMiddleware , authenticated , isAdmin , updateExpressReportItem)
 
 expressReportItemsRouter.delete("/promo/category/item/delete/:id" , authenticated , isAdmin , deleteExpressReportItem)
 

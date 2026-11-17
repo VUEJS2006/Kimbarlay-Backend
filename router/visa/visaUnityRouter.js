@@ -1,6 +1,6 @@
 import express from "express";
-import { setIdForChoosingBanner } from "../../middleware/travelBannerMiddleware.js";
-import { eidtVisaUnity, getVisaUnity } from "../../controller/TravelController/visaUnityController.js";
+import { setIdForChoosingBanner } from "../../middleware/bannerMiddleware.js";
+import { eidtVisaUnity, getVisaUnity } from "../../controller/visa/visaUnityController.js";
 import { authenticated, isAdmin } from "../../middleware/authenticatedMiddleware.js";
 
 

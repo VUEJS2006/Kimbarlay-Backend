@@ -1,5 +1,5 @@
 import db from "../../config/db.js";
-import { changeToImageFullUrl, deleteStoredImage, storeImageToDynamicFolder } from "../../utils/image.js";
+import { backendDomainUrl, changeToImageFullUrl, deleteStoredImage, storeImageToDynamicFolder } from "../../utils/image.js";
 
 
 const tourismTourPackageCategories = [ 'Domestic', 'Local', 'Overseas' ]
@@ -113,7 +113,10 @@ export const updateTourismTourPackages = async (req , res) => {
 
         await db.query(`UPDATE tourism_tour_package SET package_name = ? , price = ? , old_price  = ? , rating = ? , discount_tag = ? , description = ? , image_url = ? WHERE id = ?` , [ package_name , price , old_price  , rating , discount_tag , description , url , id])
         
-        await deleteStoredImage(exitRows[0].image_url)
+        if( !(!image && image_url.includes(backendDomainUrl)) ) {
+            await deleteStoredImage(exitRows[0].image_url)
+        }
+        
 
         const [ rows ] = await db.query(`SELECT * FROM tourism_tour_package WHERE id = ?` , [id]);
 
@@ -142,6 +145,9 @@ export const deleteTavelTourismTourPackages = async (req , res) => {
                 message : "Id is required"
             })
         }
+        
+        const [ rows ] = await db.query(`SELECT * FROM tourism_tour_package WHERE id = ?` , [id]);
+
 
         const [ result ] = await db.query(`DELETE FROM tourism_tour_package WHERE id = ?` , [ id ]);
 
@@ -151,6 +157,9 @@ export const deleteTavelTourismTourPackages = async (req , res) => {
                 message : "Wrong or invalid id!"
             })
         }
+
+        await deleteStoredImage(rows[0].image_url)
+
 
         res.status(200).json({
             status : true,

@@ -73,9 +73,11 @@ export const deleteManyStoredImages = async (imageUrls = []) => {
     await Promise.all(deletePromises);
 };
 
+export const backendDomainUrl = process.env.BACKEND_DOMAIN_URL;
+
+
 // backend domain url + image location = full url
 export const changeToImageFullUrl = (image_url) => {
-    const backendDomainUrl = process.env.BACKEND_DOMAIN_URL;
 
     if(image_url)
     return `${backendDomainUrl}/${image_url}`;

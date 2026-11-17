@@ -84,10 +84,11 @@ import insuranceCoverageOptionsRouter from "./router/TravelRouter/insuranceCover
 import insuranceCoverageFeaturesRouter from "./router/TravelRouter/insuranceCoverageFeaturesRouter.js";
 import insuranceFAQsRouter from "./router/TravelRouter/insuranceFAQsRouter.js";
 import insurancePartnersRouter from "./router/TravelRouter/insurancePartnersRouter.js";
-import visaUnityRouter from "./router/TravelRouter/visaUnityRouter.js";
-import visaServicesRouter from "./router/TravelRouter/visaServicesRouter.js";
-import visaPopularDestinationsRouter from "./router/TravelRouter/visaPopularDestinationsRouter.js";
+import visaUnityRouter from "./router/visa/visaUnityRouter.js";
+import visaServicesRouter from "./router/visa/visaServicesRouter.js";
+import visaPopularDestinationsRouter from "./router/visa/visaPopularDestinationsRouter.js";
 import privateStepsRouter from "./router/TravelRouter/privateStepsRouter.js";
+import busAndBoatBannerRouter from "./router/busAndBoat/busAndBoatBannerRouter.js";
 
 
 
@@ -192,6 +193,7 @@ app.use('/api', visaUnityRouter )
 app.use('/api', visaServicesRouter )
 app.use('/api', visaPopularDestinationsRouter )
 app.use('/api', privateStepsRouter )
+app.use('/api', busAndBoatBannerRouter )
 
 
 app.get("/", (req, res) => {

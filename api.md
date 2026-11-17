@@ -9833,5 +9833,255 @@ CREATE TABLE visa_popular_destinations (
 ```
 
 ---
+---
 
-## 5. SQL for creting 
+
+# Bus & Boat
+
+## 1 SQL for creating `bus_and_boat_banner` 
+
+```sql
+CREATE TABLE bus_and_boat_banner (
+    id VARCHAR(50) PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    subtitle VARCHAR(255) NOT NULL,
+    description TEXT NULL,
+    qr_caption VARCHAR(255) NULL,
+    background_image_url VARCHAR(500) NOT NULL,
+    phone_screen_image_url VARCHAR(500) NOT NULL,
+    qr_code_image_url VARCHAR(500) NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+```
+
+## 1.1 For bus banner
+
+### GET /api/bus_banner
+
+- No payment required
+
+#### Response
+
+```json
+{
+    "success": true,
+    "message": "bus_banner is here.",
+    "data": {
+        "title": "Kimberley Bus",
+        "subtitle": "Bus tickets arranged for you",
+        "description": "We book on your behalf with trusted bus lines across Myanmar & beyond",
+        "qr_caption": "",
+        "background_image_url": "http://localhost:5000/images/bus_banner/32b65d1f-e457-40c4-bc25-9c10056b4dd1.webp",
+        "phone_screen_image_url": "http://localhost:5000/images/bus_banner/a6bc4f1d-8698-4303-8aee-e36dd9485739.webp",
+        "qr_code_image_url": "http://localhost:5000/images/bus_banner/516b9fcf-0b6f-4f38-a19c-d76afdf250e9.webp",
+        "created_at": "2026-11-17T07:37:43.000Z",
+        "updated_at": "2026-11-17T08:10:02.000Z"
+    }
+}
+```
+
+### PUT /api/bus_banner
+
+- `Only admin` can use this route.
+
+#### Payload
+
+- This endpoint accepts data using `multipart/form-data`.
+- The following fields should be included in the request body as `FormData`:
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `title` | string | YES | title |
+| `subtitle` | string | YES | subtitle |
+| `description` | string | YES | description |
+| `qr_caption` | string | YES | QR caption |
+| `background_image` | file | YES | background image file to upload |
+| `background_image_url` | string | YES | The background_image_url of the banner |
+| `phone_screen_image` | file | YES | phone_screen_image file to upload |
+| `phone_screen_image_url` | string | YES | The phone_screen_image_url of the banner |
+| `qr_code_image` | file | YES | qr_code_image file to upload |
+| `qr_code_image_url` | string | YES | The qr_code_image_url of the banner |
+
+#### Example
+
+```js
+const formData = new FormData();
+
+formData.append("title", "Kimberley Bus");
+formData.append("subtitle",  "Bus tickets arranged for you");
+formData.append("description", "We book on your behalf with trusted bus lines across Myanmar & beyond");
+formData.append("qr_caption", "");
+
+formData.append("background_image", imageFile);
+//or
+formData.append("background_image_url", "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1600&q=80");
+
+formData.append("phone_screen_image", imageFile);
+//or
+formData.append("phone_screen_image_url", "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1600&q=80");
+
+formData.append("qr_code_image", imageFile);
+//or
+formData.append("qr_code_image_url", "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1600&q=80");
+
+fetch("domain/api/bus_banner", {
+  method: "PUT",
+  body: formData
+});
+```
+
+#### Success Response
+
+```json
+{
+    "success": true,
+    "message": "bus_banner is successfully updated.",
+    "data": {
+        "title": "Kimberley Bus",
+        "subtitle": "Bus tickets arranged for you",
+        "description": "We book on your behalf with trusted bus lines across Myanmar & beyond",
+        "qr_caption": "",
+        "background_image_url": "http://localhost:5000/images/bus_banner/32b65d1f-e457-40c4-bc25-9c10056b4dd1.webp",
+        "phone_screen_image_url": "http://localhost:5000/images/bus_banner/a6bc4f1d-8698-4303-8aee-e36dd9485739.webp",
+        "qr_code_image_url": "http://localhost:5000/images/bus_banner/516b9fcf-0b6f-4f38-a19c-d76afdf250e9.webp",
+        "created_at": "2026-11-17T07:37:43.000Z",
+        "updated_at": "2026-11-17T08:10:02.000Z"
+    }
+}
+```
+
+##### Error Response 
+
+```json
+{
+    "status": false,
+    "message": "Title and subtitle are required"
+}
+```
+```json
+{
+    "success": false,
+    "message": "One of background_image file or background_image_url is required"
+}
+```
+
+---
+
+
+## 1.2 For boat banner
+
+### GET /api/boat_banner
+
+- No payment required
+
+#### Response
+
+```json
+{
+    "success": true,
+    "message": "boat_banner is here.",
+    "data": {
+        "title": "Kimberley 金伯利",
+        "subtitle": "Premium Boat Tickets · 豪华船票",
+        "description": "Scan the QR code to book premium boat tickets · 扫码预订豪华船票",
+        "qr_caption": "Scan with WeChat · 微信扫码",
+        "background_image_url": "http://localhost:5000/images/boat_banner/e6d0603d-75d0-4d42-bc9c-351f13455004.webp",
+        "phone_screen_image_url": "http://localhost:5000/images/bus_banner/a210c375-a476-4196-8219-350cee7f7437.webp",
+        "qr_code_image_url": "http://localhost:5000/images/bus_banner/8bf110ba-38be-4975-bcee-c95a447a4a82.webp",
+        "created_at": "2026-11-17T08:07:23.000Z",
+        "updated_at": "2026-11-17T08:07:23.000Z"
+    }
+}
+```
+
+### PUT /api/boat_banner
+
+- `Only admin` can use this route.
+
+#### Payload
+
+- This endpoint accepts data using `multipart/form-data`.
+- The following fields should be included in the request body as `FormData`:
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `title` | string | YES | title |
+| `subtitle` | string | YES | subtitle |
+| `description` | string | YES | description |
+| `qr_caption` | string | YES | QR caption |
+| `background_image` | file | YES | background image file to upload |
+| `background_image_url` | string | YES | The background_image_url of the banner |
+| `phone_screen_image` | file | YES | phone_screen_image file to upload |
+| `phone_screen_image_url` | string | YES | The phone_screen_image_url of the banner |
+| `qr_code_image` | file | YES | qr_code_image file to upload |
+| `qr_code_image_url` | string | YES | The qr_code_image_url of the banner |
+
+#### Example
+
+```js
+const formData = new FormData();
+
+formData.append("title", "Kimberley 金伯利");
+formData.append("subtitle",  "Premium Boat Tickets · 豪华船票");
+formData.append("description", "Scan the QR code to book premium boat tickets · 扫码预订豪华船票");
+formData.append("qr_caption", "Scan with WeChat · 微信扫码");
+
+formData.append("background_image", imageFile);
+//or
+formData.append("background_image_url", "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1600&q=80");
+
+formData.append("phone_screen_image", imageFile);
+//or
+formData.append("phone_screen_image_url", "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1600&q=80");
+
+formData.append("qr_code_image", imageFile);
+//or
+formData.append("qr_code_image_url", "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1600&q=80");
+
+
+fetch("domain/api/boat_banner", {
+  method: "PUT",
+  body: formData
+});
+```
+
+#### Success Response
+
+```json
+{
+    "success": true,
+    "message": "boat_banner is successfully updated.",
+    "data": {
+        "title": "Kimberley 金伯利",
+        "subtitle": "Premium Boat Tickets · 豪华船票",
+        "description": "Scan the QR code to book premium boat tickets · 扫码预订豪华船票",
+        "qr_caption": "Scan with WeChat · 微信扫码",
+        "background_image_url": "http://localhost:5000/images/boat_banner/e6d0603d-75d0-4d42-bc9c-351f13455004.webp",
+        "phone_screen_image_url": "http://localhost:5000/images/bus_banner/a210c375-a476-4196-8219-350cee7f7437.webp",
+        "qr_code_image_url": "http://localhost:5000/images/bus_banner/8bf110ba-38be-4975-bcee-c95a447a4a82.webp",
+        "created_at": "2026-11-17T08:07:23.000Z",
+        "updated_at": "2026-11-17T08:07:23.000Z"
+    }
+}
+```
+
+##### Error Response 
+
+```json
+{
+    "success": false,
+    "message": "Title and subtitle are required"
+}
+```
+```json
+{
+    "success": false,
+    "message": "One of background_image file or background_image_url is required"
+}
+```
+
+---
+
+
+

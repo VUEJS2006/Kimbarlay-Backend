@@ -1,5 +1,5 @@
 import db from "../../config/db.js";
-import { changeToImageFullUrl, deleteStoredImage, storeImageToDynamicFolder } from "../../utils/image.js";
+import { backendDomainUrl, changeToImageFullUrl, deleteStoredImage, storeImageToDynamicFolder } from "../../utils/image.js";
 import fs from "fs";
 import path from "path";
 
@@ -67,20 +67,22 @@ export const updateTravelBannersUnity = async (req , res) => {
             })
         }
 
-        const folder = path.join(
-            process.cwd(),
-            "images",
-            id
-        )
+        if( !(!image && background_image_url.includes(backendDomainUrl)) ) {
+            const folder = path.join(
+                process.cwd(),
+                "images",
+                id
+            )
 
-        if(fs.existsSync(folder)) {
-            fs.rmSync(folder , { recursive : true , force : true })
+            if(fs.existsSync(folder)) {
+                fs.rmSync(folder , { recursive : true , force : true })
+            }
         }
 
         let url = background_image_url;
         if(image) {
             url = await storeImageToDynamicFolder(image , id);
-        }
+        } 
 
         const query = `
         INSERT INTO travel_banners_unity (id, background_image_url, tag, title, subtitle , highlighted_text)

@@ -1,5 +1,5 @@
 import db from "../../config/db.js";
-import { changeToImageFullUrl, deleteStoredImage, storeImageToDynamicFolder } from "../../utils/image.js";
+import { backendDomainUrl, changeToImageFullUrl, deleteStoredImage, storeImageToDynamicFolder } from "../../utils/image.js";
 
 
 export const getAllPrivateSeasonalHotDestinations = async (req , res) => {
@@ -102,7 +102,9 @@ export const updatePrivateSeasonalHotDestinations = async (req , res) => {
 
         await db.query(`UPDATE private_seasonal_hot_destinations SET title = ? , duration = ? , price = ? , description = ? , image_url = ? WHERE id = ?` , [ title , duration , price , description , url , id])
 
-        await deleteStoredImage(exitRows[0].image_url)
+        if( !(!image && image_url.includes(backendDomainUrl)) ) {
+            await deleteStoredImage(exitRows[0].image_url)
+        }
 
         const [ rows ] = await db.query(`SELECT * FROM private_seasonal_hot_destinations WHERE id = ?` , [id]);
 

@@ -1,5 +1,5 @@
 import db from "../../config/db.js";
-import { changeToImageFullUrl, deleteStoredImage, storeImageToDynamicFolder } from "../../utils/image.js";
+import { backendDomainUrl, changeToImageFullUrl, deleteStoredImage, storeImageToDynamicFolder } from "../../utils/image.js";
 
 
 export const getAllLocalGroupTours = async (req , res) => {
@@ -116,7 +116,9 @@ export const updateLocalGroupTours = async (req , res) => {
 
         await db.query(`UPDATE travel_local_group_tours SET title = ? , badge = ? , description = ? , price = ? , rating = ? , image_url = ? WHERE id = ?` , [ title , badge , description , price , rating , url , id])
 
-        await deleteStoredImage(exitRows[0].image_url)
+        if( !(!image && image_url.includes(backendDomainUrl)) ) {
+            await deleteStoredImage(exitRows[0].image_url)
+        }
 
         const [ rows ] = await db.query(`SELECT * FROM travel_local_group_tours WHERE id = ?` , [id]);
 
