@@ -1,4 +1,4 @@
-import { changeToImageFullUrl, storeImageToDynamicFolder } from "../utils/image.js";
+import { backendDomainUrl, changeToImageFullUrl, storeImageToDynamicFolder } from "../utils/image.js";
 import fs from "fs";
 import path from "path";
 import db from "../config/db.js";
@@ -32,15 +32,18 @@ export const bannerUpdate = async(req , res) => {
 
         const subFolder = "banner";
 
-        const folderName = path.join(
-            process.cwd(),
-            "images",
-            subFolder
-        )
+        if( !(!image && url.includes(backendDomainUrl)) ) {
+            const folderName = path.join(
+                process.cwd(),
+                "images",
+                subFolder
+            )
 
-        if(fs.existsSync(folderName)) {
-            fs.rmSync(folderName , { recursive : true , force : true })
+            if(fs.existsSync(folderName)) {
+                fs.rmSync(folderName , { recursive : true , force : true })
+            }
         }
+        
 
         let image_url = url;
 

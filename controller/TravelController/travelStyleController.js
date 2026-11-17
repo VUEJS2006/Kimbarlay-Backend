@@ -1,5 +1,5 @@
 import db from "../../config/db.js";
-import { changeToImageFullUrl, deleteStoredImage, storeImageToDynamicFolder } from "../../utils/image.js";
+import { backendDomainUrl, changeToImageFullUrl, deleteStoredImage, storeImageToDynamicFolder } from "../../utils/image.js";
 
 
 export const getAllTavelStyle = async (req , res) => {
@@ -101,7 +101,10 @@ export const updateTavelStyle = async (req , res) => {
 
         await db.query(`UPDATE travel_styles SET title = ? , icon = ? , image_url = ? WHERE id = ?` , [ title , icon , url , id])
 
-        await deleteStoredImage(exitRows[0].image_url)
+        if( !(!image && image_url.includes(backendDomainUrl)) ) {
+            await deleteStoredImage(exitRows[0].image_url)
+        }
+        
 
         const [ rows ] = await db.query(`SELECT * FROM travel_styles WHERE id = ?` , [id]);
 

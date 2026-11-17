@@ -1,5 +1,5 @@
 import db from "../../config/db.js";
-import { changeToImageFullUrl, deleteStoredImage, storeImageToDynamicFolder } from "../../utils/image.js";
+import { backendDomainUrl, changeToImageFullUrl, deleteStoredImage, storeImageToDynamicFolder } from "../../utils/image.js";
 
 
 export const getAllTravelDesigners = async (req , res) => {
@@ -102,7 +102,9 @@ export const updateTravelDesigner = async (req , res) => {
 
         await db.query(`UPDATE travel_designers SET name = ? , specialty = ? , description = ? , image_url = ? WHERE id = ?` , [ name , specialty , description , url , id])
 
-        await deleteStoredImage(exitRows[0].image_url)
+        if( !(!image && image_url.includes(backendDomainUrl)) ) {
+            await deleteStoredImage(exitRows[0].image_url)
+        }
 
         const [ rows ] = await db.query(`SELECT * FROM travel_designers WHERE id = ?` , [id]);
 

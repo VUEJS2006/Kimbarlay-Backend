@@ -1,5 +1,5 @@
 import db from "../../config/db.js";
-import { changeToImageFullUrl , deleteStoredImage, storeImageToDynamicFolder } from "../../utils/image.js";
+import { backendDomainUrl, changeToImageFullUrl , deleteStoredImage, storeImageToDynamicFolder } from "../../utils/image.js";
 
 
 export const getAllTavelTestimonials = async (req , res) => {
@@ -104,7 +104,9 @@ export const updateTavelTestimonials = async (req , res) => {
 
         await db.query(`UPDATE testimonials SET customer_name = ? , destination = ? , avatar_image_url = ? , rating = ? , review_text = ? WHERE id = ?` , [ customerName , destination , url, rating  , reviewText , id])
         
-        await deleteStoredImage(exitRows[0].avatar_image_url)
+        if( !(!image && avatarImageUrl.includes(backendDomainUrl)) ) {
+            await deleteStoredImage(exitRows[0].avatar_image_url)
+        }
 
         const [ rows ] = await db.query(`SELECT * FROM testimonials WHERE id = ?` , [id]);
 
@@ -134,6 +136,8 @@ export const deleteTavelTestimonials = async (req , res) => {
             })
         }
 
+        const [ rows ] = await db.query(`SELECT * FROM travel_styles WHERE id = ?` , [id]);
+
         const [ result ] = await db.query(`DELETE FROM testimonials WHERE id = ?` , [ id ]);
 
         if(result.affectedRows === 0) {
@@ -142,6 +146,9 @@ export const deleteTavelTestimonials = async (req , res) => {
                 message : "Wrong or invalid id!"
             })
         }
+
+        await deleteStoredImage(rows[0].avatar_image_url)
+
 
         res.status(200).json({
             status : true,

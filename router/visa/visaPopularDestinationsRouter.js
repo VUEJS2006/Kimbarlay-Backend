@@ -1,6 +1,6 @@
 import express from "express"
 import { authenticated, isAdmin } from "../../middleware/authenticatedMiddleware.js";
-import { createVisaPopularDestinations, deleteVisaPopularDestinations, getAllVisaPopularDestinations, updateVisaPopularDestinations } from "../../controller/TravelController/visaPopularDestinationsController.js";
+import { createVisaPopularDestinations, deleteVisaPopularDestinations, getAllVisaPopularDestinations, updateVisaPopularDestinations } from "../../controller/visa/visaPopularDestinationsController.js";
 
 const visaPopularDestinationsRouter = express.Router();
 
