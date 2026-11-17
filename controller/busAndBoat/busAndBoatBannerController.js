@@ -5,17 +5,21 @@ export const getBusOrBoatBanner = async ( req , res ) => {
     try {
         const id = req.id;
 
-        const [ rows ] = await db.query(`SELECT * FROM bus_and_boat_banner WHERE id = ?` , [id]);
+        const [ rows ] = await db.query(`SELECT * FROM ticket_bus_boat_car_banners_unity WHERE id = ?` , [id]);
 
-        const { id : newId , ...data } = rows[0];
-        const new_background_image_url = (data.background_image_url && data.background_image_url.startsWith("images")) ? changeToImageFullUrl(data.background_image_url) : data.background_image_url;
-        const new_phone_screen_image_url = (data.phone_screen_image_url && data.phone_screen_image_url.startsWith("images")) ? changeToImageFullUrl(data.phone_screen_image_url) : data.phone_screen_image_url;
-        const new_qr_code_image_url = (data.qr_code_image_url && data.qr_code_image_url.startsWith("images")) ? changeToImageFullUrl(data.qr_code_image_url) : data.qr_code_image_url;
-
+        let data = {}
+        if(rows && rows.length) {
+            const { id : newId , ...exitData } = rows[0];
+            const new_background_image_url = (exitData.background_image_url && exitData.background_image_url.startsWith("images")) ? changeToImageFullUrl(exitData.background_image_url) : exitData.background_image_url;
+            const new_phone_screen_image_url = (exitData.phone_screen_image_url && exitData.phone_screen_image_url.startsWith("images")) ? changeToImageFullUrl(exitData.phone_screen_image_url) : exitData.phone_screen_image_url;
+            const new_qr_code_image_url = (exitData.qr_code_image_url && exitData.qr_code_image_url.startsWith("images")) ? changeToImageFullUrl(exitData.qr_code_image_url) : exitData.qr_code_image_url;
+            data = {...exitData , background_image_url : new_background_image_url , phone_screen_image_url : new_phone_screen_image_url , qr_code_image_url : new_qr_code_image_url }
+        }
+        
         res.status(200).json({
             success : true,
             message : id + " is here.",
-            data : {...data , background_image_url : new_background_image_url , phone_screen_image_url : new_phone_screen_image_url , qr_code_image_url : new_qr_code_image_url } 
+            data  
         })
 
     } catch (err) {
@@ -65,7 +69,7 @@ export const updateBusAndBoatBanner = async ( req , res ) => {
         }
 
 
-        const [ oldData ] = await db.query(`SELECT * from bus_and_boat_banner WHERE id = ?` , [id])
+        const [ oldData ] = await db.query(`SELECT * from ticket_bus_boat_car_banners_unity WHERE id = ?` , [id])
         if(oldData && oldData.length) {
 
             if( !(!bgImageContainer && background_image_url.includes(backendDomainUrl)) && oldData[0].background_image_url && oldData[0].background_image_url.startsWith("images")) {
@@ -104,7 +108,7 @@ export const updateBusAndBoatBanner = async ( req , res ) => {
         }
 
         const query = `
-        INSERT INTO bus_and_boat_banner (id, title, subtitle, description, qr_caption , background_image_url, phone_screen_image_url, qr_code_image_url)
+        INSERT INTO ticket_bus_boat_car_banners_unity (id, title, subtitle, description, qr_caption , background_image_url, phone_screen_image_url, qr_code_image_url)
         VALUES ( ?, ? , ? , ? , ? , ? , ? , ?)
         ON DUPLICATE KEY UPDATE 
             title = VALUES(title),
@@ -119,7 +123,7 @@ export const updateBusAndBoatBanner = async ( req , res ) => {
         const dataArray = [ id , title , subtitle , description , qr_caption , bgImgUrl , phScreenImgUrl , qrCodeImgUrl ]
         await db.query(query , dataArray);
 
-        const [ rows ] = await db.query(`SELECT * FROM bus_and_boat_banner WHERE id = ?` , [id]);
+        const [ rows ] = await db.query(`SELECT * FROM ticket_bus_boat_car_banners_unity WHERE id = ?` , [id]);
 
         const { id : newId , ...data } = rows[0];
         const new_background_image_url = (data.background_image_url && data.background_image_url.startsWith("images")) ? changeToImageFullUrl(data.background_image_url) : data.background_image_url;
