@@ -19,6 +19,28 @@ busAndBoatBannerRouter.get("/boat_banner", setIdForChoosingBanner({ id : "boat_b
 
 busAndBoatBannerRouter.put("/boat_banner" , upload.fields(imageFields) , authenticated , isAdmin , imageErrorHandlingMiddleware , setIdForChoosingBanner({ id : "boat_banner" }) , updateBusAndBoatBanner )
 
+// for Event ticket banner
+busAndBoatBannerRouter.get("/event_ticket_banner", setIdForChoosingBanner({ id : "event_ticket_banner" }), getBusOrBoatBanner )
+
+busAndBoatBannerRouter.put("/event_ticket_banner" , upload.fields(imageFields) , authenticated , isAdmin , imageErrorHandlingMiddleware , setIdForChoosingBanner({ id : "event_ticket_banner" }) , updateBusAndBoatBanner )
+
+// for Sport ticket banner
+busAndBoatBannerRouter.get("/sport_ticket_banner", setIdForChoosingBanner({ id : "sport_ticket_banner" }), getBusOrBoatBanner )
+
+busAndBoatBannerRouter.put("/sport_ticket_banner" , upload.fields(imageFields) , authenticated , isAdmin , imageErrorHandlingMiddleware , setIdForChoosingBanner({ id : "sport_ticket_banner" }) , updateBusAndBoatBanner )
+
+// for Domestic Car banner
+busAndBoatBannerRouter.get("/domestic_car_banner", setIdForChoosingBanner({ id : "domestic_car_banner" }), getBusOrBoatBanner )
+
+busAndBoatBannerRouter.put("/domestic_car_banner" , upload.fields(imageFields) , authenticated , isAdmin , imageErrorHandlingMiddleware , setIdForChoosingBanner({ id : "domestic_car_banner" }) , updateBusAndBoatBanner )
+
+// for Overseas Car banner
+busAndBoatBannerRouter.get("/overseas_car_banner", setIdForChoosingBanner({ id : "overseas_car_banner" }), getBusOrBoatBanner )
+
+busAndBoatBannerRouter.put("/overseas_car_banner" , upload.fields(imageFields) , authenticated , isAdmin , imageErrorHandlingMiddleware , setIdForChoosingBanner({ id : "overseas_car_banner" }) , updateBusAndBoatBanner )
+
+
+
 export default busAndBoatBannerRouter;
 
 
