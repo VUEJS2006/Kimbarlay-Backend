@@ -9981,3 +9981,387 @@ fetch("domain/api/bus_banner", {
 ```
 
 ---
+
+
+## 2. SQL for creating `bus_and_boat_unity` 
+
+```sql
+CREATE TABLE bus_and_boat_unity (
+    id VARCHAR(50) PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    subtitle TEXT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+```
+
+
+## 2.1 For the `Intro` section for Bus ticket
+
+### GET /api/visa_intro
+
+- No payment required
+
+#### Response
+
+```json
+{
+    "success": true,
+    "message": "bus_intro is here.",
+    "data": {
+        "heading": "We arrange your bus tickets",
+        "paragraph": "Kimberley Travel & Tour partners with leading bus operators — Royal Express, Bee Express, Shwe Mandalar and more — to arrange your seat. Just tell us your route and travel date. We handle the booking for you.",
+        "created_at": "2026-11-18T01:51:19.000Z",
+        "updated_at": "2026-11-18T01:51:19.000Z"
+    }
+}
+```
+
+### PUT /api/visa_intro
+
+- `Only admin` can use this route.
+
+#### Payload
+
+```json
+{
+    "heading" : "We arrange your bus tickets",
+    "paragraph" : "Kimberley Travel & Tour partners with leading bus operators — Royal Express, Bee Express, Shwe Mandalar and more — to arrange your seat. Just tell us your route and travel date. We handle the booking for you."
+}
+```
+
+#### Success Response
+
+```json
+{
+    "success": true,
+    "message": "bus_intro is successfully updated.",
+    "data": {
+        "heading": "We arrange your bus tickets",
+        "paragraph": "Kimberley Travel & Tour partners with leading bus operators — Royal Express, Bee Express, Shwe Mandalar and more — to arrange your seat. Just tell us your route and travel date. We handle the booking for you.",
+        "created_at": "2026-11-18T01:51:19.000Z",
+        "updated_at": "2026-11-18T01:51:19.000Z"
+    }
+}
+```
+
+##### Error Response 
+
+```json
+{
+    "success": false,
+    "message": "Heading is required"
+}
+```
+
+---
+
+
+## 2.2 For the `Bus line Heading` section for Bus ticket
+
+### GET /api/bus_line_heading
+
+- No payment required
+
+#### Response
+
+```json
+{
+    "success": true,
+    "message": "bus_line_heading is here.",
+    "data": {
+        "title": "Bus lines we work with",
+        "subtitle": "We arrange seats on these trusted bus lines.",
+        "created_at": "2026-11-18T02:01:40.000Z",
+        "updated_at": "2026-11-18T02:01:40.000Z"
+    }
+}
+```
+
+### PUT /api/bus_line_heading
+
+- `Only admin` can use this route.
+
+#### Payload
+
+```json
+{
+    "title" : "Bus lines we work with",
+    "subtitle" : "We arrange seats on these trusted bus lines."
+}
+```
+
+#### Success Response
+
+```json
+{
+    "success": true,
+    "message": "bus_line_heading is successfully updated.",
+    "data": {
+        "title": "Bus lines we work with",
+        "subtitle": "We arrange seats on these trusted bus lines.",
+        "created_at": "2026-11-18T02:01:40.000Z",
+        "updated_at": "2026-11-18T02:01:40.000Z"
+    }
+}
+```
+
+##### Error Response 
+
+```json
+{
+    "success": false,
+    "message": "Title is required"
+}
+```
+
+---
+
+
+## 2.3 For the `Bus Route Heading` section for Bus ticket
+
+### GET /api/bus_route_heading
+
+- No payment required
+
+#### Response
+
+```json
+{
+    "success": true,
+    "message": "bus_route_heading is here.",
+    "data": {
+        "title": "Popular routes we arrange",
+        "subtitle": "A sample of routes we regularly book.",
+        "created_at": "2026-11-18T02:16:08.000Z",
+        "updated_at": "2026-11-18T02:16:08.000Z"
+    }
+}
+```
+
+### PUT /api/bus_route_heading
+
+- `Only admin` can use this route.
+
+#### Payload
+
+```json
+{
+    "title" : "Popular routes we arrange",
+    "subtitle" : "A sample of routes we regularly book."
+}
+```
+
+#### Success Response
+
+```json
+{
+    "success": true,
+    "message": "bus_route_heading is successfully updated.",
+    "data": {
+        "title": "Popular routes we arrange",
+        "subtitle": "A sample of routes we regularly book.",
+        "created_at": "2026-11-18T02:16:08.000Z",
+        "updated_at": "2026-11-18T02:16:08.000Z"
+    }
+}
+```
+
+##### Error Response 
+
+```json
+{
+    "success": false,
+    "message": "Title is required"
+}
+```
+
+---
+
+
+## 2.4 For the `Bus Step Heading` section for Bus ticket
+
+### GET /api/bus_step_heading
+
+- No payment required
+
+#### Response
+
+```json
+{
+    "success": true,
+    "message": "bus_step_heading is here.",
+    "data": {
+        "title": "How it works",
+        "created_at": "2026-11-18T02:21:33.000Z",
+        "updated_at": "2026-11-18T02:21:33.000Z"
+    }
+}
+```
+
+### PUT /api/bus_step_heading
+
+- `Only admin` can use this route.
+
+#### Payload
+
+```json
+{
+    "title" : "How it works"
+}
+```
+
+#### Success Response
+
+```json
+{
+    "success": true,
+    "message": "bus_step_heading is successfully updated.",
+    "data": {
+        "title": "How it works",
+        "created_at": "2026-11-18T02:21:33.000Z",
+        "updated_at": "2026-11-18T02:21:33.000Z"
+    }
+}
+```
+
+##### Error Response 
+
+```json
+{
+    "success": false,
+    "message": "Title is required"
+}
+```
+
+---
+
+
+## 2.5 For the `Bus Why Heading` section for Bus ticket
+
+### GET /api/bus_why_heading
+
+- No payment required
+
+#### Response
+
+```json
+{
+    "success": true,
+    "message": "bus_why_heading is here.",
+    "data": {
+        "title": "Why book with us?",
+        "created_at": "2026-11-18T02:25:35.000Z",
+        "updated_at": "2026-11-18T02:25:35.000Z"
+    }
+}
+```
+
+### PUT /api/bus_why_heading
+
+- `Only admin` can use this route.
+
+#### Payload
+
+```json
+{
+    "title" : "Why book with us?"
+}
+```
+
+#### Success Response
+
+```json
+{
+    "success": true,
+    "message": "bus_why_heading is successfully updated.",
+    "data": {
+        "title": "Why book with us?",
+        "created_at": "2026-11-18T02:25:35.000Z",
+        "updated_at": "2026-11-18T02:25:35.000Z"
+    }
+}
+```
+
+##### Error Response 
+
+```json
+{
+    "success": false,
+    "message": "Title is required"
+}
+```
+
+---
+
+
+## 2.6 For the `Boat Section Heading` section for Bus ticket
+
+### GET /api/boat_section_heading
+
+- No payment required
+
+#### Response
+
+```json
+{
+    "success": true,
+    "message": "boat_section_heading is here.",
+    "data": {
+        "title": "Premium Boat Tickets",
+        "created_at": "2026-11-18T02:31:45.000Z",
+        "updated_at": "2026-11-18T02:31:45.000Z"
+    }
+}
+```
+
+### PUT /api/boat_section_heading
+
+- `Only admin` can use this route.
+
+#### Payload
+
+```json
+{
+    "title" : "Premium Boat Tickets",
+    "subtitle" : "Scan the QR code to book premium boat tickets · 扫码预订豪华船票"
+}
+```
+
+#### Success Response
+
+```json
+{
+    "success": true,
+    "message": "boat_section_heading is successfully updated.",
+    "data": {
+        "title": "Premium Boat Tickets",
+        "created_at": "2026-11-18T02:31:45.000Z",
+        "updated_at": "2026-11-18T02:31:45.000Z"
+    }
+}
+```
+
+##### Error Response 
+
+```json
+{
+    "success": false,
+    "message": "Title is required"
+}
+```
+
+---
+
+
+<!-- ## 3. SQL for creating `bus_and_boat_unity` 
+
+```sql
+CREATE TABLE bus_and_boat_unity (
+    id VARCHAR(50) PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    subtitle TEXT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+``` -->
