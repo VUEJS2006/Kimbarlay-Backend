@@ -10354,14 +10354,344 @@ CREATE TABLE bus_and_boat_unity (
 ---
 
 
-<!-- ## 3. SQL for creating `bus_and_boat_unity` 
+## 3. SQL for creating `bus_lines`
 
 ```sql
-CREATE TABLE bus_and_boat_unity (
-    id VARCHAR(50) PRIMARY KEY,
+CREATE TABLE bus_lines (
+    id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
-    subtitle TEXT NULL,
+    subtitle VARCHAR(255) NULL,
+    icon VARCHAR(50) NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
-``` -->
+```
+
+
+### GET /api/bus_lines/all
+
+- No payment required
+
+#### Response
+
+```json
+{
+    "status": true,
+    "message": "All items are here",
+    "data": [
+        {
+            "id": 1,
+            "title": "Bee Express",
+            "subtitle": "VVIP · Yangon ↔ Nay Pyi Taw · Mandalay",
+            "icon": "🐝",
+            "created_at": "2026-11-18T08:13:18.000Z",
+            "updated_at": "2026-11-18T08:13:18.000Z"
+        },
+        {
+            "id": 2,
+            "title": "Royal Express 22",
+            "subtitle": "VIP 2+1 · Yangon ↔ Mandalay",
+            "icon": "",
+            "created_at": "2026-11-18T08:13:55.000Z",
+            "updated_at": "2026-11-18T08:15:55.000Z"
+        }
+    ]
+}
+```
+
+### POST /api/bus_lines
+
+- `Only admin` can use this route.
+
+#### Payload
+
+- `title` must exit
+
+```json
+{
+    "title" : "Bee Express",
+    "subtitle" : "VVIP · Yangon ↔ Nay Pyi Taw · Mandalay",
+    "icon" : "🐝"
+}
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully created",
+    "data": {
+        "id": 1,
+        "title": "Bee Express",
+        "subtitle": "VVIP · Yangon ↔ Nay Pyi Taw · Mandalay",
+        "icon": "🐝",
+        "created_at": "2026-11-18T08:13:18.000Z",
+        "updated_at": "2026-11-18T08:13:18.000Z"
+    }
+}
+```
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Title is required"
+}
+```
+
+
+### PUT /api/bus_lines
+
+- `Only admin` can use this route.
+
+#### Payload
+
+-  `id` and `title` must exit
+
+```json
+{
+    "id" : 2,
+    "title" : "Royal Express 22",
+    "subtitle" : "VIP 2+1 · Yangon ↔ Mandalay",
+    "icon" : null
+}
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully updated.",
+    "data": {
+        "id": 2,
+        "title": "Royal Express 22",
+        "subtitle": "VIP 2+1 · Yangon ↔ Mandalay",
+        "icon": null,
+        "created_at": "2026-11-18T08:13:55.000Z",
+        "updated_at": "2026-11-18T08:14:28.000Z"
+    }
+}
+```
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Wrong  or invalid Id!"
+}
+```
+
+```json
+{
+    "status": false,
+    "message": "Id and title are required"
+}
+```
+
+### DELETE /api/bus_lines/:id
+
+- `:id` is the id of item to delete
+- `Only admin` can use this route.
+
+#### Example 
+
+```text
+/api/bus_lines/1
+
+/api/bus_lines/2
+```
+
+#### Success response
+
+```json
+{
+    "status": true,
+    "message": "Successfully deleted."
+}
+```
+
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Wrong or invalid id!"
+}
+```
+
+---
+
+## 7. SQL for creating `bus_and_boat_contact` 
+
+```sql
+CREATE TABLE bus_and_boat_contact (
+    id VARCHAR(50) PRIMARY KEY,
+    heading VARCHAR(255) NOT NULL,
+    paragraph TEXT NULL,
+    phone VARCHAR(50) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    whatsapp VARCHAR(255) NOT NULL,
+    viber VARCHAR(255) NOT NULL,
+    disclaimer TEXT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+```
+
+## 7.1 For the `Bus Contact`
+
+### GET /api/bus_contact
+
+- No payment required
+
+#### Response
+
+```json
+{
+    "success": true,
+    "message": "bus_contact is here.",
+    "data": {
+        "heading": "Ready to book your bus seat?",
+        "paragraph": "Chat with our travel experts — we will confirm availability and arrange everything for you.",
+        "phone": "+95 9 000 000 000",
+        "email": "hello@kimberleytravel.com",
+        "whatsapp": "+95 9 000 000 000",
+        "viber": "+95 9 000 000 000",
+        "disclaimer": "Kimberley Travel & Tour is a travel agency. We arrange bus tickets on behalf of customers through partner bus operators.",
+        "created_at": "2026-11-18T08:06:36.000Z",
+        "updated_at": "2026-11-18T08:06:36.000Z"
+    }
+}
+```
+
+### PUT /api/bus_contact
+
+- `Only admin` can use this route.
+
+#### Payload
+
+```json
+{
+  "heading": "Ready to book your bus seat?",
+  "paragraph": "Chat with our travel experts — we will confirm availability and arrange everything for you.",
+  "phone": "+95 9 000 000 000",
+  "email": "hello@kimberleytravel.com",
+  "whatsapp": "+95 9 000 000 000",
+  "viber": "+95 9 000 000 000",
+  "disclaimer": "Kimberley Travel & Tour is a travel agency. We arrange bus tickets on behalf of customers through partner bus operators."
+}
+```
+
+#### Success Response
+
+```json
+{
+    "success": true,
+    "message": "bus_contact is successfully updated.",
+    "data": {
+        "heading": "Ready to book your bus seat?",
+        "paragraph": "Chat with our travel experts — we will confirm availability and arrange everything for you.",
+        "phone": "+95 9 000 000 000",
+        "email": "hello@kimberleytravel.com",
+        "whatsapp": "+95 9 000 000 000",
+        "viber": "+95 9 000 000 000",
+        "disclaimer": "Kimberley Travel & Tour is a travel agency. We arrange bus tickets on behalf of customers through partner bus operators.",
+        "created_at": "2026-11-18T08:06:36.000Z",
+        "updated_at": "2026-11-18T08:06:36.000Z"
+    }
+}
+```
+
+##### Error Response 
+
+```json
+{
+    "success": false,
+    "message": "Heading, phone, email, whatsapp and viber are required."
+}
+```
+
+---
+
+
+## 7.2 For the `Boat Contact`
+
+### GET /api/boat_contact
+
+- No payment required
+
+#### Response
+
+```json
+{
+    "success": true,
+    "message": "boat_contact is here.",
+    "data": {
+        "heading": "Ready to book your boat ticket?",
+        "paragraph": "Chat with our team — we will confirm availability and arrange everything for you.",
+        "phone": "+95 9 000 000 000",
+        "email": "hello@kimberleytravel.com",
+        "whatsapp": "+95 9 000 000 000",
+        "viber": "+95 9 000 000 000",
+        "disclaimer": "Kimberley Travel & Tour is a travel agency. We arrange boat tickets on behalf of customers through partner boat operators.",
+        "created_at": "2026-11-18T08:10:15.000Z",
+        "updated_at": "2026-11-18T08:10:15.000Z"
+    }
+}
+```
+
+### PUT /api/boat_contact
+
+- `Only admin` can use this route.
+
+#### Payload
+
+```json
+{
+  "heading": "Ready to book your boat ticket?",
+  "paragraph": "Chat with our team — we will confirm availability and arrange everything for you.",
+  "phone": "+95 9 000 000 000",
+  "email": "hello@kimberleytravel.com",
+  "whatsapp": "+95 9 000 000 000",
+  "viber": "+95 9 000 000 000",
+  "disclaimer": "Kimberley Travel & Tour is a travel agency. We arrange boat tickets on behalf of customers through partner boat operators."
+}
+
+```
+
+#### Success Response
+
+```json
+{
+    "success": true,
+    "message": "boat_contact is successfully updated.",
+    "data": {
+        "heading": "Ready to book your boat ticket?",
+        "paragraph": "Chat with our team — we will confirm availability and arrange everything for you.",
+        "phone": "+95 9 000 000 000",
+        "email": "hello@kimberleytravel.com",
+        "whatsapp": "+95 9 000 000 000",
+        "viber": "+95 9 000 000 000",
+        "disclaimer": "Kimberley Travel & Tour is a travel agency. We arrange boat tickets on behalf of customers through partner boat operators.",
+        "created_at": "2026-11-18T08:10:15.000Z",
+        "updated_at": "2026-11-18T08:10:15.000Z"
+    }
+}
+```
+
+##### Error Response 
+
+```json
+{
+    "success": false,
+    "message": "Heading, phone, email, whatsapp and viber are required."
+}
+```
+
+---
+
