@@ -89,6 +89,7 @@ import visaServicesRouter from "./router/visa/visaServicesRouter.js";
 import visaPopularDestinationsRouter from "./router/visa/visaPopularDestinationsRouter.js";
 import privateStepsRouter from "./router/TravelRouter/privateStepsRouter.js";
 import busAndBoatBannerRouter from "./router/busAndBoat/busAndBoatBannerRouter.js";
+import busAndBoatUnityRouter from "./router/busAndBoat/busAndBoatUnityRouter.js";
 
 
 
@@ -194,6 +195,7 @@ app.use('/api', visaServicesRouter )
 app.use('/api', visaPopularDestinationsRouter )
 app.use('/api', privateStepsRouter )
 app.use('/api', busAndBoatBannerRouter )
+app.use('/api', busAndBoatUnityRouter )
 
 
 app.get("/", (req, res) => {
