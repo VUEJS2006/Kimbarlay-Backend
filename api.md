@@ -10526,6 +10526,574 @@ CREATE TABLE bus_lines (
 
 ---
 
+
+## 4. SQL for creating `bus_routes`
+
+```sql
+CREATE TABLE bus_routes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    origin VARCHAR(255) NOT NULL,
+    destination VARCHAR(255) NOT NULL,
+    sub_origin VARCHAR(255) NOT NULL,
+    sub_destination VARCHAR(255) NOT NULL,
+    duration VARCHAR(100) NOT NULL,
+    price VARCHAR(100) NOT NULL,
+    scope ENUM('Domestic', 'International') NOT NULL DEFAULT 'Domestic',
+    operators TEXT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+```
+
+
+### GET /api/bus_routes/all
+
+- No payment required
+
+#### Response
+
+```json
+{
+    "status": true,
+    "message": "All items are here",
+    "data": [
+        {
+            "id": 1,
+            "origin": "Yangon",
+            "destination": "Mandalay",
+            "sub_origin": "ရန်ကုန်",
+            "sub_destination": "မန္တလေး",
+            "duration": "9h 30m",
+            "price": "From 25,000 Ks",
+            "scope": "International",
+            "operators": "Royal Express, Bee Express, Shwe Mandalar",
+            "created_at": "2026-11-18T09:54:34.000Z",
+            "updated_at": "2026-11-18T09:54:34.000Z"
+        },
+        {
+            "id": 2,
+            "origin": "Yangon 2",
+            "destination": "Mandalay 2",
+            "sub_origin": "ရန်ကုန် 2",
+            "sub_destination": "မန္တလေး 2",
+            "duration": "9h 30m 2",
+            "price": "From 25,000 Ks 2",
+            "scope": "International",
+            "operators": "Royal Express, Bee Express, Shwe Mandalar 2",
+            "created_at": "2026-11-18T09:59:44.000Z",
+            "updated_at": "2026-11-18T09:59:44.000Z"
+        }
+    ]
+}
+```
+
+### POST /api/bus_routes
+
+- `Only admin` can use this route.
+
+#### Payload
+
+- `title` must exit
+- `scope` must be one of `Domestic` , `International`
+
+```json
+{
+  "origin": "Yangon",
+  "destination": "Mandalay",
+  "sub_origin": "ရန်ကုန်",
+  "sub_destination": "မန္တလေး",
+  "duration": "9h 30m",
+  "price": "From 25,000 Ks",
+  "scope": "International",
+  "operators": "Royal Express, Bee Express, Shwe Mandalar"
+}
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully created",
+    "data": {
+        "id": 1,
+        "origin": "Yangon",
+        "destination": "Mandalay",
+        "sub_origin": "ရန်ကုန်",
+        "sub_destination": "မန္တလေး",
+        "duration": "9h 30m",
+        "price": "From 25,000 Ks",
+        "scope": "International",
+        "operators": "Royal Express, Bee Express, Shwe Mandalar",
+        "created_at": "2026-11-18T09:54:34.000Z",
+        "updated_at": "2026-11-18T09:54:34.000Z"
+    }
+}
+```
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Origin , destination , sub_origin , sub_destination , duration , price , scope and operators are required"
+}
+```
+```json
+{
+    "status": false,
+    "message": "Scope is allowed only for Domestic , International"
+}
+```
+
+
+### PUT /api/bus_routes
+
+- `Only admin` can use this route.
+
+#### Payload
+
+-  `id` and `title` must exit
+- `scope` must be one of `Domestic` , `International`
+
+```json
+{
+  "id" : 2,
+  "origin": "Yangon 2",
+  "destination": "Mandalay 2",
+  "sub_origin": "ရန်ကုန် 2",
+  "sub_destination": "မန္တလေး 2",
+  "duration": "9h 30m 2",
+  "price": "From 25,000 Ks 2",
+  "scope": "International",
+  "operators": "Royal Express, Bee Express, Shwe Mandalar 2"
+}
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully updated.",
+    "data": {
+        "id": 2,
+        "origin": "Yangon 2",
+        "destination": "Mandalay 2",
+        "sub_origin": "ရန်ကုန် 2",
+        "sub_destination": "မန္တလေး 2",
+        "duration": "9h 30m 2",
+        "price": "From 25,000 Ks 2",
+        "scope": "International",
+        "operators": "Royal Express, Bee Express, Shwe Mandalar 2",
+        "created_at": "2026-11-18T09:59:44.000Z",
+        "updated_at": "2026-11-18T09:59:44.000Z"
+    }
+}
+```
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Wrong  or invalid Id!"
+}
+```
+
+```json
+{
+    "status": false,
+    "message": "Id , origin , destination , sub_origin , sub_destination , duration , price , scope and operators are required"
+}
+```
+```json
+{
+    "status": false,
+    "message": "Scope is allowed only for Domestic , International"
+}
+```
+
+### DELETE /api/bus_routes/:id
+
+- `:id` is the id of item to delete
+- `Only admin` can use this route.
+
+#### Example 
+
+```text
+/api/bus_routes/1
+
+/api/bus_routes/2
+```
+
+#### Success response
+
+```json
+{
+    "status": true,
+    "message": "Successfully deleted."
+}
+```
+
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Wrong or invalid id!"
+}
+```
+
+---
+
+
+
+## 5. SQL for creating `bus_steps`
+
+```sql
+CREATE TABLE bus_steps (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT NULL,
+    icon VARCHAR(50) NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+```
+
+
+### GET /api/bus_steps/all
+
+- No payment required
+
+#### Response
+
+```json
+{
+    "status": true,
+    "message": "All items are here",
+    "data": [
+        {
+            "id": 1,
+            "title": "Contact us",
+            "description": "Call, Viber, or WhatsApp us with your route and travel date.",
+            "icon": "📞",
+            "created_at": "2026-11-18T10:17:46.000Z",
+            "updated_at": "2026-11-18T10:17:46.000Z"
+        },
+        {
+            "id": 2,
+            "title": "We check bus lines 2",
+            "description": "We compare availability across our partner bus lines. 2",
+            "icon": "🚌",
+            "created_at": "2026-11-18T10:18:11.000Z",
+            "updated_at": "2026-11-18T10:19:45.000Z"
+        }
+    ]
+}
+```
+
+### POST /api/bus_steps
+
+- `Only admin` can use this route.
+
+#### Payload
+
+- `title` must exit
+
+```json
+{
+    "title" : "Contact us",
+    "description" : "Call, Viber, or WhatsApp us with your route and travel date.",
+    "icon" : "📞"
+}
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully created",
+    "data": {
+        "id": 1,
+        "title": "Contact us",
+        "description": "Call, Viber, or WhatsApp us with your route and travel date.",
+        "icon": "📞",
+        "created_at": "2026-11-18T10:17:46.000Z",
+        "updated_at": "2026-11-18T10:17:46.000Z"
+    }
+}
+```
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Title is required"
+}
+```
+
+
+### PUT /api/bus_steps
+
+- `Only admin` can use this route.
+
+#### Payload
+
+-  `id` and `title` must exit
+
+```json
+{
+    "id" : 2,
+    "title" : "We check bus lines 2",
+    "description" : "We compare availability across our partner bus lines. 2",
+    "icon" : "🚌"
+}
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully updated.",
+    "data": {
+        "id": 2,
+        "title": "We check bus lines 2",
+        "description": "We compare availability across our partner bus lines. 2",
+        "icon": "🚌",
+        "created_at": "2026-11-18T10:18:11.000Z",
+        "updated_at": "2026-11-18T10:19:45.000Z"
+    }
+}
+```
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Wrong  or invalid Id!"
+}
+```
+
+```json
+{
+    "status": false,
+    "message": "Id and title are required"
+}
+```
+
+### DELETE /api/bus_steps/:id
+
+- `:id` is the id of item to delete
+- `Only admin` can use this route.
+
+#### Example 
+
+```text
+/api/bus_steps/1
+
+/api/bus_steps/2
+```
+
+#### Success response
+
+```json
+{
+    "status": true,
+    "message": "Successfully deleted."
+}
+```
+
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Wrong or invalid id!"
+}
+```
+
+---
+
+## 6. SQL for creating `bus_why_cards`
+
+```sql
+CREATE TABLE bus_why_cards (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT NULL,
+    icon VARCHAR(50) NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+```
+
+
+### GET /api/bus_why_cards/all
+
+- No payment required
+
+#### Response
+
+```json
+{
+    "status": true,
+    "message": "All items are here",
+    "data": [
+        {
+            "id": 1,
+            "title": "Trusted operators",
+            "description": "We only work with licensed, reviewed bus lines.",
+            "icon": "fas fa-handshake",
+            "created_at": "2026-11-18T10:37:05.000Z",
+            "updated_at": "2026-11-18T10:37:05.000Z"
+        },
+        {
+            "id": 2,
+            "title": "24/7 support",
+            "description": "Travel experts available before and during your trip.",
+            "icon": "fas fa-headset",
+            "created_at": "2026-11-18T10:37:51.000Z",
+            "updated_at": "2026-11-18T10:38:36.000Z"
+        }
+    ]
+}
+```
+
+### POST /api/bus_why_cards
+
+- `Only admin` can use this route.
+
+#### Payload
+
+- `title` must exit
+
+```json
+{
+    "title" : "Trusted operators",
+    "description" : "We only work with licensed, reviewed bus lines.",
+    "icon" : "fas fa-handshake"
+}
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully created",
+    "data": {
+        "id": 1,
+        "title": "Trusted operators",
+        "description": "We only work with licensed, reviewed bus lines.",
+        "icon": "fas fa-handshake",
+        "created_at": "2026-11-18T10:37:05.000Z",
+        "updated_at": "2026-11-18T10:37:05.000Z"
+    }
+}
+```
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Title is required"
+}
+```
+
+
+### PUT /api/bus_why_cards
+
+- `Only admin` can use this route.
+
+#### Payload
+
+-  `id` and `title` must exit
+
+```json
+{
+    "id" : 2,
+    "title" : "24/7 support",
+    "description" : "Travel experts available before and during your trip.",
+    "icon" : "fas fa-headset"
+}
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully updated.",
+    "data": {
+        "id": 2,
+        "title": "24/7 support",
+        "description": "Travel experts available before and during your trip.",
+        "icon": "fas fa-headset",
+        "created_at": "2026-11-18T10:37:51.000Z",
+        "updated_at": "2026-11-18T10:38:36.000Z"
+    }
+}
+```
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Wrong  or invalid Id!"
+}
+```
+
+```json
+{
+    "status": false,
+    "message": "Id and title are required"
+}
+```
+
+### DELETE /api/bus_why_cards/:id
+
+- `:id` is the id of item to delete
+- `Only admin` can use this route.
+
+#### Example 
+
+```text
+/api/bus_why_cards/1
+
+/api/bus_why_cards/2
+```
+
+#### Success response
+
+```json
+{
+    "status": true,
+    "message": "Successfully deleted."
+}
+```
+
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Wrong or invalid id!"
+}
+```
+
+---
+
 ## 7. SQL for creating `bus_and_boat_contact` 
 
 ```sql
@@ -10695,3 +11263,460 @@ CREATE TABLE bus_and_boat_contact (
 
 ---
 
+## 8. SQL for creating `boat_tickets`
+
+```sql
+CREATE TABLE boat_tickets (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    route VARCHAR(255) NOT NULL,
+    sub_route VARCHAR(255) NOT NULL,
+    departure_time VARCHAR(50) NOT NULL,
+    arrival_time VARCHAR(50) NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
+    currency_unit VARCHAR(10) NOT NULL,
+    ticket_class ENUM('VIP', 'Deluxe' , 'Standard') NOT NULL DEFAULT 'Standard',
+    is_popular BOOLEAN NOT NULL DEFAULT FALSE,
+    ticket_image_url VARCHAR(500) NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+```
+
+
+
+### GET /api/boat_tickets/all
+
+- No payment required
+
+#### Response
+
+```json
+{
+    "status": true,
+    "message": "All items are here",
+    "data": [
+        {
+            "id": 1,
+            "route": "Yangon → Mandalay 2",
+            "sub_route": "仰光 → 曼德勒 2",
+            "departure_time": "08:30 2",
+            "arrival_time": "20:15 2",
+            "price": "45.00",
+            "currency_unit": "USD",
+            "ticket_class": "Standard",
+            "is_popular": 0,
+            "ticket_image_url": "http://localhost:5000/images/boat_tickets/c6288407-dd1f-4aba-832a-b2b72c91efa0.webp",
+            "created_at": "2026-11-18T12:47:38.000Z",
+            "updated_at": "2026-11-18T13:02:03.000Z"
+        },
+        {
+            "id": 2,
+            "route": "Yangon → Mandalay",
+            "sub_route": "仰光 → 曼德勒",
+            "departure_time": "08:30",
+            "arrival_time": "20:15",
+            "price": "45.00",
+            "currency_unit": "USD",
+            "ticket_class": "Standard",
+            "is_popular": 1,
+            "ticket_image_url": "http://localhost:5000/images/boat_tickets/f1c548f2-279a-4e85-b5cf-6a0635e9174d.webp",
+            "created_at": "2026-11-18T12:50:24.000Z",
+            "updated_at": "2026-11-18T12:50:24.000Z"
+        }
+    ]
+}
+```
+
+
+### POST /api/boat_tickets
+
+- `Only admin` can use this route.
+
+#### Payload
+
+- This endpoint accepts data using `multipart/form-data`.
+- The following fields should be included in the request body as `FormData`:
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `route` | string | YES | route |
+| `sub_route` | string | YES | sub_route |
+| `departure_time` | string | YES | departure_time |
+| `arrival_time` | string | YES | arrival_time |
+| `price` | Decimal or number | YES | price |
+| `currency_unit` | string | YES | currency_unit like "USD", "Kyat" |
+| `ticket_class` | Enum | YES | one of 'VIP', 'Deluxe' , 'Standard' |
+| `is_popular` | boolean | YES | its default is false |
+| `image` | file | YES | Image file to upload |
+| `ticket_image_url` | string | YES | The background_image_url of the banner |
+
+#### Example
+
+```js
+const formData = new FormData();
+
+formData.append("route", "Yangon → Mandalay");
+formData.append("sub_route", "仰光 → 曼德勒");
+formData.append("departure_time", "08:30");
+formData.append("arrival_time", "20:15");
+formData.append("price", 45);
+formData.append("currency_unit", "USD");
+formData.append("ticket_class", "Standard");
+formData.append("is_popular", false);
+
+formData.append("image", imageFile);
+//or
+formData.append("ticket_image_url", "https://randomuser.me/api/portraits/women/32.jpg");
+
+
+fetch("domain/api/boat_tickets", {
+  method: "POST",
+  body: formData
+});
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully created",
+    "data": {
+        "id": 2,
+        "route": "Yangon → Mandalay",
+        "sub_route": "仰光 → 曼德勒",
+        "departure_time": "08:30",
+        "arrival_time": "20:15",
+        "price": "45.00",
+        "currency_unit": "USD",
+        "ticket_class": "Standard",
+        "is_popular": 0,
+        "ticket_image_url": "http://localhost:5000/images/boat_tickets/f1c548f2-279a-4e85-b5cf-6a0635e9174d.webp",
+        "created_at": "2026-11-18T12:50:24.000Z",
+        "updated_at": "2026-11-18T12:50:24.000Z"
+    }
+}
+```
+
+##### Error Response 
+
+```json
+{
+    "status": false,
+    "message": "Image file or ticket_image_url is required"
+}
+```
+```json
+{
+    "status": false,
+    "message": "Route , sub_route , departure_time , arrival_time , price , currency_unit , ticket_class and is_popular are required"
+}
+```
+```json
+{
+    "status": false,
+    "message": "ticket_class is allowed only for VIP , Deluxe , Standard"
+}
+```
+
+### PUT /api/boat_tickets
+
+- `Only admin` can use this route.
+
+#### Payload
+
+- This endpoint accepts data using `multipart/form-data`.
+- The following fields should be included in the request body as `FormData`:
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `id` | number | YES | id of the row to update |
+| `route` | string | YES | route |
+| `sub_route` | string | YES | sub_route |
+| `departure_time` | string | YES | departure_time |
+| `arrival_time` | string | YES | arrival_time |
+| `price` | Decimal or number | YES | price |
+| `currency_unit` | string | YES | currency_unit like "USD", "Kyat" |
+| `ticket_class` | Enum | YES | one of 'VIP', 'Deluxe' , 'Standard' |
+| `is_popular` | boolean | YES | its default is false |
+| `image` | file | YES | Image file to upload |
+| `ticket_image_url` | string | YES | The background_image_url of the banner |
+
+#### Example
+
+```js
+const formData = new FormData();
+
+formData.append("id", 1);
+formData.append("route", "Yangon → Mandalay 2");
+formData.append("sub_route", "仰光 → 曼德勒 2");
+formData.append("departure_time", "08:30 2");
+formData.append("arrival_time", "20:15 2");
+formData.append("price", 45);
+formData.append("currency_unit", "USD");
+formData.append("ticket_class", "Standard");
+formData.append("is_popular", false);
+
+formData.append("image", imageFile);
+//or
+formData.append("ticket_image_url", "https://images.unsplash.com/photo-1542718610-a1d656d1884c?w=500&q=60");
+
+
+fetch("domain/api/boat_tickets", {
+  method: "PUT",
+  body: formData
+});
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully updated.",
+    "data": {
+        "id": 1,
+        "route": "Yangon → Mandalay 2",
+        "sub_route": "仰光 → 曼德勒 2",
+        "departure_time": "08:30 2",
+        "arrival_time": "20:15 2",
+        "price": "45.00",
+        "currency_unit": "USD",
+        "ticket_class": "Standard",
+        "is_popular": 0,
+        "ticket_image_url": "http://localhost:5000/images/boat_tickets/c6288407-dd1f-4aba-832a-b2b72c91efa0.webp",
+        "created_at": "2026-11-18T12:47:38.000Z",
+        "updated_at": "2026-11-18T13:02:03.000Z"
+    }
+}
+```
+
+##### Error Response 
+
+
+```json
+{
+    "status": false,
+    "message": "Image file or ticket_image_url is required"
+}
+```
+```json
+{
+    "status": false,
+    "message": "Id , route , sub_route , departure_time , arrival_time , price , currency_unit , ticket_class and is_popular are required"
+}
+```
+```json
+{
+    "status": false,
+    "message": "ticket_class is allowed only for VIP , Deluxe , Standard"
+}
+```
+```json
+{
+    "status": false,
+    "message": "Wrong  or invalid Id!"
+}
+```
+
+
+### DELETE /api/boat_tickets/:id
+
+- `:id` is the id of item to delete
+- `Only admin` can use this route.
+
+#### Example 
+
+```text
+/api/boat_tickets/1
+
+/api/boat_tickets/2
+```
+
+#### Success response
+
+```json
+{
+    "status": true,
+    "message": "Successfully deleted."
+}
+``` 
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Wrong or invalid id!"
+}
+```
+
+
+---
+
+## 9. SQL for creating `boat_trust_badges`
+
+```sql
+CREATE TABLE boat_trust_badges (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    icon VARCHAR(50) NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+```
+
+
+### GET /api/boat_trust_badges/all
+
+- No payment required
+
+#### Response
+
+```json
+{
+    "status": true,
+    "message": "All items are here",
+    "data": [
+        {
+            "id": 1,
+            "title": "Secure payment · 安全支付",
+            "icon": "🔒",
+            "created_at": "2026-11-18T11:33:44.000Z",
+            "updated_at": "2026-11-18T11:33:44.000Z"
+        },
+        {
+            "id": 2,
+            "title": "WeChat Pay · 微信支付 2",
+            "icon": "💬",
+            "created_at": "2026-11-18T11:33:57.000Z",
+            "updated_at": "2026-11-18T11:35:12.000Z"
+        }
+    ]
+}
+```
+
+### POST /api/boat_trust_badges
+
+- `Only admin` can use this route.
+
+#### Payload
+
+- `title` must exit
+
+```json
+{
+    "title" : "Secure payment · 安全支付",
+    "icon" : "🔒"
+}
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully created",
+    "data": {
+        "id": 1,
+        "title": "Secure payment · 安全支付",
+        "icon": "🔒",
+        "created_at": "2026-11-18T11:33:44.000Z",
+        "updated_at": "2026-11-18T11:33:44.000Z"
+    }
+}
+```
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Title is required"
+}
+```
+
+
+### PUT /api/boat_trust_badges
+
+- `Only admin` can use this route.
+
+#### Payload
+
+-  `id` and `title` must exit
+
+```json
+{
+    "id" : 2,
+    "title" : "WeChat Pay · 微信支付 2",
+    "icon" : "💬"
+}
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "Successfully updated.",
+    "data": {
+        "id": 2,
+        "title": "WeChat Pay · 微信支付 2",
+        "icon": "💬",
+        "created_at": "2026-11-18T11:33:57.000Z",
+        "updated_at": "2026-11-18T11:35:12.000Z"
+    }
+}
+```
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Wrong  or invalid Id!"
+}
+```
+
+```json
+{
+    "status": false,
+    "message": "Id and title are required"
+}
+```
+
+### DELETE /api/boat_trust_badges/:id
+
+- `:id` is the id of item to delete
+- `Only admin` can use this route.
+
+#### Example 
+
+```text
+/api/boat_trust_badges/1
+
+/api/boat_trust_badges/2
+```
+
+#### Success response
+
+```json
+{
+    "status": true,
+    "message": "Successfully deleted."
+}
+```
+
+
+#### Error Response
+
+```json
+{
+    "status": false,
+    "message": "Wrong or invalid id!"
+}
+```
+
+---
+---
+---

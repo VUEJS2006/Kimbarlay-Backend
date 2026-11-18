@@ -92,6 +92,11 @@ import busAndBoatBannerRouter from "./router/busAndBoat/busAndBoatBannerRouter.j
 import busAndBoatUnityRouter from "./router/busAndBoat/busAndBoatUnityRouter.js";
 import busAndBoatContactRouter from "./router/busAndBoat/busAndBoatContactRouter.js";
 import busLinesRouter from "./router/busAndBoat/busLinesRouter.js";
+import busRoutesRouter from "./router/busAndBoat/busRoutesRouter.js";
+import busStepsRouter from "./router/busAndBoat/busStepsRouter.js";
+import busWhyCardsRouter from "./router/busAndBoat/busWhyCardsRouter.js";
+import boatTrustBadgesRouter from "./router/busAndBoat/boatTrustBadgesRouter.js";
+import boatTicketsRouter from "./router/busAndBoat/boatTicketsRouter.js";
 
 
 
@@ -200,6 +205,11 @@ app.use('/api', busAndBoatBannerRouter )
 app.use('/api', busAndBoatUnityRouter )
 app.use('/api', busAndBoatContactRouter )
 app.use('/api', busLinesRouter )
+app.use('/api', busRoutesRouter )
+app.use('/api', busStepsRouter )
+app.use('/api', busWhyCardsRouter )
+app.use('/api', boatTrustBadgesRouter )
+app.use('/api', boatTicketsRouter )
 
 
 app.get("/", (req, res) => {
