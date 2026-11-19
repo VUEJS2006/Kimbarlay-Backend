@@ -31,3 +31,6 @@ router.put(
 router.delete("/admin/day-trip/banner/delete/:id", authenticated, isAdmin, dayBannerDelete);
 
 export default router;
+
+
+

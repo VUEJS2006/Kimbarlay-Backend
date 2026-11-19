@@ -99,6 +99,9 @@ import boatTrustBadgesRouter from "./router/busAndBoat/boatTrustBadgesRouter.js"
 import boatTicketsRouter from "./router/busAndBoat/boatTicketsRouter.js";
 
 
+import eventServiceRouter from "./router/ticket/eventServiceRouter.js";
+
+
 
 
 const app = express();
@@ -197,19 +200,21 @@ app.use('/api', insuranceCoverageOptionsRouter)
 app.use('/api', insuranceCoverageFeaturesRouter)
 app.use('/api', insuranceFAQsRouter)
 app.use('/api', insurancePartnersRouter)
-app.use('/api', visaUnityRouter )
-app.use('/api', visaServicesRouter )
-app.use('/api', visaPopularDestinationsRouter )
-app.use('/api', privateStepsRouter )
-app.use('/api', busAndBoatBannerRouter )
-app.use('/api', busAndBoatUnityRouter )
-app.use('/api', busAndBoatContactRouter )
-app.use('/api', busLinesRouter )
-app.use('/api', busRoutesRouter )
-app.use('/api', busStepsRouter )
-app.use('/api', busWhyCardsRouter )
-app.use('/api', boatTrustBadgesRouter )
-app.use('/api', boatTicketsRouter )
+app.use('/api', visaUnityRouter)
+app.use('/api', visaServicesRouter)
+app.use('/api', visaPopularDestinationsRouter)
+app.use('/api', privateStepsRouter)
+app.use('/api', busAndBoatBannerRouter)
+app.use('/api', busAndBoatUnityRouter)
+app.use('/api', busAndBoatContactRouter)
+app.use('/api', busLinesRouter)
+app.use('/api', busRoutesRouter)
+app.use('/api', busStepsRouter)
+app.use('/api', busWhyCardsRouter)
+app.use('/api', boatTrustBadgesRouter)
+app.use('/api', boatTicketsRouter)
+
+app.use('/api', eventServiceRouter)
 
 
 app.get("/", (req, res) => {

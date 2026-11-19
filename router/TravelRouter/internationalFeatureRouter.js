@@ -23,3 +23,4 @@ router.put("/admin/international/feature/update/:id", authenticated, isAdmin, fe
 router.delete("/admin/international/feature/delete/:id", authenticated, isAdmin, featureDelete);
 
 export default router;
+
