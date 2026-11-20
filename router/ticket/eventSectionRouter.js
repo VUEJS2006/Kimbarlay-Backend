@@ -1,11 +1,11 @@
 import express from "express";
-import { eventSectionCreate, eventSectionDelete, eventSectionList, eventSectionUpdate, mobileEventSectionMobilList } from "../../controller/ticket/eventSectionController.js";
+import { eventSectionCreate, eventSectionDelete, eventSectionList, eventSectionUpdate, mobileEventSectionList } from "../../controller/ticket/eventSectionController.js";
 import { upload } from "../../middleware/upload.js";
 import { authenticated, isAdmin } from "../../middleware/authenticatedMiddleware.js";
 
 const router = express.Router();
 
-router.get("/mobile/event/section/list", authenticated, mobileEventSectionMobilList);
+router.get("/mobile/event/section/list", authenticated, mobileEventSectionList);
 
 router.get("/admin/event/section/list", authenticated, isAdmin, eventSectionList);
 router.post("/admin/event/section/create", authenticated, isAdmin, eventSectionCreate);
