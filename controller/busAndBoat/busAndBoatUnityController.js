@@ -11,8 +11,8 @@ export const getBusOrBoatUnity = async ( req , res ) => {
         if(rows && rows.length) {
             const { id : newId , title : newTitle , subtitle : newSubTitle , ...newData } = rows[0];
             data = newData;
-
-            if(id === "bus_step_heading" || "bus_why_heading") {
+            
+            if(id === "bus_step_heading" || id === "bus_why_heading") {
                 data = { title : newTitle , ...data }
             } else if(id === "bus_intro" ) {
                 data = { heading : newTitle , paragraph : newSubTitle , ...data }
@@ -63,7 +63,7 @@ export const updateBusOrBoatUnity = async ( req , res ) => {
 
         const { id : newId , title : newTitle , subtitle : newSubTitle , ...newData } = rows[0];
         let data = newData;
-        if(id === "bus_step_heading" || "bus_why_heading" ) {
+        if(id === "bus_step_heading" || id === "bus_why_heading" ) {
             data = { title : newTitle , ...data }
         } else if(id === "bus_intro" ) {
             data = {  heading : newTitle , paragraph : newSubTitle , ...data }
