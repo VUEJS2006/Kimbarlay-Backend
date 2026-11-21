@@ -9998,7 +9998,7 @@ CREATE TABLE bus_and_boat_unity (
 
 ## 2.1 For the `Intro` section for Bus ticket
 
-### GET /api/visa_intro
+### GET /api/bus_intro
 
 - No payment required
 
@@ -10017,7 +10017,7 @@ CREATE TABLE bus_and_boat_unity (
 }
 ```
 
-### PUT /api/visa_intro
+### PUT /api/bus_intro
 
 - `Only admin` can use this route.
 
