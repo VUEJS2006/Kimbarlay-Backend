@@ -7,7 +7,7 @@ import { asyncHandel } from "../../middleware/asyncMiddleware.js";
 
 
 
-const sportCTA = "event_ctas";
+const sportCTA = "sport_ctas";
 
 export const createSportCTA = asyncHandel(async (req, res) => {
     try {
