@@ -104,6 +104,11 @@ import eventSectionRouter from "./router/ticket/eventSectionRouter.js";
 import eventCTARouter from "./router/ticket/eventSectionCTARouter.js";
 import eventBadgeRouter from "./router/ticket/eventBadgeRouter.js";
 
+import sportServiceRouter from "./router/ticket/sportServiceRouter.js";
+import sportSectionRouter from "./router/ticket/sportSectionRouter.js";
+import sportCTARouter from "./router/ticket/sportSectionCTARouter.js";
+import sportBadgeRouter from "./router/ticket/sportBadgeRouter.js";
+
 const app = express();
 
 
@@ -217,8 +222,11 @@ app.use('/api', boatTicketsRouter)
 app.use('/api', eventServiceRouter)
 app.use('/api', eventSectionRouter)
 app.use('/api', eventCTARouter)
-app.use('/api', eventBadgeRouter)
-
+app.use('/api', sportBadgeRouter)
+app.use('/api', sportServiceRouter)
+app.use('/api', sportSectionRouter)
+app.use('/api', sportCTARouter)
+app.use('/api', sportBadgeRouter)
 
 
 app.get("/", (req, res) => {
