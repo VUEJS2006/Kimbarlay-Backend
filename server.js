@@ -108,6 +108,7 @@ import sportServiceRouter from "./router/ticket/sportServiceRouter.js";
 import sportSectionRouter from "./router/ticket/sportSectionRouter.js";
 import sportCTARouter from "./router/ticket/sportSectionCTARouter.js";
 import sportBadgeRouter from "./router/ticket/sportBadgeRouter.js";
+import insuranceFourStepsRouter from "./router/TravelRouter/insuranceFourStepsRouter.js";
 
 const app = express();
 
@@ -218,6 +219,8 @@ app.use('/api', busStepsRouter)
 app.use('/api', busWhyCardsRouter)
 app.use('/api', boatTrustBadgesRouter)
 app.use('/api', boatTicketsRouter)
+app.use('/api', insuranceFourStepsRouter)
+
 
 app.use('/api', eventServiceRouter)
 app.use('/api', eventSectionRouter)
