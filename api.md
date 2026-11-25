@@ -9164,6 +9164,168 @@ CREATE TABLE travel_private_steps (
 ```
 
 
+## 22. SQL code of creating `insurance_four_steps` in database
+
+```sql
+CREATE TABLE insurance_four_steps (
+    id VARCHAR(50) PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+```
+
+
+### GET /api/insurance_four_steps
+
+- No payload required
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "All steps are here",
+    "data": [
+        {
+            "id": "1",
+            "title": "Filter Information",
+            "description": "Enter your travel details and preferences",
+            "created_at": "2026-11-25T07:32:02.000Z",
+            "updated_at": "2026-11-25T07:32:40.000Z"
+        },
+        {
+            "id": "2",
+            "title": "Select Insurance",
+            "description": "Choose the plan that best fits your needs",
+            "created_at": "2026-11-25T07:32:02.000Z",
+            "updated_at": "2026-11-25T07:32:40.000Z"
+        },
+        {
+            "id": "3",
+            "title": "Confirm & Pay",
+            "description": "Review your selection and complete payment",
+            "created_at": "2026-11-25T07:32:02.000Z",
+            "updated_at": "2026-11-25T07:32:40.000Z"
+        },
+        {
+            "id": "4",
+            "title": "Download Policy",
+            "description": "Receive your electronic policy and terms",
+            "created_at": "2026-11-25T07:32:02.000Z",
+            "updated_at": "2026-11-25T07:32:40.000Z"
+        }
+    ]
+}
+```
+
+### PUT /api/insurance_four_steps/update/all
+
+- Id must be only `1`, `2` , `3` or `4`.
+- Order by Id like `1` is always the first one.
+
+#### Payload
+
+```json
+[
+   {
+    "id": 2,
+    "title": "Select Insurance",
+    "description": "Choose the plan that best fits your needs"
+  },
+  {
+    "id": 1,
+    "title": "Filter Information",
+    "description": "Enter your travel details and preferences"
+  },
+  {
+    "id": 3,
+    "title": "Confirm & Pay",
+    "description": "Review your selection and complete payment"
+  },
+  {
+    "id": 4,
+    "title": "Download Policy",
+    "description": "Receive your electronic policy and terms"
+  }
+]
+```
+
+#### Success Response
+
+```json
+{
+    "status": true,
+    "message": "After updated, all steps are here",
+    "data": [
+        {
+            "id": "1",
+            "title": "Filter Information",
+            "description": "Enter your travel details and preferences",
+            "created_at": "2026-11-25T07:32:02.000Z",
+            "updated_at": "2026-11-25T07:32:02.000Z"
+        },
+        {
+            "id": "2",
+            "title": "Select Insurance",
+            "description": "Choose the plan that best fits your needs",
+            "created_at": "2026-11-25T07:32:02.000Z",
+            "updated_at": "2026-11-25T07:32:02.000Z"
+        },
+        {
+            "id": "3",
+            "title": "Confirm & Pay",
+            "description": "Review your selection and complete payment",
+            "created_at": "2026-11-25T07:32:02.000Z",
+            "updated_at": "2026-11-25T07:32:02.000Z"
+        },
+        {
+            "id": "4",
+            "title": "Download Policy",
+            "description": "Receive your electronic policy and terms",
+            "created_at": "2026-11-25T07:32:02.000Z",
+            "updated_at": "2026-11-25T07:32:02.000Z"
+        }
+    ]
+}
+```
+
+#### Error Response
+
+- Status : `400`
+
+```json
+{
+    "success": false,
+    "message": "Request body must be an array containing exactly 4 steps."
+}
+```
+
+```json
+{
+    "success": false,
+    "message": "Invalid Step ID: '5'. ID must be only from 1 to 4."
+}
+```
+
+```json
+{
+    "success": false,
+    "message": "Title and description are required for step '4'."
+}
+```
+
+```json
+{
+    "success": false,
+    "message": "You must provide all steps : 1 , 2 , 3 , 4."
+}
+```
+
+
+
+
 ---
 ---
 
