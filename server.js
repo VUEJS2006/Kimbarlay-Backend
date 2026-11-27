@@ -223,6 +223,7 @@ app.use('/api', insuranceFourStepsRouter)
 
 
 app.use('/api', eventServiceRouter)
+app.use('/api', eventBadgeRouter)
 app.use('/api', eventSectionRouter)
 app.use('/api', eventCTARouter)
 app.use('/api', sportBadgeRouter)
